@@ -790,6 +790,7 @@ body{ --present:#c79a2b; --absent-bg:rgba(128,128,128,.42); }
       </div>
       <div id="lobby-settings-summary" class="settings-summary hidden"></div>
       <div class="list-wrap" id="lobby-players"></div>
+      <button class="ghost hidden" id="btn-rename">✏️ تغيير اسمي</button>
       <button class="ghost hidden" id="btn-reset-all-scores">↺ تصفير نقاط جميع اللاعبين</button>
       <div id="leader-settings" class="settings-box hidden">
         <label>لون تنسيق اللعبة</label>
@@ -918,7 +919,7 @@ body{ --present:#c79a2b; --absent-bg:rgba(128,128,128,.42); }
       <div class="rc-bin-area rc-furnace" id="rc-furnace"><div class="rc-heat"></div><div class="rc-furnace-label">🔥 فرن الصهر</div><span class="rc-spark s1"></span><span class="rc-spark s2"></span><span class="rc-spark s3"></span><span class="rc-spark s4"></span><span class="rc-spark s5"></span><div class="rc-molten"><span class="rc-bubble b1"></span><span class="rc-bubble b2"></span><span class="rc-bubble b3"></span><span class="rc-bubble b4"></span><span class="rc-bubble b5"></span></div><div class="rc-timer" id="rc-timer"></div></div>
       <div class="rc-belt" id="rc-belt"><div class="rc-target"></div></div>
       <div class="rc-controls">
-        <button type="button" class="rc-btn rc-recycle" id="rc-recycle" aria-label="إعادة تدوير"><svg viewBox="0 0 100 100"><path d="M50 6 L84 44 H61 V94 H39 V44 H16 Z"/></svg></button>
+        <button type="button" class="rc-btn rc-recycle" id="rc-recycle" aria-label="صهر"><svg viewBox="0 0 100 100"><path d="M50 6 L84 44 H61 V94 H39 V44 H16 Z"/></svg></button>
         <button type="button" class="rc-btn rc-pass" id="rc-pass" aria-label="تمرير"><svg viewBox="0 0 100 100"><path d="M94 50 L56 16 V39 H6 V61 H56 V84 Z"/></svg></button>
       </div>
       <div class="rc-score-label">النقاط</div>
@@ -1136,7 +1137,7 @@ function unlockAudio(){
     ctx._victoryStateHook = true;
     ctx.addEventListener && ctx.addEventListener('statechange', function(){
       if(ctx.state === 'running') tryPlayPendingVictory();
-      else if(ctx.state !== 'closed'){ try{ ctx.resume().catch(function(){}); }catch(e){} }
+      else if(ctx.state !== 'closed' && document.visibilityState === 'visible'){ try{ ctx.resume().catch(function(){}); }catch(e){} }
     });
   }
   if(ctx.state!=='running'){
@@ -1159,6 +1160,17 @@ function unlockAudio(){
 }
 document.addEventListener('touchstart', unlockAudio);
 document.addEventListener('click', unlockAudio);
+['touchend','pointerdown','pointerup','keydown'].forEach(function(ev){
+  document.addEventListener(ev, unlockAudio, {capture:true, passive:true});
+});
+// iOS: a context left running while the page is in the background often comes back
+// "running" but silent - park it while hidden, wake it on return (see visibilitychange).
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState === 'hidden' && audioCtx && audioCtx.state === 'running'){
+    try{ audioCtx.suspend().catch(function(){}); }catch(e){}
+  }
+});
+window.addEventListener('pageshow', function(){ unlockAudio(); });
 // Synthesized fallbacks for the flag-move sounds (distinct pitch/timbre per axis so the
 // two are still easy to tell apart even without the real assets).
 function playSynthFlagLR(){
@@ -1191,6 +1203,19 @@ function playSynthFlagUD(){
 }
 var SYNTH_FALLBACK = { wrong:playSynthBuzz, appear:playSynthAppear, victory:playSynthVictory, 'flag-lr':playSynthFlagLR, 'flag-ud':playSynthFlagUD };
 function playSound(key){
+  var ctx = getAudioCtx();
+  if(ctx && ctx.state !== 'running' && ctx.state !== 'closed'){
+    var askedAt = Date.now();
+    try{
+      ctx.resume().then(function(){
+        if(ctx.state === 'running' && Date.now() - askedAt < 1500) playSoundNow(key);
+      }, function(){});
+    }catch(e){}
+    return;
+  }
+  playSoundNow(key);
+}
+function playSoundNow(key){
   if(soundBuffers[key]){
     var src = playBuffer(soundBuffers[key]);
     if(src){ if(key==='victory') victoryAudioSession.sources.push(src); return; }
@@ -1478,7 +1503,7 @@ var els = {};
  'flags-pad-container','flags-remaining','flags-char-img','dpad-up','dpad-left','dpad-right','dpad-down','btn-flags-reset','dpad-up-img','dpad-left-img','dpad-right-img','dpad-down-img',
  'words-container','words-board','words-toast','words-kb','words-giveup',
  'inter-container','rc-belt','rc-score','rc-timer','rc-recycle','rc-pass','elim-overlay','rc-furnace',
- 'btn-next-round','btn-bomb-new-round','btn-reset-all-scores','btn-bomb-to-lobby','btn-bomb-continue','winner-screen',
+ 'btn-next-round','btn-bomb-new-round','btn-reset-all-scores','btn-rename','btn-bomb-to-lobby','btn-bomb-continue','winner-screen',
  'victory-audio-box','btn-pick-victory-audio','victory-audio-input','victory-audio-status'
 ].forEach(function(id){ els[toCamel(id)] = document.getElementById(id); });
 function toCamel(s){ return s.replace(/-([a-z0-9])/g, function(m,c){ return c.toUpperCase(); }); }
@@ -1563,7 +1588,7 @@ function wireHostPeerHandlers(peer){
     conn.on('data', function(msg){ hostHandleMessage(msg, conn); });
     conn.on('close', function(){ hostHandlePlayerDisconnect(conn); });
   });
-  peer.on('disconnected', function(){ keepSignalingAlive(peer); });
+  peer.on('disconnected', function(){ handleHostConnectionLost(); });
 }
 
 // fix #8: the letter O looks too much like the digit 0 and was a common typo source when
@@ -1607,7 +1632,6 @@ function createRoomFlow(){
   });
   wireHostPeerHandlers(peer);
   peer.on('error', function(err){
-    if(app.game) return; // an in-game signaling hiccup (see keepSignalingAlive) - not a failed room
     els.homeStatus.textContent = 'تعذر إنشاء الغرفة، حاول مرة أخرى.';
     els.homeStatus.classList.add('error');
     els.btnCreateRoom.disabled = false;
@@ -1619,25 +1643,9 @@ function createRoomFlow(){
 // the whole session. All existing game state in app.game is preserved untouched; players
 // reconnect to it individually via their own auto-reconnect flow below.
 
-// fix: the signaling server (maq-peerjs-server on Render's free plan) sleeps / restarts now
-// and then. That fires 'disconnected' on every device - but it does NOT break the direct
-// phone<->display connections, which keep working. The old code treated it as a lost room:
-// every device destroyed its connection and tried to re-join through a server that was
-// still asleep, so the whole game hung on "reconnecting" until the server came back. Now we
-// only quietly re-register with the server in the background (PeerJS keeps the existing
-// connections) and the game carries on.
-function keepSignalingAlive(peer){
-  if(!peer || peer._reviving) return;
-  peer._reviving = true;
-  var delay = 1000;
-  (function attempt(){
-    if(app.peer !== peer || peer.destroyed || app.intentionalLeave || !peer.disconnected){ peer._reviving = false; return; }
-    try{ peer.reconnect(); }catch(e){}
-    delay = Math.min(delay*2, 20000);
-    setTimeout(attempt, delay);
-  })();
-}
-// keep the free server awake while a room is open (it sleeps after a quiet spell)
+// keep the free signaling server (Render) awake while a room is open - it goes to sleep
+// after a quiet spell, and that's what used to pop up "reconnecting" while waiting
+// between rounds. The connection handling itself is the proven v10 one.
 setInterval(function(){
   if(!app.isHost || !app.game || app.intentionalLeave) return;
   try{ fetch('https://'+PEER_CONFIG.host+PEER_CONFIG.path+'/', {mode:'no-cors', cache:'no-store'}).catch(function(){}); }catch(e){}
@@ -1692,7 +1700,7 @@ function joinRoomFlow(codeRaw, name, opts){
     conn.on('data', function(msg){ clientHandleMessage(msg); });
     conn.on('close', function(){ handlePlayerConnectionLost(); });
   });
-  peer.on('disconnected', function(){ keepSignalingAlive(peer); }); // only a REAL drop (conn 'close') re-joins
+  peer.on('disconnected', function(){ handlePlayerConnectionLost(); });
   peer.on('error', function(err){
     if(opts.isReconnect){
       scheduleReconnectRetry(attemptPlayerReconnect);
@@ -1745,8 +1753,8 @@ document.addEventListener('visibilitychange', function(){
     var alive = app.hostConn && app.hostConn.open;
     if(!alive) handlePlayerConnectionLost();
   } else if(app.isHost && app.game){
-    if(!app.peer || app.peer.destroyed) handleHostConnectionLost();
-    else if(app.peer.disconnected) keepSignalingAlive(app.peer);
+    var peerAlive = app.peer && !app.peer.destroyed && !app.peer.disconnected;
+    if(!peerAlive) handleHostConnectionLost();
   }
 });
 
@@ -1832,6 +1840,8 @@ function hostHandleMessage(msg, conn){
     if(msg.senderId === g.leaderId) hostBackToLobby();
   } else if(msg.t === 'victory-audio-chunk'){
     hostRelayVictoryAudioChunk(msg.senderId, msg, conn);
+  } else if(msg.t === 'rename'){
+    hostRenamePlayer(msg.senderId, msg.name, conn);
   } else if(msg.t === 'send-emoji'){
     hostReceiveEmoji(msg.senderId, msg.emoji);
   }
@@ -1983,6 +1993,19 @@ function checkAllInAfterDisconnect(){
   }
 }
 
+function hostRenamePlayer(id, name, conn){
+  var g = app.game, p = findPlayer(id);
+  if(!p || g.phase !== 'lobby') return;
+  name = String(name||'').trim().slice(0, PLAYER_NAME_MAX);
+  if(!name || name === p.name) return;
+  if(g.players.some(function(o){ return o.id !== id && o.name === name; })){
+    if(conn && conn.send) conn.send({t:'notice', text:'هذا الاسم مستخدم من لاعب آخر، اختر اسمًا ثانيًا'});
+    return;
+  }
+  p.name = name;
+  if(conn && conn.send) conn.send({t:'renamed', name:name});
+  broadcastState();
+}
 function hostToggleReady(id){
   var p = findPlayer(id);
   if(p){ p.ready = !p.ready; broadcastState(); }
@@ -2024,6 +2047,10 @@ function clientHandleMessage(msg){
     app.intentionalLeave = true; // don't try to auto-reconnect after being kicked
     alert('تم طردك من الغرفة من قبل القائد.');
     resetToHome();
+  } else if(msg.t === 'renamed'){
+    app.myName = msg.name;
+    var nameInput = document.getElementById('player-name');
+    if(nameInput) nameInput.value = msg.name;
   } else if(msg.t === 'time-sync-reply'){
     applyTimeSyncReply(msg);
   } else if(msg.t === 'victory-audio-chunk-relay'){
@@ -2190,7 +2217,7 @@ function renderLobbySettingsSummary(g){
     '<div>💣 <b>لعبة القنابل:</b> '+(ls.bombCols||8)+' مراحل — '+bombModeLabel+'</div>' +
     '<div>🚩 <b>لعبة الأعلام:</b> '+(ls.flagsRoundsTotal||5)+' جولة</div>' +
     '<div>🔤 <b>لعبة الكلمات:</b> '+(ls.wordsRoundsTotal||5)+' جولة — '+(ls.wordsAttempts||6)+' محاولات — '+(ls.wordsMinutes||5)+' دقائق للجولة'+(ls.wordsStrict==='any'?' — أي 5 أحرف':' — كلمات القاموس فقط')+'</div>' +
-    '<div>🎯 <b>الألعاب التفاعلية:</b> '+escapeHtml(((ls.interGames&&ls.interGames.length)?ls.interGames:['recycle']).map(function(k){ return (k==='recycle'?'إعادة التدوير ♻️':k); }).join('، '))+' — '+(ls.interRoundsTotal||3)+' جولات — '+(ls.interSec||20)+' ثانية لكل إقصاء</div>' +
+    '<div>🎯 <b>الألعاب التفاعلية:</b> '+escapeHtml(((ls.interGames&&ls.interGames.length)?ls.interGames:['recycle']).map(function(k){ return (k==='recycle'?'فرن الصهر 🔥':k); }).join('، '))+' — '+(ls.interRoundsTotal||3)+' جولات — '+(ls.interSec||20)+' ثانية لكل إقصاء</div>' +
     '<div>🎨 <b>لون التنسيق:</b><div class="theme-picker">'+swatchesHtml+'</div></div>';
 }
 
@@ -2215,6 +2242,7 @@ function renderLobby(){
   els.roomCodeDisplay2.textContent = g.code;
   els.leaderSettings.classList.toggle('hidden', !isLeader);
   els.btnResetAllScores.classList.toggle('hidden', !isLeader);
+  els.btnRename.classList.toggle('hidden', app.isHost);
   els.btnReady.style.display = app.isHost ? 'none' : 'block';
   els.victoryAudioBox.classList.toggle('hidden', app.isHost);
   if(isLeader){ renderThemePicker(g.theme||0); renderGamePicker(); renderInterPicker(); }
@@ -2274,6 +2302,19 @@ function renderLobby(){
   }
 }
 
+// any player can change their name while in the lobby (no need to leave and re-join)
+var PLAYER_NAME_MAX = 16;
+els.btnRename.addEventListener('click', function(){
+  var g = app.game;
+  if(!g || g.phase !== 'lobby') return;
+  var me = findPlayer(app.myPlayerId);
+  var v = prompt('اكتب اسمك الجديد', me ? me.name : (app.myName||''));
+  if(v == null) return;
+  v = v.trim().slice(0, PLAYER_NAME_MAX);
+  if(!v){ alert('الاسم لا يمكن أن يكون فارغًا'); return; }
+  if(me && v === me.name) return;
+  sendToHost({t:'rename', name:v});
+});
 els.btnReady.addEventListener('click', function(){
   sendToHost({t:'ready-toggle'});
 });
@@ -3269,7 +3310,7 @@ function buildWinnerScreenStatic(g){
     '<div class="emoji-burst-layer" id="winner-burst-layer"></div>' +
     '<div class="winner-trophy">🏆</div>' +
     '<div class="winner-name">'+(winner?escapeHtml(winner.name):'')+'</div>' +
-    '<div class="winner-sub">'+(isMeWinner?'مبروك! أنت الفائز 🎉':'تهانينا للفائز 🎊')+'</div>' +
+    '<div class="winner-sub">'+(isMeWinner?'مبروك! أنت الفائز':'تهانينا للفائز')+'</div>' +
     emojiButtonsHtml +
     '<div class="winner-scoreboard">'+scoreboardHtml+'</div>';
   startCelebrationFx();
@@ -3344,6 +3385,25 @@ function renderEmojiBursts(g){
     span.style.opacity = String(0.72 * (progress<0.85 ? 1 : Math.max(0,(1-(progress-0.85)/0.15))));
   });
 }
+// Phones only: the winner's name keeps its normal size as the MAXIMUM, and a longer name
+// gets a smaller font so it always fits inside the winner screen on one line. (The
+// display is a big screen and keeps the normal size.)
+function fitWinnerName(){
+  if(app.isHost) return;
+  var el = els.winnerScreen.querySelector('.winner-name');
+  if(!el) return;
+  el.style.fontSize = '';
+  el.style.whiteSpace = 'nowrap';
+  var cs = getComputedStyle(el), max = parseFloat(cs.fontSize);
+  var sc = getComputedStyle(els.winnerScreen);
+  var avail = els.winnerScreen.clientWidth - parseFloat(sc.paddingLeft) - parseFloat(sc.paddingRight) - 16;
+  if(!(max > 0) || !(avail > 0)) return;
+  var c = fitWinnerName._c || (fitWinnerName._c = document.createElement('canvas').getContext('2d'));
+  c.font = cs.fontStyle+' '+cs.fontWeight+' '+max+'px '+cs.fontFamily;
+  var w = c.measureText(el.textContent).width * 1.08 + 4;   // room for the shadow / entrance spacing
+  if(w > avail) el.style.fontSize = Math.max(14, Math.floor(max*avail/w))+'px';
+}
+window.addEventListener('resize', function(){ if(!els.winnerScreen.classList.contains('hidden')) fitWinnerName(); });
 function renderWinnerScreen(){
   var g = app.game;
   els.winnerScreen.classList.remove('hidden');
@@ -3354,6 +3414,8 @@ function renderWinnerScreen(){
     // fix: victory music now plays ONLY on the shared display device, not on every
     // player's own phone.
     if(g.winnerId && app.isHost) playCustomOrDefaultVictory(g.winnerId);
+    fitWinnerName();
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitWinnerName);
   }
   renderEmojiBursts(g);
 }
@@ -4862,19 +4924,22 @@ function renderWordsPlayer(){
 // random). Outer-round points: the first one out 0, the next 1 ... the last one standing
 // (players - 1). A new interactive game can be added to INTER_GAMES later.
 var INTER_GAMES = {
-  recycle: { label:'إعادة التدوير ♻️' }
+  recycle: { label:'فرن الصهر 🔥' }
 };
 var INTER_GAME_KEYS = Object.keys(INTER_GAMES);
 var INTER_READY_MS = 3000;        // countdown before every inner round
 var INTER_GRACE_MS = 1200;        // after time's up: wait this long for the phones' last scores
 var INTER_ELIM_SHOT_MS = 1900;    // elimination: reload at 0, shot this long after
 var INTER_ELIM_PANEL_MS = 1000;   // ...ranking shows this long after the shot
-var INTER_WRONG_HOLD_MS = 800;    // wrong move: the player is frozen this long
+var INTER_WRONG_HOLD_MS = 550;    // wrong move: the player is frozen this long
 var RC_QUEUE = 3;                 // items on the belt: the one to decide on + 2 coming up
 var RC_RECYCLE = ['🔩','🔧','⚙️','🔨'];   // must be recycled
 var RC_KEEP = ['💎','🎁','🎮','🧸'];      // must be passed on
 
-function interSignature(it){ return it ? ('inter|'+it.roundNumber+'|'+it.innerNumber) : ''; }
+// the game id makes every new interactive game's rounds different from the last game's
+// (otherwise round 1 of a new game looked like the old one: the phone kept its old score
+// and the gun/glass sounds, which play once per round, stayed silent)
+function interSignature(it){ return it ? ('inter|'+(it.gameId||'')+'|'+it.roundNumber+'|'+it.innerNumber) : ''; }
 function interGameLabel(key){ return (INTER_GAMES[key] && INTER_GAMES[key].label) || key; }
 function interPlayerAlive(it, pid){ return !!(it && it.alive && it.alive.indexOf(pid) >= 0); }
 function interInnerTotal(it){ return Math.max(1, (it && it.startCount ? it.startCount : 2) - 1); }
@@ -4893,7 +4958,7 @@ function hostTryStartInter(senderId, msg, conn){
     innerSec: Math.max(10, Math.min(90, parseInt(msg.innerSec,10)||20)),
     games: games.length ? games : INTER_GAME_KEYS.slice()
   };
-  g.inter = { roundNumber:0 };
+  g.inter = { roundNumber:0, gameId: Math.random().toString(36).substring(2,9) };
   hostBeginInterRound();
 }
 function hostBeginInterRound(){
@@ -5320,7 +5385,7 @@ function renderInterPlayer(){
     if(alive){
       if(now >= it.startAt && now < it.endsAt && !rc.queue.length) rcFill();
       if(now >= it.endsAt && !rc.finalSent){ rc.finalSent = true; rcSendScore(true); }
-      els.notifBar.textContent = now < it.endsAt ? 'أعد تدوير ⬆ القطع - ومرّر ➡ الباقي' : 'انتهى الوقت...';
+      els.notifBar.textContent = now < it.endsAt ? 'اصهر ⬆ القطع - ومرّر ➡ الباقي' : 'انتهى الوقت...';
     } else {
       els.notifBar.textContent = 'تم إقصاؤك - تابع الشاشة';
     }
