@@ -601,6 +601,160 @@ body{ --present:#c79a2b; --absent-bg:rgba(128,128,128,.42); }
 .words-clock{font-size:clamp(34px,7vh,72px);font-weight:800;line-height:1;direction:ltr;font-variant-numeric:tabular-nums lining-nums;color:var(--text);}
 .notif-bar.words-clock-bar{font-size:clamp(24px,3.8vh,34px);direction:ltr;font-variant-numeric:tabular-nums lining-nums;letter-spacing:1px;}
 .words-clock.low, .notif-bar.words-clock-bar.low{color:var(--red);}
+
+/* ===================== Interactive games: Recycle ♻️ ===================== */
+.inter-wrap{flex:1 1 0;min-height:0;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:stretch;gap:1.3vh;
+  padding:.6vh 14px calc(1.2vh + env(safe-area-inset-bottom));}
+.rc-bin-area{position:relative;flex:0 0 auto;height:clamp(78px,14vh,150px);display:flex;align-items:center;justify-content:center;
+  border:2px dashed var(--border);border-radius:14px;background:var(--panel2);}
+.rc-bin{font-size:clamp(44px,8.5vh,84px);line-height:1;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));}
+.rc-timer{position:absolute;top:8px;left:12px;font-size:clamp(16px,2.6vh,22px);font-weight:800;direction:ltr;font-variant-numeric:tabular-nums lining-nums;color:var(--sub);}
+.rc-timer.low{color:var(--red);}
+.rc-belt{position:relative;flex:0 0 auto;height:clamp(76px,13vh,122px);direction:ltr;border-radius:12px;background:var(--panel);border:1px solid var(--border);}
+.rc-belt::before, .rc-belt::after{content:"";position:absolute;left:0;right:0;height:10px;opacity:.85;
+  background:repeating-linear-gradient(90deg, var(--border) 0 16px, transparent 16px 32px);animation:rc-belt-move .5s linear infinite;}
+.rc-belt::before{top:0;border-radius:12px 12px 0 0;}
+.rc-belt::after{bottom:0;border-radius:0 0 12px 12px;}
+@keyframes rc-belt-move{from{background-position:0 0;}to{background-position:32px 0;}}
+.rc-target{position:absolute;left:50%;top:14%;bottom:14%;width:clamp(72px,12vh,112px);transform:translateX(-50%);
+  border:2px dashed var(--gold);border-radius:12px;opacity:.55;}
+.rc-item{position:absolute;left:50%;top:50%;z-index:3;font-size:clamp(42px,8vh,76px);line-height:1;transform:translate(-50%,-50%);
+  will-change:transform,opacity;pointer-events:none;}
+/* queue on the belt: pos-0 = in the frame (full size), pos-1/pos-2 = coming up (smaller),
+   pos-3 = just off the left edge (where new items roll in from) */
+.rc-item{transition:left .13s ease-out, transform .13s ease-out, opacity .13s ease-out;}
+.rc-item.pos-0{left:50%;transform:translate(-50%,-50%) scale(1);}
+.rc-item.pos-1{left:26%;transform:translate(-50%,-50%) scale(.6);opacity:.92;}
+.rc-item.pos-2{left:9%;transform:translate(-50%,-50%) scale(.48);opacity:.78;}
+.rc-item.pos-3{left:-14%;transform:translate(-50%,-50%) scale(.42);opacity:0;}
+.rc-out-right{animation:rc-out-right .2s ease-in both;}
+@keyframes rc-out-right{to{transform:translate(calc(-50% + 56vw),-50%) rotate(20deg);opacity:.15;}}
+.rc-out-up{animation:rc-out-up .24s cubic-bezier(.3,.7,.4,1) both;}
+@keyframes rc-out-up{55%{opacity:1;filter:none;}to{transform:translate(-50%,calc(-50% - 16vh)) scale(.3) rotate(-30deg);opacity:0;
+  filter:sepia(1) saturate(6) hue-rotate(-25deg) brightness(1.5);}}
+.rc-controls{flex:1 1 auto;min-height:0;display:flex;direction:ltr;gap:5vw;align-items:center;justify-content:center;}
+.rc-btn{width:min(38vw,22vh,190px);height:min(38vw,22vh,190px);flex:0 0 auto;padding:0;border:none;border-radius:18px;cursor:pointer;
+  background:#fff;color:#111;display:flex;align-items:center;justify-content:center;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  box-shadow:0 10px 24px -10px rgba(0,0,0,.55), inset 0 -6px 0 rgba(0,0,0,.12);transition:transform .05s, opacity .1s;}
+.rc-btn:active{transform:scale(.93);}
+.rc-btn svg{width:60%;height:60%;fill:currentColor;pointer-events:none;}
+.rc-score-label{text-align:center;font-weight:700;color:var(--sub);font-size:clamp(13px,2vh,18px);}
+.rc-score{text-align:center;font-size:clamp(46px,9.5vh,96px);font-weight:900;line-height:1;color:var(--text);font-variant-numeric:tabular-nums lining-nums;}
+.rc-hold .rc-btn{opacity:.4;filter:grayscale(.7);}
+.rc-wrong .rc-belt{animation:rc-wrong .5s ease-out;}
+@keyframes rc-wrong{0%,40%{box-shadow:inset 0 0 0 3px var(--red), 0 0 22px rgba(220,40,60,.55);}100%{box-shadow:none;}}
+.rc-wrong .rc-controls{animation:rc-shake .28s;}
+@keyframes rc-shake{25%{transform:translateX(-7px);}50%{transform:translateX(7px);}75%{transform:translateX(-4px);}}
+.rc-dead .rc-belt, .rc-dead .rc-controls, .rc-dead .rc-bin-area{opacity:.3;filter:grayscale(1);}
+@media (max-height:620px){ .rc-bin-area{height:64px;} .rc-belt{height:66px;} .rc-score{font-size:40px;} }
+
+/* shot out: shattered screen + blood (phone) */
+.elim-overlay{position:fixed;inset:0;z-index:40;pointer-events:none;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4);}
+.elim-overlay .crack-svg{position:absolute;inset:0;width:100%;height:100%;}
+.crack-lines path{fill:none;stroke:rgba(255,255,255,.88);stroke-width:1.3;vector-effect:non-scaling-stroke;}
+.blood circle, .blood path{fill:#a4001a;opacity:.93;}
+.bullet-hole{fill:#0c0c0c;stroke:#666;stroke-width:1;vector-effect:non-scaling-stroke;}
+.elim-text{position:relative;font-size:clamp(34px,7vh,62px);font-weight:900;color:#fff;transform:rotate(-7deg);
+  text-shadow:0 3px 12px #000, 0 0 26px #a4001a;}
+.elim-hit{animation:elim-hit .5s ease-out;}
+.elim-hit .crack-svg{animation:crack-in .22s ease-out both;}
+@keyframes elim-hit{0%{background:rgba(255,255,255,.95);}100%{background:rgba(0,0,0,.4);}}
+@keyframes crack-in{from{transform:scale(.7);opacity:0;}to{transform:none;opacity:1;}}
+.leader-inline-btns{position:relative;z-index:41;}
+
+/* display: players, gun, elimination */
+.player-slot.inter-out .status-circle, .player-slot.inter-out .pname, .player-slot.inter-out .pscore, .player-slot.inter-out .count-label{opacity:.55;filter:grayscale(.8);}
+.player-slot.inter-idle{opacity:.35;}
+.slot-crack{position:absolute;left:50%;top:0;width:clamp(90px,14vh,150px);height:clamp(90px,14vh,150px);transform:translateX(-50%);pointer-events:none;border-radius:50%;overflow:hidden;z-index:2;} /* no entrance animation: the slots are redrawn every frame */
+.slot-crack .crack-svg{width:100%;height:100%;}
+.inter-emojis{font-size:clamp(28px,6vh,58px);letter-spacing:4px;line-height:1.2;text-align:center;}
+.inter-clock{margin-top:1vh;}
+.gun-stage{position:relative;width:min(42vw,54vh);height:min(28vw,36vh);display:flex;align-items:center;justify-content:center;
+  animation:gun-in .45s cubic-bezier(.2,.9,.3,1.25) both;}
+@keyframes gun-in{from{transform:translateY(45vh) rotate(-25deg);opacity:0;}to{transform:none;opacity:1;}}
+.gun-stage.fired{animation:gun-kick .28s ease-out;}
+@keyframes gun-kick{30%{transform:translate(-14px,-8px) rotate(-4deg);}}
+.gun-stage.gone{display:none;}
+.gun-svg{width:100%;height:100%;overflow:visible;transform:rotate(var(--aim,0deg)) scaleX(var(--flip,1));transition:transform .45s cubic-bezier(.2,.9,.3,1.2);}
+.gun-slide rect:first-child, .gun-frame, .gun-barrel{fill:var(--gun-metal,#2c3038);stroke:var(--gun-edge,#9aa3ad);stroke-width:2;}
+.gun-grip{fill:var(--gun-grip,#5b3b27);stroke:var(--gun-edge,#9aa3ad);stroke-width:2;}
+.gun-guard{fill:none;stroke:var(--gun-edge,#9aa3ad);stroke-width:6;}
+.gun-trigger, .gun-sight{fill:var(--gun-edge,#9aa3ad);}
+.gun-serr{fill:none;stroke:var(--gun-edge,#9aa3ad);stroke-width:2;}
+.gun-flash{opacity:0;fill:#ffd24a;}
+.reloading .gun-slide{animation:gun-rack .75s ease-in-out .15s both;}
+@keyframes gun-rack{35%{transform:translateX(-30px);}55%{transform:translateX(-30px);}100%{transform:none;}}
+.fired .gun-slide{animation:gun-recoil .16s ease-out;}
+@keyframes gun-recoil{40%{transform:translateX(-22px);}}
+.fired .gun-flash{animation:gun-flash .2s ease-out both;}
+@keyframes gun-flash{0%{opacity:1;}100%{opacity:0;}}
+.gun-tracer{position:absolute;left:50%;top:50%;height:4px;transform-origin:0 50%;opacity:0;border-radius:2px;
+  background:linear-gradient(90deg, rgba(255,255,255,0), #ffe38a 60%, #fff);}
+.fired .gun-tracer{animation:gun-tracer .22s ease-out both;}
+@keyframes gun-tracer{0%{opacity:1;}100%{opacity:0;}}
+.shot-flash{animation:shot-flash .3s ease-out;}
+@keyframes shot-flash{0%{filter:brightness(2.4);}100%{filter:none;}}
+.elim-panel{min-width:min(62vw,560px);max-width:92vw;padding:2.2vh 3vw;text-align:center;border-radius:14px;
+  background:var(--panel);border:1px solid var(--border);animation:crack-in .3s ease-out both;}
+.elim-title{font-size:clamp(24px,4.4vh,44px);font-weight:900;color:var(--red);}
+.elim-sub{margin-top:.6vh;color:var(--sub);font-size:clamp(14px,2.2vh,22px);}
+.elim-table{width:100%;border-collapse:collapse;margin-top:1.6vh;font-size:clamp(16px,2.6vh,27px);}
+.elim-table td{padding:.9vh 1.2vw;border-bottom:1px solid var(--border);text-align:right;font-weight:700;}
+.elim-table td:last-child{text-align:center;width:22%;color:var(--gold);font-variant-numeric:tabular-nums lining-nums;}
+.elim-table tr.lost td{color:var(--red);}
+.elim-table td:last-child{direction:ltr;}
+.elim-title.res{color:var(--gold);}
+.elim-table tr.win td{color:var(--gold);font-weight:900;}
+
+/* smelting furnace (replaces the recycle bin): molten metal, bubbles, sparks, heat glow */
+.rc-bin-area.rc-furnace{overflow:hidden;border:2px solid #3b2a22;border-radius:14px;
+  background:radial-gradient(120% 95% at 50% 125%, #ff9a1f 0%, #d9480f 28%, #5a1a08 56%, #1b0d08 80%), #140a07;
+  box-shadow:inset 0 0 0 3px rgba(0,0,0,.35), inset 0 -18px 40px rgba(255,120,0,.4), 0 0 24px -6px rgba(255,100,0,.55);}
+.rc-furnace-label{position:absolute;top:7px;left:0;right:0;text-align:center;font-size:clamp(11px,1.8vh,14px);font-weight:800;
+  color:#ffd9a8;opacity:.8;letter-spacing:.5px;text-shadow:0 0 8px rgba(255,120,0,.8);}
+.rc-furnace .rc-timer{color:#ffe7c2;text-shadow:0 0 8px rgba(0,0,0,.8);z-index:2;}
+.rc-molten{position:absolute;left:-10%;right:-10%;bottom:-14%;height:60%;border-radius:50% 50% 0 0 / 30% 30% 0 0;
+  background:radial-gradient(60% 60% at 50% 28%, #fff6b0 0%, #ffd23f 20%, #ff8c1a 48%, #e2470d 74%, #8e2607 100%);
+  box-shadow:0 -6px 22px rgba(255,170,40,.75), inset 0 8px 16px rgba(255,255,210,.5);
+  animation:rc-molten 2.2s ease-in-out infinite alternate;}
+@keyframes rc-molten{from{transform:translateY(0) scaleX(1);}to{transform:translateY(-5%) scaleX(1.04);}}
+.rc-heat{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(0deg, rgba(255,140,0,.28), rgba(255,90,0,.05) 55%, transparent 80%);
+  animation:rc-heat 1.4s ease-in-out infinite alternate;}
+@keyframes rc-heat{from{opacity:.7;}to{opacity:1;}}
+.rc-bubble{position:absolute;bottom:22%;width:10px;height:10px;border-radius:50%;opacity:0;
+  background:radial-gradient(circle at 35% 35%, #fffbe0, #ffc233 55%, rgba(255,120,0,0) 72%);animation:rc-bubble 1.9s ease-in infinite;}
+.rc-bubble.b1{left:16%;animation-delay:.1s;} .rc-bubble.b2{left:33%;animation-delay:.8s;width:7px;height:7px;}
+.rc-bubble.b3{left:52%;animation-delay:.4s;width:12px;height:12px;} .rc-bubble.b4{left:69%;animation-delay:1.2s;}
+.rc-bubble.b5{left:85%;animation-delay:.6s;width:8px;height:8px;}
+@keyframes rc-bubble{0%{transform:translateY(6px) scale(.4);opacity:0;}30%{opacity:1;}100%{transform:translateY(-18px) scale(1.25);opacity:0;}}
+.rc-spark{position:absolute;bottom:34%;width:3px;height:3px;border-radius:50%;opacity:0;background:#ffe27a;
+  box-shadow:0 0 6px 1px #ffb300;animation:rc-spark 1.5s linear infinite;}
+.rc-spark.s1{left:22%;animation-delay:.2s;} .rc-spark.s2{left:41%;animation-delay:.9s;} .rc-spark.s3{left:58%;animation-delay:.5s;}
+.rc-spark.s4{left:74%;animation-delay:1.2s;} .rc-spark.s5{left:48%;animation-delay:.05s;}
+@keyframes rc-spark{0%{transform:translate(0,0);opacity:0;}15%{opacity:1;}100%{transform:translate(10px,-60px);opacity:0;}}
+.rc-furnace.rc-splash{animation:rc-furnace-flash .35s ease-out;}
+@keyframes rc-furnace-flash{0%{box-shadow:inset 0 0 0 3px rgba(0,0,0,.35), inset 0 -30px 60px rgba(255,200,60,.95), 0 0 40px 4px rgba(255,140,0,.9);}}
+.rc-furnace.rc-splash .rc-molten{filter:brightness(1.35);}
+
+/* v3 look: tailored hairlines, double frames */
+.rc-bin-area{border:1px solid rgba(var(--metal-rgb),.55);border-radius:4px;background:var(--surface2);
+  box-shadow:inset 0 0 0 5px var(--surface2), inset 0 0 0 6px rgba(var(--metal-rgb),.22);}
+.rc-belt{border-radius:3px;border-color:rgba(var(--metal-rgb),.45);background:var(--surface);}
+.rc-belt::before{border-radius:3px 3px 0 0;} .rc-belt::after{border-radius:0 0 3px 3px;}
+.rc-target{border:1px solid var(--metal);border-radius:3px;opacity:.7;}
+.rc-btn{border-radius:4px;background:var(--accent);color:var(--accent-ink);
+  box-shadow:inset 0 0 0 5px var(--accent), inset 0 0 0 6px rgba(var(--metal-rgb),.85), 0 16px 28px -16px var(--shadow);}
+.rc-timer, .rc-score{font-family:var(--f-num);}
+.rc-score{color:var(--metal);}
+.rc-score-label{color:var(--muted);}
+.elim-panel{border-radius:4px;border-color:rgba(var(--metal-rgb),.55);background:var(--surface);
+  box-shadow:inset 0 0 0 6px var(--surface), inset 0 0 0 7px rgba(var(--metal-rgb),.25), 0 30px 60px -30px var(--shadow);}
+.elim-title{font-family:var(--f-display);}
+.elim-table td:last-child{font-family:var(--f-num);color:var(--metal);}
+.gun-stage{--gun-metal:#23262b;--gun-edge:var(--metal);--gun-grip:#4a2f22;}
+.rc-bin-area.rc-furnace{border-radius:4px;border:1px solid rgba(var(--metal-rgb),.6);box-shadow:inset 0 0 0 4px #1b0d08, inset 0 0 0 5px rgba(var(--metal-rgb),.3), inset 0 -18px 40px rgba(255,120,0,.4);}
 </style>
 </head>
 <body>
@@ -677,6 +831,14 @@ body{ --present:#c79a2b; --absent-bg:rgba(128,128,128,.42); }
           <option value="any">أي 5 أحرف</option>
         </select>
         <button class="gold" id="btn-start-words">🔤 ابدأ لعبة الكلمات</button>
+        <div style="height:14px;"></div>
+        <label>الألعاب التفاعلية المطلوبة</label>
+        <div class="game-picker" id="inter-game-picker"></div>
+        <label>عدد جولات الألعاب التفاعلية</label>
+        <div class="stepper"><button type="button" class="step-btn" data-step="1" data-for="inter-rounds-input" aria-label="زيادة">+</button><input type="number" id="inter-rounds-input" min="1" max="20" value="3"><button type="button" class="step-btn" data-step="-1" data-for="inter-rounds-input" aria-label="إنقاص">−</button></div>
+        <label>مدة كل جولة إقصاء (بالثواني)</label>
+        <div class="stepper"><button type="button" class="step-btn" data-step="5" data-for="inter-sec-input" aria-label="زيادة">+</button><input type="number" id="inter-sec-input" min="10" max="90" value="20"><button type="button" class="step-btn" data-step="-5" data-for="inter-sec-input" aria-label="إنقاص">−</button></div>
+        <button class="gold" id="btn-start-inter">🎯 ابدأ الألعاب التفاعلية</button>
         <div class="status-msg" id="leader-ready-status"></div>
       </div>
       <button class="readybtn" id="btn-ready" style="display:none;">استعداد ✅</button>
@@ -693,6 +855,7 @@ body{ --present:#c79a2b; --absent-bg:rgba(128,128,128,.42); }
 
 <div id="screen-game" class="screen">
   <div id="winner-screen" class="winner-screen hidden"></div>
+  <div id="elim-overlay" class="elim-overlay hidden"></div>
   <!-- Host / display arena : PURE DISPLAY, NO CONTROLS -->
   <div id="display-wrap" class="display-wrap hidden">
     <div class="game-topbar">
@@ -749,6 +912,17 @@ body{ --present:#c79a2b; --absent-bg:rgba(128,128,128,.42); }
       </div>
       <div class="words-kb" id="words-kb"></div>
       <button type="button" class="ghost words-giveup hidden" id="words-giveup">🏳️ انسحاب من هذه الجولة</button>
+    </div>
+    <!-- Interactive games (Recycle): recycle bin, conveyor belt, two big buttons, score -->
+    <div id="inter-container" class="inter-wrap hidden">
+      <div class="rc-bin-area rc-furnace" id="rc-furnace"><div class="rc-heat"></div><div class="rc-furnace-label">🔥 فرن الصهر</div><span class="rc-spark s1"></span><span class="rc-spark s2"></span><span class="rc-spark s3"></span><span class="rc-spark s4"></span><span class="rc-spark s5"></span><div class="rc-molten"><span class="rc-bubble b1"></span><span class="rc-bubble b2"></span><span class="rc-bubble b3"></span><span class="rc-bubble b4"></span><span class="rc-bubble b5"></span></div><div class="rc-timer" id="rc-timer"></div></div>
+      <div class="rc-belt" id="rc-belt"><div class="rc-target"></div></div>
+      <div class="rc-controls">
+        <button type="button" class="rc-btn rc-recycle" id="rc-recycle" aria-label="إعادة تدوير"><svg viewBox="0 0 100 100"><path d="M50 6 L84 44 H61 V94 H39 V44 H16 Z"/></svg></button>
+        <button type="button" class="rc-btn rc-pass" id="rc-pass" aria-label="تمرير"><svg viewBox="0 0 100 100"><path d="M94 50 L56 16 V39 H6 V61 H56 V84 Z"/></svg></button>
+      </div>
+      <div class="rc-score-label">النقاط</div>
+      <div class="rc-score" id="rc-score">0</div>
     </div>
     <div id="submitted-label" class="submitted-label hidden" style="text-align:center;">SUBMITED!</div>
     <div class="leader-inline-btns">
@@ -850,6 +1024,13 @@ loadSoundBuffer('appear', ASSET_BASE+'Appear.mp3');
 loadSoundBuffer('victory', ASSET_BASE+'Vectory.mp3');
 loadSoundBuffer('flag-lr', ASSET_BASE+'Flag-Left-Right.mp3');
 loadSoundBuffer('flag-ud', ASSET_BASE+'Flag-Up-Down.mp3');
+// interactive games: button clicks on the phones, gun + glass for the eliminations
+loadSoundBuffer('pass', ASSET_BASE+'pass_click.mp3');
+loadSoundBuffer('recycle', ASSET_BASE+'recycle_click.mp3');
+loadSoundBuffer('gun-reload', ASSET_BASE+'gunreload.mp3');
+loadSoundBuffer('gun-shot', ASSET_BASE+'gunshot.mp3');
+loadSoundBuffer('glass', ASSET_BASE+'glass_break.mp3');
+loadSoundBuffer('wrong-click', ASSET_BASE+'wrong_click.mp3');
 function playBuffer(buffer, gainValue){
   var ctx = getAudioCtx();
   if(!ctx || !buffer) return null;
@@ -1290,13 +1471,14 @@ function fmtScore(n){ return String(Math.round((n||0)*1000)/1000); }
 var els = {};
 ['btn-create-room','btn-show-join','join-box','player-name','room-code-input','btn-join-room','home-status',
  'lobby-host-view','lobby-player-view','room-code-display','room-code-display2','lobby-players','leader-settings','reconnect-banner','lobby-settings-summary',
- 'round-count-input','btn-start-quick','btn-start-bomb','leader-ready-status','btn-ready','btn-leave-lobby','lobby-status','theme-picker','game-picker','bomb-cols-input','bomb-scoring-select','bomb-rounds-box','bomb-rounds-input','flags-rounds-input','btn-start-flags','words-rounds-input','words-attempts-input','words-time-input','words-strict-select','btn-start-words',
+ 'round-count-input','btn-start-quick','btn-start-bomb','leader-ready-status','btn-ready','btn-leave-lobby','lobby-status','theme-picker','game-picker','bomb-cols-input','bomb-scoring-select','bomb-rounds-box','bomb-rounds-input','flags-rounds-input','btn-start-flags','words-rounds-input','words-attempts-input','words-time-input','words-strict-select','btn-start-words','inter-game-picker','inter-rounds-input','inter-sec-input','btn-start-inter',
  'display-wrap','round-indicator','game-name-label','arena-wrap','arena-center','next-round-label',
  'ready-overlay','ready-gtitle','ready-cdnum','round-overlay','ov-title','ov-table','ov-status',
  'pcontrols-wrap','p-round-indicator','p-game-name-label','p-score-label','notif-bar','pgrid-container',
  'counter-container','counter-num','counter-btn','counter-minus-btn','submitted-label','btn-submit',
  'flags-pad-container','flags-remaining','flags-char-img','dpad-up','dpad-left','dpad-right','dpad-down','btn-flags-reset','dpad-up-img','dpad-left-img','dpad-right-img','dpad-down-img',
  'words-container','words-board','words-toast','words-kb','words-giveup',
+ 'inter-container','rc-belt','rc-score','rc-timer','rc-recycle','rc-pass','elim-overlay','rc-furnace',
  'btn-next-round','btn-bomb-new-round','btn-reset-all-scores','btn-bomb-to-lobby','btn-bomb-continue','winner-screen',
  'victory-audio-box','btn-pick-victory-audio','victory-audio-input','victory-audio-status'
 ].forEach(function(id){ els[toCamel(id)] = document.getElementById(id); });
@@ -1382,7 +1564,7 @@ function wireHostPeerHandlers(peer){
     conn.on('data', function(msg){ hostHandleMessage(msg, conn); });
     conn.on('close', function(){ hostHandlePlayerDisconnect(conn); });
   });
-  peer.on('disconnected', function(){ handleHostConnectionLost(); });
+  peer.on('disconnected', function(){ keepSignalingAlive(peer); });
 }
 
 // fix #8: the letter O looks too much like the digit 0 and was a common typo source when
@@ -1417,7 +1599,8 @@ function createRoomFlow(){
         quickRoundCount: 10,
         bombCols: 8, bombScoringMode: 'classic', bombRoundsTotal: 5,
         flagsRoundsTotal: 5,
-        wordsRoundsTotal: 5, wordsAttempts: 6, wordsMinutes: 5, wordsStrict: 'strict'
+        wordsRoundsTotal: 5, wordsAttempts: 6, wordsMinutes: 5, wordsStrict: 'strict',
+        interRoundsTotal: 3, interSec: 20, interGames: null
       }
     };
     renderLobby();
@@ -1425,6 +1608,7 @@ function createRoomFlow(){
   });
   wireHostPeerHandlers(peer);
   peer.on('error', function(err){
+    if(app.game) return; // an in-game signaling hiccup (see keepSignalingAlive) - not a failed room
     els.homeStatus.textContent = 'تعذر إنشاء الغرفة، حاول مرة أخرى.';
     els.homeStatus.classList.add('error');
     els.btnCreateRoom.disabled = false;
@@ -1435,6 +1619,30 @@ function createRoomFlow(){
 // OS - if that happens mid-game, reconnect it under the SAME room id instead of losing
 // the whole session. All existing game state in app.game is preserved untouched; players
 // reconnect to it individually via their own auto-reconnect flow below.
+
+// fix: the signaling server (maq-peerjs-server on Render's free plan) sleeps / restarts now
+// and then. That fires 'disconnected' on every device - but it does NOT break the direct
+// phone<->display connections, which keep working. The old code treated it as a lost room:
+// every device destroyed its connection and tried to re-join through a server that was
+// still asleep, so the whole game hung on "reconnecting" until the server came back. Now we
+// only quietly re-register with the server in the background (PeerJS keeps the existing
+// connections) and the game carries on.
+function keepSignalingAlive(peer){
+  if(!peer || peer._reviving) return;
+  peer._reviving = true;
+  var delay = 1000;
+  (function attempt(){
+    if(app.peer !== peer || peer.destroyed || app.intentionalLeave || !peer.disconnected){ peer._reviving = false; return; }
+    try{ peer.reconnect(); }catch(e){}
+    delay = Math.min(delay*2, 20000);
+    setTimeout(attempt, delay);
+  })();
+}
+// keep the free server awake while a room is open (it sleeps after a quiet spell)
+setInterval(function(){
+  if(!app.isHost || !app.game || app.intentionalLeave) return;
+  try{ fetch('https://'+PEER_CONFIG.host+PEER_CONFIG.path+'/', {mode:'no-cors', cache:'no-store'}).catch(function(){}); }catch(e){}
+}, 4*60*1000);
 function attemptHostReconnect(){
   if(!app.game || !app.game.code) return;
   var hostId = ROOM_PREFIX + app.game.code.toLowerCase() + '-host';
@@ -1485,7 +1693,7 @@ function joinRoomFlow(codeRaw, name, opts){
     conn.on('data', function(msg){ clientHandleMessage(msg); });
     conn.on('close', function(){ handlePlayerConnectionLost(); });
   });
-  peer.on('disconnected', function(){ handlePlayerConnectionLost(); });
+  peer.on('disconnected', function(){ keepSignalingAlive(peer); }); // only a REAL drop (conn 'close') re-joins
   peer.on('error', function(err){
     if(opts.isReconnect){
       scheduleReconnectRetry(attemptPlayerReconnect);
@@ -1538,8 +1746,8 @@ document.addEventListener('visibilitychange', function(){
     var alive = app.hostConn && app.hostConn.open;
     if(!alive) handlePlayerConnectionLost();
   } else if(app.isHost && app.game){
-    var peerAlive = app.peer && !app.peer.destroyed && !app.peer.disconnected;
-    if(!peerAlive) handleHostConnectionLost();
+    if(!app.peer || app.peer.destroyed) handleHostConnectionLost();
+    else if(app.peer.disconnected) keepSignalingAlive(app.peer);
   }
 });
 
@@ -1605,6 +1813,12 @@ function hostHandleMessage(msg, conn){
     if(msg.senderId === g.leaderId) hostBeginNextQuickRound();
   } else if(msg.t === 'flags-next-round'){
     if(msg.senderId === g.leaderId) hostAdvanceFlags();
+  } else if(msg.t === 'start-inter'){
+    hostTryStartInter(msg.senderId, msg, conn);
+  } else if(msg.t === 'inter-score'){
+    hostInterScore(msg.senderId, msg);
+  } else if(msg.t === 'inter-next'){
+    if(msg.senderId === g.leaderId) hostInterNext();
   } else if(msg.t === 'start-words'){
     hostTryStartWords(msg.senderId, msg, conn);
   } else if(msg.t === 'words-guess'){
@@ -1938,7 +2152,10 @@ function syncLobbySettingsFromLeaderUI(){
     wordsRoundsTotal: Math.max(1, Math.min(20, parseInt(els.wordsRoundsInput.value,10)||5)),
     wordsAttempts: Math.max(3, Math.min(10, parseInt(els.wordsAttemptsInput.value,10)||6)),
     wordsMinutes: Math.max(1, Math.min(30, parseInt(els.wordsTimeInput.value,10)||5)),
-    wordsStrict: els.wordsStrictSelect.value === 'any' ? 'any' : 'strict'
+    wordsStrict: els.wordsStrictSelect.value === 'any' ? 'any' : 'strict',
+    interRoundsTotal: Math.max(1, Math.min(20, parseInt(els.interRoundsInput.value,10)||3)),
+    interSec: Math.max(10, Math.min(90, parseInt(els.interSecInput.value,10)||20)),
+    interGames: (app.selectedInterGames || []).slice()
   }});
 }
 els.wordsRoundsInput.addEventListener('input', syncLobbySettingsFromLeaderUI);
@@ -1981,6 +2198,7 @@ function renderLobbySettingsSummary(g){
     '<div>💣 <b>لعبة القنابل:</b> '+(ls.bombCols||8)+' مراحل — '+bombModeLabel+'</div>' +
     '<div>🚩 <b>لعبة الأعلام:</b> '+(ls.flagsRoundsTotal||5)+' جولة</div>' +
     '<div>🔤 <b>لعبة الكلمات:</b> '+(ls.wordsRoundsTotal||5)+' جولة — '+(ls.wordsAttempts||6)+' محاولات — '+(ls.wordsMinutes||5)+' دقائق للجولة'+(ls.wordsStrict==='any'?' — أي 5 أحرف':' — كلمات القاموس فقط')+'</div>' +
+    '<div>🎯 <b>الألعاب التفاعلية:</b> '+escapeHtml(((ls.interGames&&ls.interGames.length)?ls.interGames:['recycle']).map(function(k){ return (k==='recycle'?'إعادة التدوير ♻️':k); }).join('، '))+' — '+(ls.interRoundsTotal||3)+' جولات — '+(ls.interSec||20)+' ثانية لكل إقصاء</div>' +
     '<div>🎨 <b>لون التنسيق:</b><div class="theme-picker">'+swatchesHtml+'</div></div>';
 }
 
@@ -2007,7 +2225,7 @@ function renderLobby(){
   els.btnResetAllScores.classList.toggle('hidden', !isLeader);
   els.btnReady.style.display = app.isHost ? 'none' : 'block';
   els.victoryAudioBox.classList.toggle('hidden', app.isHost);
-  if(isLeader){ renderThemePicker(g.theme||0); renderGamePicker(); }
+  if(isLeader){ renderThemePicker(g.theme||0); renderGamePicker(); renderInterPicker(); }
   els.lobbySettingsSummary.classList.toggle('hidden', isLeader);
   if(!isLeader){ renderLobbySettingsSummary(g); }
 
@@ -2056,6 +2274,7 @@ function renderLobby(){
     els.btnStartBomb.disabled = !ready;
     els.btnStartFlags.disabled = !ready;
     els.btnStartWords.disabled = !ready;
+    els.btnStartInter.disabled = !ready;
     els.leaderReadyStatus.textContent = ready ? '' : 'بانتظار استعداد جميع اللاعبين...';
     els.lobbyStatus.textContent = '';
   } else {
@@ -2133,6 +2352,38 @@ els.btnStartFlags.addEventListener('click', function(){
   var roundsTotal = Math.max(2, parseInt(els.flagsRoundsInput.value,10)||5);
   sendToHost({t:'start-flags', roundsTotal:roundsTotal});
 });
+
+// interactive games picked by the leader (same chips as the quick games)
+function renderInterPicker(){
+  if(!app.selectedInterGames) app.selectedInterGames = INTER_GAME_KEYS.slice();
+  var box = els.interGamePicker;
+  if(box._built){
+    box.querySelectorAll('.game-chip').forEach(function(chip){ chip.classList.toggle('on', app.selectedInterGames.indexOf(chip.dataset.key)>-1); });
+    return;
+  }
+  box.innerHTML = '';
+  INTER_GAME_KEYS.forEach(function(key){
+    var chip = document.createElement('button');
+    chip.type = 'button'; chip.className = 'game-chip on'; chip.dataset.key = key;
+    chip.textContent = interGameLabel(key);
+    chip.addEventListener('click', function(){
+      var i = app.selectedInterGames.indexOf(key);
+      if(i>-1){ if(app.selectedInterGames.length>1) app.selectedInterGames.splice(i,1); }
+      else app.selectedInterGames.push(key);
+      renderInterPicker(); syncLobbySettingsFromLeaderUI();
+    });
+    box.appendChild(chip);
+  });
+  box._built = true;
+}
+els.btnStartInter.addEventListener('click', function(){
+  sendToHost({t:'start-inter',
+    roundsTotal: Math.max(1, Math.min(20, parseInt(els.interRoundsInput.value,10)||3)),
+    innerSec: Math.max(10, Math.min(90, parseInt(els.interSecInput.value,10)||20)),
+    games: (app.selectedInterGames || INTER_GAME_KEYS).slice()});
+});
+els.interRoundsInput.addEventListener('input', syncLobbySettingsFromLeaderUI);
+els.interSecInput.addEventListener('input', syncLobbySettingsFromLeaderUI);
 els.btnStartWords.addEventListener('click', function(){
   sendToHost({t:'start-words',
     roundsTotal: Math.max(1, Math.min(20, parseInt(els.wordsRoundsInput.value,10)||5)),
@@ -2265,6 +2516,7 @@ function hostBackToLobby(){
   g.phase='lobby'; g.mode=null; g.round=null; g.schedule=null; g.bomb=null; g.bombConfig=null;
   g.flags=null; g.flagsConfig=null;
   g.words=null; g.wordsConfig=null;
+  g.inter=null; g.interConfig=null;
   g.winnerId=null; g.celebration=null;
   g.players.forEach(function(p){ p.ready=false; });
   broadcastState();
@@ -2306,6 +2558,7 @@ function hostReceiveEmoji(senderId, emoji){
 els.btnNextRound.addEventListener('click', function(){
   if(app.game && app.game.mode==='flags') sendToHost({t:'flags-next-round'});
   else if(app.game && app.game.mode==='words') sendToHost({t:'words-next-round'});
+  else if(app.game && app.game.mode==='interactive') sendToHost({t:'inter-next'});
   else sendToHost({t:'next-round'});
 });
 els.btnBombContinue.addEventListener('click', function(){
@@ -2357,6 +2610,12 @@ function renderGameScreen(){
   showScreen('screen-game');
   var g = app.game;
   if(g.mode !== 'words') els.wordsContainer.classList.add('hidden');
+  if(g.mode !== 'interactive'){ els.interContainer.classList.add('hidden'); els.elimOverlay.classList.add('hidden'); }
+  if(g.mode === 'interactive'){
+    if(app.isHost){ els.displayWrap.classList.remove('hidden'); els.pcontrolsWrap.classList.add('hidden'); renderInterDisplay(); }
+    else { els.displayWrap.classList.add('hidden'); els.pcontrolsWrap.classList.remove('hidden'); renderInterPlayer(); }
+    return;
+  }
   if(g.mode !== 'words' || g.phase !== 'words-active') els.notifBar.classList.remove('words-clock-bar','low');
   if(g.mode === 'words'){
     if(app.isHost){
@@ -3183,7 +3442,8 @@ function startRenderLoop(){
       // invisible and the screen looked frozen. It now animates like every other winner screen.
       if(ph==='round-ready' || ph==='round-active' || ph==='round-reveal' || ph==='quick-finished' || ph==='bomb-tournament-finished' || ph==='bomb-finished' ||
          ph==='flags-ready' || ph==='flags-active' || ph==='flags-reveal' || ph==='flags-finished' ||
-         ph==='words-ready' || ph==='words-active' || ph==='words-reveal' || ph==='words-finished'){
+         ph==='words-ready' || ph==='words-active' || ph==='words-reveal' || ph==='words-finished' ||
+         ph==='inter-ready' || ph==='inter-active' || ph==='inter-elim' || ph==='inter-finished'){
         renderAll();
       }
     }
@@ -4599,6 +4859,502 @@ function renderWordsPlayer(){
   els.notifBar.classList.add('words-clock-bar');
   els.notifBar.classList.toggle('low', leftP!=null && leftP <= 30000);
 }
+
+
+
+// ===================== INTERACTIVE GAMES =====================
+// A new section of games everyone plays AT THE SAME TIME on their own phone. The leader picks
+// which interactive games to use, how many (outer) rounds and how long each inner round lasts.
+// Game 1 - Recycle (♻️): an elimination round. Each outer round is played as (players - 1)
+// INNER rounds; after every inner round the player with the fewest points is shot out (ties:
+// random). Outer-round points: the first one out 0, the next 1 ... the last one standing
+// (players - 1). A new interactive game can be added to INTER_GAMES later.
+var INTER_GAMES = {
+  recycle: { label:'إعادة التدوير ♻️' }
+};
+var INTER_GAME_KEYS = Object.keys(INTER_GAMES);
+var INTER_READY_MS = 3000;        // countdown before every inner round
+var INTER_GRACE_MS = 1200;        // after time's up: wait this long for the phones' last scores
+var INTER_ELIM_SHOT_MS = 1900;    // elimination: reload at 0, shot this long after
+var INTER_ELIM_PANEL_MS = 1000;   // ...ranking shows this long after the shot
+var INTER_WRONG_HOLD_MS = 800;    // wrong move: the player is frozen this long
+var RC_QUEUE = 3;                 // items on the belt: the one to decide on + 2 coming up
+var RC_RECYCLE = ['🔩','🔧','⚙️','🔨'];   // must be recycled
+var RC_KEEP = ['💎','🎁','🎮','🧸'];      // must be passed on
+
+function interSignature(it){ return it ? ('inter|'+it.roundNumber+'|'+it.innerNumber) : ''; }
+function interGameLabel(key){ return (INTER_GAMES[key] && INTER_GAMES[key].label) || key; }
+function interPlayerAlive(it, pid){ return !!(it && it.alive && it.alive.indexOf(pid) >= 0); }
+function interInnerTotal(it){ return Math.max(1, (it && it.startCount ? it.startCount : 2) - 1); }
+
+// ---------------- host ----------------
+function hostTryStartInter(senderId, msg, conn){
+  var g = app.game;
+  if(senderId !== g.leaderId) return;
+  if(!allPlayersReady(g)){ if(conn && conn.send) conn.send({t:'notice', text:'لازم كل اللاعبين يضغطون استعداد أولاً'}); return; }
+  var present = g.players.filter(hostPlayerCountsAsPresent);
+  if(present.length < 2){ if(conn && conn.send) conn.send({t:'notice', text:'الألعاب التفاعلية تحتاج لاعبين اثنين على الأقل'}); return; }
+  var games = (Array.isArray(msg.games) ? msg.games : []).filter(function(k){ return INTER_GAMES[k]; });
+  g.mode = 'interactive';
+  g.interConfig = {
+    roundsTotal: Math.max(1, Math.min(20, parseInt(msg.roundsTotal,10)||3)),
+    innerSec: Math.max(10, Math.min(90, parseInt(msg.innerSec,10)||20)),
+    games: games.length ? games : INTER_GAME_KEYS.slice()
+  };
+  g.inter = { roundNumber:0 };
+  hostBeginInterRound();
+}
+function hostBeginInterRound(){
+  var g = app.game, it = g.inter, cfg = g.interConfig;
+  it.roundNumber++;
+  it.gameKey = cfg.games[(it.roundNumber-1) % cfg.games.length];
+  it.alive = g.players.filter(hostPlayerCountsAsPresent).map(function(p){ return p.id; });
+  it.startCount = it.alive.length;
+  it.out = [];            // eliminated, in order: [{id, inner, score}]
+  it.innerNumber = 0;
+  it.elim = null;
+  it.roundResults = null;
+  if(it.alive.length < 2){ hostInterFinishRound(); return; }
+  hostBeginInterInner();
+}
+function hostBeginInterInner(){
+  var g = app.game, it = g.inter;
+  it.innerNumber++;
+  it.scores = {};
+  it.alive.forEach(function(pid){ it.scores[pid] = 0; });
+  it.finals = {};
+  it.elim = null;
+  it.readyStartAt = syncedNow() + 300;
+  g.phase = 'inter-ready';
+  broadcastState();
+  var sig = interSignature(it);
+  addTimer(setTimeout(function(){ hostInterStartActive(sig); }, 300 + INTER_READY_MS));
+}
+function hostInterStartActive(sig){
+  var g = app.game, it = g.inter;
+  if(!it || g.phase !== 'inter-ready' || interSignature(it) !== sig) return;
+  it.startAt = syncedNow() + 250;
+  it.endsAt = it.startAt + g.interConfig.innerSec*1000;
+  g.phase = 'inter-active';
+  broadcastState();
+  addTimer(setTimeout(function(){ hostInterCloseInner(sig); }, it.endsAt - syncedNow() + INTER_GRACE_MS));
+}
+// live score reports from the phones (a phone only ever sends its own running total)
+var interBroadcastPending = false;
+function hostInterScore(pid, msg){
+  var g = app.game, it = g.inter;
+  if(!it || g.mode !== 'interactive' || g.phase !== 'inter-active') return;
+  if(msg.sig !== interSignature(it) || !interPlayerAlive(it, pid)) return;
+  var s = parseInt(msg.score, 10);
+  var maxPlausible = g.interConfig.innerSec * 15 + 5;           // anti-nonsense cap
+  if(!(s >= 0) || s > maxPlausible) return;
+  if(s > (it.scores[pid]||0)) it.scores[pid] = s;
+  if(msg.final) it.finals[pid] = true;
+  // live scores for the display: at most ~6 broadcasts a second
+  if(!interBroadcastPending){
+    interBroadcastPending = true;
+    setTimeout(function(){ interBroadcastPending = false; if(app.game && app.game.mode==='interactive') broadcastState(); }, 160);
+  }
+}
+function hostInterCloseInner(sig){
+  var g = app.game, it = g.inter;
+  if(!it || g.phase !== 'inter-active' || interSignature(it) !== sig) return;
+  // the lowest score among those still standing is out; a tie is settled at random
+  var low = Infinity;
+  it.alive.forEach(function(pid){ low = Math.min(low, it.scores[pid]||0); });
+  var lows = it.alive.filter(function(pid){ return (it.scores[pid]||0) === low; });
+  var victim = lows[rand(0, lows.length-1)];
+  it.out.push({ id:victim, inner:it.innerNumber, score:it.scores[victim]||0 });
+  it.alive = it.alive.filter(function(pid){ return pid !== victim; });
+  it.innerScores = {};
+  Object.keys(it.scores).forEach(function(k){ it.innerScores[k] = it.scores[k]; });
+  it.elim = { id:victim, at:syncedNow(), shotAt:syncedNow()+INTER_ELIM_SHOT_MS, tie:lows.length>1, key:sig+'|'+victim };
+  if(it.alive.length <= 1) hostInterFinishRound(true);
+  g.phase = 'inter-elim';
+  broadcastState();
+}
+// outer round over: points by place, added to everyone's total
+function hostInterFinishRound(fromElim){
+  var g = app.game, it = g.inter;
+  var n = it.startCount || 0;
+  var results = [];
+  it.out.forEach(function(o, i){ results.push({ id:o.id, points:i }); });   // first out: 0
+  it.alive.forEach(function(pid){ results.push({ id:pid, points:Math.max(0, n-1), winner:true }); });
+  results.forEach(function(r){ var p = findPlayer(r.id); if(p) p.score += r.points; });
+  it.roundResults = results.slice().reverse();                               // best first
+  if(!fromElim){ g.phase = 'inter-elim'; it.elim = null; broadcastState(); }
+}
+function hostInterNext(){
+  var g = app.game, it = g.inter;
+  if(!it || g.phase !== 'inter-elim') return;
+  if(!it.roundResults){ hostBeginInterInner(); return; }
+  if(it.roundNumber < g.interConfig.roundsTotal){ hostBeginInterRound(); return; }
+  var sorted = g.players.slice().sort(function(a,b){ return b.score-a.score; });
+  g.winnerId = sorted.length ? sorted[0].id : null;
+  g.celebration = { bursts:[], sessionId: Math.random().toString(36).substring(2,9) };
+  g.phase = 'inter-finished';
+  broadcastState();
+}
+
+// ---------------- shared drawing ----------------
+// a pistol, side view, muzzle to the right (drawn in the theme's own colours)
+var INTER_GUN_SVG =
+  '<svg class="gun-svg" viewBox="0 0 260 160" aria-hidden="true">' +
+  '<path class="gun-grip" d="M44 70 L100 70 L88 146 Q86 154 77 154 L40 154 Q31 154 33 145 Z"/>' +
+  '<path class="gun-guard" d="M98 74 L134 74 Q142 74 139 83 L133 106 Q130 114 121 114 L100 114"/>' +
+  '<rect class="gun-trigger" x="108" y="78" width="7" height="24" rx="3"/>' +
+  '<rect class="gun-frame" x="34" y="54" width="176" height="24" rx="5"/>' +
+  '<rect class="gun-barrel" x="196" y="36" width="44" height="18" rx="4"/>' +
+  '<g class="gun-slide"><rect x="30" y="26" width="198" height="32" rx="6"/>' +
+  '<path class="gun-serr" d="M48 32 v20 M56 32 v20 M64 32 v20 M72 32 v20"/>' +
+  '<rect class="gun-sight" x="212" y="18" width="9" height="9" rx="2"/></g>' +
+  '<g class="gun-flash"><path d="M244 45 L286 28 L266 45 L292 47 L266 52 L284 66 L244 52 Z"/></g>' +
+  '</svg>';
+// shattered glass + blood (phone of the eliminated player, and their slot on the display)
+function interCrackSvg(){
+  var lines = '', cx = 58, cy = 42;
+  for(var i=0;i<16;i++){
+    var a = i*(Math.PI*2/16) + (i%3)*0.13, len = 60 + (i*37 % 70);
+    var mx = cx + Math.cos(a)*len*0.45 + ((i*13)%9-4), my = cy + Math.sin(a)*len*0.45 + ((i*7)%9-4);
+    lines += '<path d="M'+cx+' '+cy+' L'+mx.toFixed(1)+' '+my.toFixed(1)+' L'+(cx+Math.cos(a)*len).toFixed(1)+' '+(cy+Math.sin(a)*len).toFixed(1)+'"/>';
+  }
+  for(var r=1;r<=3;r++){
+    var ring = '';
+    for(var k=0;k<=12;k++){ var b = k*(Math.PI*2/12), rr = r*9 + (k%2)*3; ring += (k?' L':'M')+(cx+Math.cos(b)*rr).toFixed(1)+' '+(cy+Math.sin(b)*rr).toFixed(1); }
+    lines += '<path d="'+ring+' Z"/>';
+  }
+  return '<svg class="crack-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
+    '<g class="crack-lines">'+lines+'</g>' +
+    '<g class="blood"><circle cx="'+cx+'" cy="'+cy+'" r="6"/><circle cx="'+(cx+7)+'" cy="'+(cy+5)+'" r="3.2"/><circle cx="'+(cx-6)+'" cy="'+(cy+8)+'" r="2.4"/>' +
+    '<circle cx="'+(cx+3)+'" cy="'+(cy-8)+'" r="1.8"/><circle cx="'+(cx-9)+'" cy="'+(cy-3)+'" r="1.5"/><path d="M'+(cx-1)+' '+(cy+6)+' q1 14 -1 22 q-2 -8 -1 -22z"/>' +
+    '<path d="M'+(cx+5)+' '+(cy+7)+' q2 10 0 16 q-2 -6 0 -16z"/></g>' +
+    '<circle class="bullet-hole" cx="'+cx+'" cy="'+cy+'" r="2.6"/></svg>';
+}
+
+// ---------------- display (host screen) ----------------
+var interElimFx = { key:null, reloaded:false, shot:false };
+function renderPlayerSlotsInter(){
+  clearArenaSlots();
+  var g = app.game, it = g.inter;
+  var showShot = it.elim && syncedNow() >= it.elim.shotAt;
+  g.players.forEach(function(p, idx){
+    var pos = SLOT_POS[SLOT_ORDER[idx % 12]];
+    var div = document.createElement('div');
+    var out = it.out && it.out.some(function(o){ return o.id===p.id; });
+    var isVictim = it.elim && it.elim.id === p.id;
+    var hideVictim = isVictim && !showShot;             // not "out" until the shot lands
+    var inRound = interPlayerAlive(it, p.id) || out;
+    div.className = 'player-slot' + (out && !hideVictim ? ' inter-out' : '') + (!inRound ? ' inter-idle' : '');
+    Object.keys(pos).forEach(function(k){ div.style[k] = pos[k]; });
+    var circle, extra = '';
+    if(out && !hideVictim){
+      circle = '<div class="status-circle wrong">✖</div>';
+      if(isVictim) extra += '<div class="slot-crack">'+interCrackSvg()+'</div>';
+    } else if(g.phase==='inter-elim' && it.roundResults && interPlayerAlive(it, p.id)){
+      circle = '<div class="status-circle correct">👑</div>';
+    } else {
+      circle = '<div class="status-circle'+(g.phase==='inter-active' && inRound ? ' gold' : '')+'"></div>';
+    }
+    var sc = (g.phase==='inter-elim' && it.innerScores) ? it.innerScores[p.id] : (it.scores ? it.scores[p.id] : null);
+    if(sc != null && (g.phase==='inter-active' || g.phase==='inter-elim')) extra = '<div class="count-label">'+sc+'</div>' + extra;
+    div.innerHTML = circle + extra + '<div class="pname">'+escapeHtml(p.name)+'</div><div class="pscore">'+fmtScore(p.score)+'</div>';
+    els.arenaWrap.appendChild(div);
+  });
+}
+function renderInterDisplay(){
+  var g = app.game, it = g.inter;
+  if(g.phase === 'inter-finished'){
+    els.pcontrolsWrap.classList.add('hidden');
+    els.displayWrap.classList.add('hidden');
+    renderWinnerScreen();
+    return;
+  }
+  hideWinnerScreen();
+  els.gameNameLabel.textContent = interGameLabel(it.gameKey);
+  els.roundIndicator.textContent = 'الجولة '+it.roundNumber+'/'+g.interConfig.roundsTotal;
+  els.roundOverlay.classList.remove('active');
+  els.nextRoundLabel.classList.add('hidden');
+  renderPlayerSlotsInter();
+  var sig = interSignature(it);
+  if(g.phase === 'inter-ready'){
+    var remain = Math.max(0, Math.ceil((it.readyStartAt + INTER_READY_MS - syncedNow())/1000));
+    els.readyGtitle.textContent = interGameLabel(it.gameKey)+' — الإقصاء '+it.innerNumber+'/'+interInnerTotal(it);
+    els.readyCdnum.textContent = remain > 0 ? remain : '🚀';
+    els.readyOverlay.style.display = 'flex';
+    els.arenaCenter.innerHTML = ''; els.arenaCenter._builtKey = null;
+    return;
+  }
+  els.readyOverlay.style.display = 'none';
+  if(g.phase === 'inter-active'){
+    buildOnce(els.arenaCenter, 'ia|'+sig, function(){
+      els.arenaCenter.innerHTML =
+        '<div class="inter-emojis">'+RC_RECYCLE.join('')+' ♻️ '+RC_KEEP.join('')+'</div>' +
+        '<div class="answer-label">الإقصاء '+it.innerNumber+'/'+interInnerTotal(it)+' — الأقل نقاطاً يخرج</div>' +
+        '<div class="words-clock inter-clock" id="inter-clock"></div>';
+    });
+    var clock = document.getElementById('inter-clock');
+    if(clock){
+      var left = Math.max(0, Math.min(it.endsAt - syncedNow(), it.endsAt - it.startAt));
+      clock.textContent = wordsFmtTime(left);
+      clock.classList.toggle('low', left <= 5000);
+    }
+    return;
+  }
+  if(g.phase === 'inter-elim'){
+    renderInterElimDisplay(g, it);
+  }
+}
+function renderInterElimDisplay(g, it){
+  var e = it.elim, now = syncedNow();
+  var victim = e ? findPlayer(e.id) : null;
+  var key = 'ie|'+(e ? e.key : 'none|'+it.roundNumber);
+  var built = buildOnce(els.arenaCenter, key, function(){
+    els.arenaCenter.innerHTML =
+      (e ? '<div class="gun-stage" id="gun-stage">'+INTER_GUN_SVG+'<div class="gun-tracer" id="gun-tracer"></div></div>' : '') +
+      '<div class="elim-panel hidden" id="elim-panel"></div>';
+  });
+  var stage = document.getElementById('gun-stage');
+  if(e && stage){
+    // aim at the victim's slot on the display
+    if(built){
+      var slot = null, idx = g.players.findIndex(function(p){ return p.id===e.id; });
+      var slots = els.arenaWrap.querySelectorAll('.player-slot');
+      if(idx >= 0 && slots[idx]) slot = slots[idx];
+      // measured from the (static) centre of the arena - the gun itself is still sliding in
+      var sr = els.arenaCenter.getBoundingClientRect(), angle = 0, dist = 300;
+      if(slot){
+        var tr = slot.getBoundingClientRect();
+        var dx = (tr.left+tr.width/2) - (sr.left+sr.width/2), dy = (tr.top+tr.height/3) - (sr.top+sr.height/2);
+        angle = Math.atan2(dy, dx)*180/Math.PI; dist = Math.sqrt(dx*dx+dy*dy);
+      }
+      // a gun pointing left is mirrored so it never shows upside down
+      var mirror = Math.abs(angle) > 90;
+      stage.style.setProperty('--aim', (mirror ? (angle > 0 ? angle-180 : angle+180) : angle)+'deg');
+      stage.style.setProperty('--flip', mirror ? -1 : 1);
+      var tracer = document.getElementById('gun-tracer');
+      tracer.style.width = Math.max(40, dist - 40)+'px';
+      tracer.style.transform = 'rotate('+angle+'deg)';
+    }
+    var t = now - e.at;
+    stage.classList.toggle('reloading', t >= 350 && now < e.shotAt);
+    stage.classList.toggle('fired', now >= e.shotAt);
+    stage.classList.toggle('gone', now >= e.shotAt + INTER_ELIM_PANEL_MS);
+    if(interElimFx.key !== e.key){ interElimFx = { key:e.key, reloaded:false, shot:false }; }
+    if(!interElimFx.reloaded && t >= 0){ interElimFx.reloaded = true; playSound('gun-reload'); }
+    if(!interElimFx.shot && now >= e.shotAt){
+      interElimFx.shot = true; playSound('gun-shot');
+      els.arenaWrap.classList.remove('shot-flash'); void els.arenaWrap.offsetWidth; els.arenaWrap.classList.add('shot-flash');
+    }
+  }
+  var panel = document.getElementById('elim-panel');
+  var showPanel = !e || now >= e.shotAt + INTER_ELIM_PANEL_MS;
+  if(panel && showPanel && panel.classList.contains('hidden')){
+    var html = '';
+    if(it.roundResults){
+      html += '<div class="elim-title res">🏁 ترتيب الجولة '+it.roundNumber+'</div><table class="elim-table">';
+      it.roundResults.forEach(function(r, i){
+        var p = findPlayer(r.id);
+        html += '<tr class="'+(r.winner?'win':'')+'"><td>'+(i+1)+'. '+escapeHtml(p?p.name:'')+(r.winner?' 👑':'')+'</td><td>+'+r.points+'</td></tr>';
+      });
+      html += '</table>';
+      if(victim) html = '<div class="elim-sub">تم إقصاء '+escapeHtml(victim.name)+(e.tie?' (تعادل - بالقرعة)':'')+'</div>' + html;
+    } else if(victim){
+      html += '<div class="elim-title">💥 تم إقصاء '+escapeHtml(victim.name)+'</div>' + (e.tie ? '<div class="elim-sub">تعادل في أقل النقاط - تم الاختيار بالقرعة</div>' : '');
+      var rows = Object.keys(it.innerScores||{}).sort(function(a,b){ return it.innerScores[b]-it.innerScores[a]; });
+      html += '<table class="elim-table">';
+      rows.forEach(function(pid){
+        var p = findPlayer(pid);
+        html += '<tr class="'+(pid===e.id?'lost':'')+'"><td>'+escapeHtml(p?p.name:'')+'</td><td>'+it.innerScores[pid]+'</td></tr>';
+      });
+      html += '</table>';
+    }
+    panel.innerHTML = html;
+    panel.classList.remove('hidden');
+  }
+}
+
+// ---------------- player phone ----------------
+var rc = { sig:null, score:0, item:null, queue:[], holdUntil:0, lastSentAt:0, sentScore:-1, finalSent:false, sendTimer:null };
+var interElimSeen = {};
+function interMeAlive(){ var g = app.game; return interPlayerAlive(g && g.inter, app.myPlayerId); }
+function rcCanPlay(){
+  var g = app.game;
+  if(!g || app.isHost || g.mode!=='interactive' || g.phase!=='inter-active' || !g.inter) return false;
+  if(!interMeAlive()) return false;
+  var now = syncedNow();
+  return now >= g.inter.startAt && now < g.inter.endsAt;
+}
+function rcNewItem(){
+  var recycle = Math.random() < 0.5, set = recycle ? RC_RECYCLE : RC_KEEP;
+  return { emoji:set[Math.floor(Math.random()*set.length)], recycle:recycle };
+}
+// The belt holds a queue: [0] = the item in the frame (full size, the one to decide on),
+// [1] and [2] = the next two coming from the left (smaller). Every decision moves the
+// queue one step right and a new item rolls in at the back - all with short CSS
+// transitions, so input never waits for an animation.
+function rcPlace(q, i){
+  q.el.classList.remove('pos-0','pos-1','pos-2','pos-3');
+  q.el.classList.add('pos-'+i);
+}
+function rcFill(){
+  while(rc.queue.length < RC_QUEUE){
+    var item = rcNewItem(), el = document.createElement('span');
+    el.className = 'rc-item pos-3';
+    el.textContent = item.emoji;
+    els.rcBelt.appendChild(el);
+    var q = { item:item, el:el };
+    rc.queue.push(q);
+    void el.offsetWidth;                  // start off the belt, then glide into place
+    rcPlace(q, rc.queue.length-1);
+  }
+  rc.item = rc.queue[0].item;
+}
+function rcReset(sig){
+  rc.sig = sig; rc.score = 0; rc.holdUntil = 0; rc.sentScore = -1; rc.finalSent = false; rc.lastSentAt = 0;
+  if(rc.sendTimer){ clearTimeout(rc.sendTimer); rc.sendTimer = null; }
+  Array.prototype.slice.call(els.rcBelt.querySelectorAll('.rc-item')).forEach(function(n){ n.remove(); });
+  rc.item = null; rc.queue = [];
+  els.rcScore.textContent = '0';
+}
+function rcSendScore(final){
+  var g = app.game;
+  if(!g || !g.inter) return;
+  rc.lastSentAt = Date.now(); rc.sentScore = rc.score;
+  sendToHost({t:'inter-score', sig:rc.sig, score:rc.score, final:!!final});
+}
+function rcReport(){
+  if(rc.score === rc.sentScore) return;
+  var wait = 120 - (Date.now() - rc.lastSentAt);
+  if(wait <= 0){ rcSendScore(false); return; }
+  if(!rc.sendTimer) rc.sendTimer = setTimeout(function(){ rc.sendTimer = null; if(rc.score !== rc.sentScore) rcSendScore(false); }, wait);
+}
+// one press = one decision on the item in front of the player; animations never block input
+function rcAct(action){
+  if(!rcCanPlay() || !rc.item) return;
+  var now = Date.now();
+  if(now < rc.holdUntil) return;
+  var correct = (action === 'recycle') === rc.item.recycle;
+  var cur = rc.queue.shift(), el = cur.el;
+  el.classList.remove('pos-0');
+  el.classList.add(action === 'recycle' ? 'rc-out-up' : 'rc-out-right');
+  setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 340);
+  if(action === 'recycle'){ els.rcFurnace.classList.remove('rc-splash'); void els.rcFurnace.offsetWidth; els.rcFurnace.classList.add('rc-splash'); }
+  if(correct){
+    playSound(action === 'recycle' ? 'recycle' : 'pass');
+    rc.score++;
+    els.rcScore.textContent = rc.score;
+  } else {
+    playSound('wrong-click');   // wrong move: its own sound instead of the pass/recycle click
+    rc.holdUntil = now + INTER_WRONG_HOLD_MS;
+    els.interContainer.classList.remove('rc-wrong'); void els.interContainer.offsetWidth; els.interContainer.classList.add('rc-wrong');
+  }
+  rc.queue.forEach(function(q, i){ rcPlace(q, i); });   // everyone steps one place right
+  rcFill();
+  rcReport();
+}
+function rcBindButton(btn, action){
+  // pointerdown = instant response on phones (no click delay); click kept for keyboard/mouse
+  var last = 0;
+  btn.addEventListener('pointerdown', function(e){ e.preventDefault(); last = Date.now(); rcAct(action); });
+  btn.addEventListener('click', function(){ if(Date.now() - last > 400) rcAct(action); });
+}
+rcBindButton(els.rcRecycle, 'recycle');
+rcBindButton(els.rcPass, 'pass');
+document.addEventListener('keydown', function(e){
+  if(!rcCanPlay()) return;
+  if(e.key === 'ArrowUp'){ e.preventDefault(); rcAct('recycle'); }
+  else if(e.key === 'ArrowRight' || e.key === 'ArrowLeft'){ e.preventDefault(); rcAct('pass'); }
+});
+function interShowElimOverlay(show, fresh){
+  els.elimOverlay.classList.toggle('hidden', !show);
+  if(show && fresh){
+    els.elimOverlay.classList.remove('elim-hit'); void els.elimOverlay.offsetWidth; els.elimOverlay.classList.add('elim-hit');
+  }
+}
+function renderInterPlayer(){
+  var g = app.game, it = g.inter;
+  var me = findPlayer(app.myPlayerId);
+  var isLeader = app.myPlayerId === g.leaderId;
+  els.pScoreLabel.textContent = me ? fmtScore(me.score) : '0';
+  ['btnNextRound','btnBombNewRound','btnBombToLobby','btnBombContinue'].forEach(function(k){ els[k].classList.add('hidden'); });
+  els.pgridContainer.classList.add('hidden');
+  els.counterContainer.classList.add('hidden');
+  els.flagsPadContainer.classList.add('hidden');
+  els.btnSubmit.classList.add('hidden');
+  els.submittedLabel.classList.add('hidden');
+  if(g.phase === 'inter-finished'){
+    els.interContainer.classList.add('hidden');
+    interShowElimOverlay(false);
+    els.displayWrap.classList.add('hidden');
+    els.pcontrolsWrap.classList.add('hidden');
+    renderWinnerScreen();
+    return;
+  }
+  hideWinnerScreen();
+  els.roundOverlay.classList.remove('active');
+  els.pRoundIndicator.textContent = it.roundNumber+'/'+g.interConfig.roundsTotal;
+  els.pGameNameLabel.textContent = interGameLabel(it.gameKey);
+  var sig = interSignature(it);
+  if(sig !== rc.sig) rcReset(sig);
+  var alive = interMeAlive();
+  var outEntry = (it.out||[]).filter(function(o){ return o.id===app.myPlayerId; })[0];
+  // shot out: shattered screen for the rest of this outer round (sound once, at the shot)
+  var hitNow = it.elim && it.elim.id===app.myPlayerId;
+  var shotLanded = !hitNow || syncedNow() >= it.elim.shotAt;
+  var showBroken = !!outEntry && shotLanded;
+  if(showBroken && hitNow && !interElimSeen[it.elim.key]){
+    interElimSeen[it.elim.key] = true;
+    playSound('glass');
+    if(navigator.vibrate){ try{ navigator.vibrate([60,40,120]); }catch(e){} }
+    interShowElimOverlay(true, true);
+  } else {
+    interShowElimOverlay(showBroken, false);
+  }
+  els.interContainer.classList.remove('hidden');
+  els.interContainer.classList.toggle('rc-dead', !alive);
+  els.interContainer.classList.toggle('rc-hold', Date.now() < rc.holdUntil);
+
+  if(g.phase === 'inter-ready'){
+    var remain = Math.max(0, Math.ceil((it.readyStartAt + INTER_READY_MS - syncedNow())/1000));
+    els.notifBar.textContent = alive ? ('استعد... '+(remain||'🚀')) : 'تم إقصاؤك من هذه الجولة';
+    els.rcTimer.textContent = '';
+    return;
+  }
+  if(g.phase === 'inter-active'){
+    var now = syncedNow();
+    var left = Math.max(0, Math.min(it.endsAt - now, it.endsAt - it.startAt));
+    els.rcTimer.textContent = wordsFmtTime(left);
+    els.rcTimer.classList.toggle('low', left <= 5000);
+    if(alive){
+      if(now >= it.startAt && now < it.endsAt && !rc.queue.length) rcFill();
+      if(now >= it.endsAt && !rc.finalSent){ rc.finalSent = true; rcSendScore(true); }
+      els.notifBar.textContent = now < it.endsAt ? 'أعد تدوير ⬆ القطع - ومرّر ➡ الباقي' : 'انتهى الوقت...';
+    } else {
+      els.notifBar.textContent = 'تم إقصاؤك - تابع الشاشة';
+    }
+    return;
+  }
+  // inter-elim: between inner rounds / after the outer round
+  els.rcTimer.textContent = '';
+  if(it.elim && syncedNow() < it.elim.shotAt){
+    els.notifBar.textContent = '🔫 ...';
+    return;
+  }
+  var victim = it.elim ? findPlayer(it.elim.id) : null;
+  if(it.roundResults){
+    var mine = it.roundResults.filter(function(r){ return r.id===app.myPlayerId; })[0];
+    els.notifBar.textContent = mine ? (mine.winner ? '👑 آخر الصامدين! +'+mine.points : 'انتهت الجولة: +'+mine.points) : 'انتهت الجولة';
+  } else {
+    els.notifBar.textContent = hitNow ? 'تم إقصاؤك' : (alive ? ('✔ نجوت - تم إقصاء '+(victim?victim.name:'')) : 'تم إقصاء '+(victim?victim.name:''));
+  }
+  if(isLeader && (!it.elim || syncedNow() >= it.elim.shotAt + 700)){
+    els.btnNextRound.textContent = !it.roundResults ? ('▶ الإقصاء التالي ('+(it.innerNumber+1)+'/'+interInnerTotal(it)+')')
+      : (it.roundNumber < g.interConfig.roundsTotal ? '▶ الجولة التالية' : '▶ عرض النتيجة النهائية');
+    els.btnNextRound.classList.remove('hidden');
+    els.btnBombToLobby.classList.remove('hidden');
+  }
+}
+els.elimOverlay.innerHTML = interCrackSvg() + '<div class="elim-text">تم إقصاؤك</div>';
 
 
 var BOMB_ROWS = 4, BOMB_MIN_COLS = 4, BOMB_MAX_COLS = 10;
