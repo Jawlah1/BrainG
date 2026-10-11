@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تحرير فهرس كلمات اللعبة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{ --bg:#0f172a; --panel:#1e293b; --panel2:#0b1220; --border:#334155; --gold:#f5b942; --text:#f1f5f9; --sub:#94a3b8;
+  --green:#22c55e; --blue:#3b82f6; --red:#ef4444; }
+*{box-sizing:border-box;}
+[hidden]{display:none !important;}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Cairo","Tahoma",system-ui,sans-serif;}
+body{min-height:100vh;}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(180deg,#111a30,#0f172a);border-bottom:1px solid var(--border);padding:12px 16px 0;}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+h1{margin:0;font-size:clamp(18px,3vw,24px);font-weight:900;color:var(--gold);flex:1;}
+.status{font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px;background:var(--panel);border:1px solid var(--border);color:var(--sub);white-space:nowrap;}
+.status.ok{color:var(--green);border-color:rgba(34,197,94,.4);}
+.status.busy{color:var(--gold);border-color:rgba(245,185,66,.4);}
+.status.err{color:var(--red);border-color:rgba(239,68,68,.45);}
+.btn{font-family:inherit;font-weight:800;font-size:14px;border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:10px;padding:7px 14px;cursor:pointer;}
+.btn:hover{border-color:var(--gold);}
+.btn.gold{background:var(--gold);color:#1f1300;border-color:var(--gold);}
+.tabs{display:flex;gap:6px;margin-top:12px;overflow-x:auto;}
+.tab{font-family:inherit;font-weight:800;font-size:14px;background:none;border:none;color:var(--sub);padding:10px 14px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;}
+.tab.on{color:var(--text);border-bottom-color:var(--gold);}
+.tab b{display:inline-block;min-width:1.6em;margin-inline-start:6px;padding:0 6px;border-radius:999px;background:var(--panel);font-size:12px;color:var(--gold);}
+main{max-width:860px;margin:0 auto;padding:16px;}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.bar input{flex:1;min-width:180px;font-family:inherit;font-size:16px;padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:var(--panel2);color:var(--text);}
+.bar input:focus{outline:none;border-color:var(--gold);}
+.help{font-size:13px;color:var(--sub);margin:0 0 12px;line-height:1.9;}
+.help i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;color:#fff;font-weight:900;margin:0 2px;vertical-align:middle;}
+.list{display:flex;flex-direction:column;gap:6px;}
+.row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:var(--panel);border:1px solid var(--border);}
+.row .w{flex:1;font-size:22px;font-weight:800;letter-spacing:1px;}
+.row .meta{font-size:12px;color:var(--sub);white-space:nowrap;}
+.row .tag{font-size:11px;font-weight:800;color:var(--gold);border:1px solid rgba(245,185,66,.45);border-radius:999px;padding:1px 8px;}
+.act{width:38px;height:38px;flex:0 0 auto;border:none;border-radius:10px;color:#fff;font-size:20px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;}
+.act:active{transform:scale(.92);}
+.act.ok, i.ok{background:var(--green);}
+.act.plus, i.plus{background:var(--blue);}
+.act.plus{font-size:26px;}
+.act.down, i.down{background:var(--blue);}
+.act.del, i.del{background:var(--red);}
+.act[disabled]{opacity:.35;cursor:default;}
+.more{display:block;margin:14px auto 0;}
+.empty{text-align:center;color:var(--sub);padding:30px 10px;line-height:2;}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--border);padding:10px 18px;border-radius:12px;font-weight:700;opacity:0;transition:opacity .25s;pointer-events:none;z-index:20;}
+.toast.on{opacity:1;}
+dialog{width:min(560px,94vw);background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:16px;padding:18px;}
+dialog::backdrop{background:rgba(0,0,0,.6);}
+dialog h2{margin:0 0 10px;font-size:18px;color:var(--gold);}
+dialog label{display:block;font-size:13px;color:var(--sub);margin:12px 0 5px;font-weight:700;}
+dialog input{width:100%;font-family:inherit;font-size:14px;padding:9px 12px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--text);direction:ltr;text-align:left;}
+dialog .row2{display:flex;gap:8px;justify-content:flex-start;margin-top:16px;flex-wrap:wrap;}
+dialog small{display:block;color:var(--sub);font-size:12px;margin-top:4px;line-height:1.7;}
+.warn{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);color:#fecaca;border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:14px;line-height:1.8;}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1>📖 تحرير فهرس كلمات اللعبة</h1>
+    <span class="status" id="status">جاري التحميل...</span>
+    <button class="btn" id="btn-save" title="يحفظ التعديلات في GitHub الآن">💾 حفظ الآن</button>
+    <button class="btn" id="btn-settings">⚙️ الإعدادات</button>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab on" data-tab="log">📝 الكلمات المسجّلة<b id="n-log">0</b></button>
+    <button class="tab" data-tab="answers">✅ كلمات الأجوبة<b id="n-answers">0</b></button>
+    <button class="tab" data-tab="guesses">⌨️ الكلمات المسموحة<b id="n-guesses">0</b></button>
+    <button class="tab" data-tab="extra">🗂️ الكتابات القديمة<b id="n-extra">0</b></button>
+  </nav>
+</header>
+<main>
+  <div id="warn"></div>
+  <div class="bar">
+    <input id="search" type="search" placeholder="🔍 ابحث عن كلمة..." autocomplete="off">
+  </div>
+  <div class="bar" id="add-bar">
+    <input id="add-word" type="text" placeholder="إضافة كلمة جديدة (5 حروف)" autocomplete="off" maxlength="12">
+    <button class="btn gold" id="btn-add">➕ إضافة</button>
+  </div>
+  <p class="help" id="help"></p>
+  <div class="list" id="list"></div>
+  <button class="btn more" id="btn-more" hidden>عرض المزيد</button>
+</main>
+<div class="toast" id="toast"></div>
+
+<dialog id="dlg">
+  <h2>⚙️ الإعدادات</h2>
+  <label>مفتاح GitHub (للحفظ في القاموس)</label>
+  <input id="s-token" type="password" placeholder="github_pat_...">
+  <small>مفتاح خاص لمستودع BrainG فقط، بصلاحية Contents: Read and write. يبقى في هذا المتصفح بس، وما ينحفظ في أي ملف.</small>
+  <label>المستودع / الملف</label>
+  <input id="s-repo" type="text" placeholder="Jawlah1/BrainG">
+  <input id="s-path" type="text" placeholder="words.json" style="margin-top:6px">
+  <label>رابط سكربت جدول الكلمات المرفوضة (Google Apps Script)</label>
+  <input id="s-log" type="url" placeholder="https://script.google.com/macros/s/.../exec">
+  <small>الرابط هذا ينحفظ داخل words.json بعد، عشان اللعبة تعرف وين ترسل الكلمات.</small>
+  <label>كلمة سر السكربت (KEY)</label>
+  <input id="s-key" type="password">
+  <div class="row2">
+    <button class="btn gold" id="s-save">حفظ</button>
+    <button class="btn" id="s-test">اختبار الاتصال</button>
+    <button class="btn" id="s-close">إغلاق</button>
+  </div>
+  <small id="s-result"></small>
+</dialog>
+
+<script>
+(function(){
+'use strict';
+// ---------------- settings (kept in this browser only) ----------------
+var CFG_KEY = 'words-editor-settings';
+var cfg = { token:'', repo:'Jawlah1/BrainG', path:'words.json', branch:'main', log:'', key:'' };
+try{ var saved = JSON.parse(localStorage.getItem(CFG_KEY) || '{}'); Object.keys(saved).forEach(function(k){ cfg[k] = saved[k]; }); }catch(e){}
+function saveCfg(){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }catch(e){} }
+
+// ---------------- the dictionary ----------------
+// A = answers (can be a round's word), G = every word a player may type (answers included),
+// X = older spellings that are also accepted. Kept in their original order; new words at the end.
+var D = { A:[], G:[], X:[], sA:{}, sG:{}, sX:{}, meta:{}, sha:null, loaded:false, readOnly:true };
+var pending = [];            // changes not saved to GitHub yet
+var saveTimer = null, saving = false;
+var LOG = [], logLoaded = false, logErr = '';
+
+function clean(w){ return String(w || '').replace(/[ً-ٰٟـ\s]/g, ''); }
+function isWord(w){ return w.length === 5 && /^[ء-غف-ي]+$/.test(w); }
+function listOf(x){ return (Array.isArray(x) ? x : String(x || '').split(/\s+/)).map(clean).filter(isWord); }
+function setFrom(arr){ var s = {}; arr.forEach(function(w){ s[w] = true; }); return s; }
+function useData(d){
+  D.meta = d;
+  D.A = listOf(d.answers); D.G = listOf(d.guesses); D.X = listOf(d.extra);
+  D.sA = setFrom(D.A); D.sG = setFrom(D.G); D.sX = setFrom(D.X);
+  if(typeof d.logUrl === 'string' && d.logUrl && !cfg.log){ cfg.log = d.logUrl; saveCfg(); }
+  D.loaded = true;
+}
+// one change: add / remove a word in A, G or X
+function apply(op){
+  var L = op.list, s = D['s' + L], a = D[L];
+  if(op.add){ if(!s[op.w]){ s[op.w] = true; a.push(op.w); } }
+  else if(s[op.w]){ delete s[op.w]; var i = a.indexOf(op.w); if(i >= 0) a.splice(i, 1); }
+}
+function change(ops){
+  if(D.readOnly){ toast('ضع مفتاح GitHub من الإعدادات أولاً عشان تقدر تعدّل'); return false; }
+  ops.forEach(function(op){ apply(op); pending.push(op); });
+  scheduleSave();
+  render();
+  return true;
+}
+// the moves the buttons make
+var MOVES = {
+  toAnswer: function(w){ return [{list:'A', w:w, add:true}, {list:'G', w:w, add:true}, {list:'X', w:w, add:false}]; },
+  toGuess:  function(w){ return [{list:'G', w:w, add:true}, {list:'X', w:w, add:false}]; },
+  answerToGuess: function(w){ return [{list:'A', w:w, add:false}, {list:'G', w:w, add:true}]; },
+  removeAll: function(w){ return [{list:'A', w:w, add:false}, {list:'G', w:w, add:false}]; },
+  removeExtra: function(w){ return [{list:'X', w:w, add:false}]; }
+};
+
+// ---------------- GitHub ----------------
+function b64encode(str){
+  var bytes = new TextEncoder().encode(str), bin = '';
+  for(var i=0;i<bytes.length;i+=0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function b64decode(b64){
+  var bin = atob(String(b64).replace(/\s/g, '')), bytes = new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+function apiUrl(){ return 'https://api.github.com/repos/' + cfg.repo + '/contents/' + encodeURIComponent(cfg.path).replace(/%2F/g, '/'); }
+function load(){
+  status('busy', 'جاري تحميل القاموس...');
+  var p;
+  if(cfg.token){
+    p = fetch(apiUrl() + '?ref=' + encodeURIComponent(cfg.branch) + '&t=' + Date.now(), { headers:{ Authorization:'Bearer ' + cfg.token, Accept:'application/vnd.github+json' }, cache:'no-store' })
+      .then(function(r){ if(!r.ok) throw new Error('GitHub ' + r.status); return r.json(); })
+      .then(function(j){ D.sha = j.sha; D.readOnly = false; return JSON.parse(b64decode(j.content)); });
+  } else {
+    p = fetch('https://raw.githubusercontent.com/' + cfg.repo + '/' + cfg.branch + '/' + cfg.path + '?t=' + Date.now(), { cache:'no-store' })
+      .then(function(r){ if(!r.ok) throw new Error('GitHub ' + r.status); return r.json(); })
+      .then(function(j){ D.readOnly = true; return j; });
+  }
+  return p.then(function(d){
+    useData(d);
+    pending.forEach(apply);                       // (changes made before a reload stay)
+    status(D.readOnly ? 'err' : 'ok', D.readOnly ? 'للقراءة فقط - ضع مفتاح GitHub' : 'محمّل من GitHub ✔');
+    render();
+  }).catch(function(e){
+    status('err', 'ما قدرت أحمّل القاموس');
+    warn('ما قدرت أحمّل القاموس من GitHub (' + e.message + '). تأكد إن ملف <b>' + cfg.path + '</b> مرفوع في المستودع <b>' + cfg.repo + '</b>' + (cfg.token ? ' وإن المفتاح صحيح' : '') + '.');
+    render();
+  });
+}
+function scheduleSave(){
+  status('busy', 'تعديلات بانتظار الحفظ (' + pending.length + ')');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(save, 2500);
+}
+function buildFile(){
+  var d = {};
+  Object.keys(D.meta || {}).forEach(function(k){ d[k] = D.meta[k]; });
+  d.v = 1; d.logUrl = cfg.log || '';
+  d.answers = D.A.join(' '); d.guesses = D.G.join(' '); d.extra = D.X.join(' ');
+  return JSON.stringify(d, null, 1) + '\n';
+}
+function save(retry){
+  clearTimeout(saveTimer);
+  if(saving || D.readOnly || !D.loaded) return Promise.resolve();
+  var sent = pending.length, logChanged = (D.meta.logUrl || '') !== (cfg.log || '');
+  if(!sent && !logChanged){ status('ok', 'كل شي محفوظ ✔'); return Promise.resolve(); }
+  saving = true;
+  status('busy', 'جاري الحفظ...');
+  var adds = pending.filter(function(o){ return o.add; }).length, rems = sent - adds;
+  var body = { message:'قاموس لعبة الكلمات: ' + (sent ? (adds + ' إضافة، ' + rems + ' حذف') : 'رابط جدول الكلمات المرفوضة'), content:b64encode(buildFile()), sha:D.sha, branch:cfg.branch };
+  return fetch(apiUrl(), { method:'PUT', headers:{ Authorization:'Bearer ' + cfg.token, Accept:'application/vnd.github+json', 'Content-Type':'application/json' }, body:JSON.stringify(body) })
+    .then(function(r){
+      if(r.status === 409 || r.status === 422){ throw { conflict:true }; }
+      if(!r.ok) throw new Error('GitHub ' + r.status);
+      return r.json();
+    }).then(function(j){
+      saving = false;
+      D.sha = j.content && j.content.sha;
+      D.meta.logUrl = cfg.log || '';
+      pending = pending.slice(sent);
+      if(pending.length) scheduleSave(); else status('ok', 'محفوظ ✔ - يوصل للعبة خلال دقائق');
+    }).catch(function(e){
+      saving = false;
+      if(e && e.conflict && !retry){                 // the file changed on GitHub meanwhile: reload and redo my changes
+        return load().then(function(){ return save(true); });
+      }
+      status('err', 'ما انحفظ - ' + (e && e.message ? e.message : 'تعارض'));
+      toast('ما قدرت أحفظ في GitHub - تأكد من المفتاح والاتصال');
+    });
+}
+
+// ---------------- the list of words players tried (Google Sheet) ----------------
+function loadLog(){
+  logErr = '';
+  if(!cfg.log){ logLoaded = true; LOG = []; render(); return Promise.resolve(); }
+  return fetch(cfg.log + '?action=list&t=' + Date.now()).then(function(r){ return r.json(); }).then(function(j){
+    if(!j || !j.ok) throw new Error('list');
+    LOG = (j.words || []).filter(function(x){ return isWord(clean(x.w)); }).map(function(x){ return { w:clean(x.w), n:x.n || 1, last:x.last }; });
+    LOG.sort(function(a, b){ return (b.n - a.n) || String(b.last).localeCompare(String(a.last)); });
+    logLoaded = true; render();
+  }).catch(function(){ logLoaded = true; logErr = 'ما قدرت أقرأ جدول الكلمات المرفوضة - تأكد من الرابط في الإعدادات.'; render(); });
+}
+function logRemove(words){
+  LOG = LOG.filter(function(x){ return words.indexOf(x.w) < 0; });
+  render();
+  if(!cfg.log) return;
+  if(!cfg.key){ toast('ضع كلمة سر السكربت في الإعدادات عشان ينحذف من الجدول'); return; }
+  fetch(cfg.log + '?action=del&key=' + encodeURIComponent(cfg.key) + '&words=' + encodeURIComponent(words.join(','))).then(function(r){ return r.json(); })
+    .then(function(j){ if(!j || !j.ok) toast(j && j.error === 'key' ? 'كلمة سر السكربت غلط' : 'ما انحذفت من الجدول'); })
+    .catch(function(){ toast('ما انحذفت من الجدول - تأكد من الاتصال'); });
+}
+
+// ---------------- the page ----------------
+var tab = 'log', shown = 200, $ = function(id){ return document.getElementById(id); };
+var HELP = {
+  log: 'كلمات حاول اللاعبين يكتبونها وما كانت في القاموس (الأكثر تكراراً أول). <i class="ok">✓</i> يضيفها لكلمات الأجوبة، <i class="plus">+</i> يضيفها للكلمات المسموحة بس، <i class="del">✕</i> يحذفها من القائمة.',
+  answers: 'الكلمات اللي ممكن تكون جواب الجولة (وكلها مسموح كتابتها). <i class="down">⬇</i> ينقلها للمسموحة بس (ما تصير جواب)، <i class="del">✕</i> يحذفها من القاموس كله.',
+  guesses: 'كل الكلمات اللي يقدر اللاعب يكتبها. <i class="ok">✓</i> يخليها كلمة جواب بعد، <i class="del">✕</i> يحذفها من القاموس كله.',
+  extra: 'كتابات قديمة مقبولة (بدون همزات أو بضمائر). <i class="ok">✓</i> ينقلها لكلمات الأجوبة، <i class="plus">+</i> ينقلها للمسموحة، <i class="del">✕</i> يحذفها.'
+};
+function status(kind, text){ var s = $('status'); s.className = 'status ' + (kind || ''); s.textContent = text; }
+function warn(html){ $('warn').innerHTML = html ? '<div class="warn">' + html + '</div>' : ''; }
+var toastT = null;
+function toast(t){ var el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function(){ el.classList.remove('on'); }, 2600); }
+function button(cls, text, title, fn){ var b = document.createElement('button'); b.className = 'act ' + cls; b.textContent = text; b.title = title; b.addEventListener('click', fn); return b; }
+function row(w, opts){
+  var r = document.createElement('div'); r.className = 'row';
+  (opts.right || []).forEach(function(b){ r.appendChild(b); });     // (the page is right-to-left: these sit on the right)
+  var ww = document.createElement('span'); ww.className = 'w'; ww.textContent = w; r.appendChild(ww);
+  if(opts.tag){ var t = document.createElement('span'); t.className = 'tag'; t.textContent = opts.tag; r.appendChild(t); }
+  if(opts.meta){ var m = document.createElement('span'); m.className = 'meta'; m.textContent = opts.meta; r.appendChild(m); }
+  (opts.left || []).forEach(function(b){ r.appendChild(b); });      // ...and these on the left
+  return r;
+}
+function fmtDate(d){ try{ var x = new Date(d); return isNaN(x) ? '' : x.toLocaleDateString('ar-SA-u-nu-latn', { day:'numeric', month:'short' }); }catch(e){ return ''; } }
+function render(){
+  $('n-log').textContent = LOG.length; $('n-answers').textContent = D.A.length; $('n-guesses').textContent = D.G.length; $('n-extra').textContent = D.X.length;
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(t){ t.classList.toggle('on', t.getAttribute('data-tab') === tab); });
+  $('help').innerHTML = HELP[tab];
+  $('add-bar').hidden = !(tab === 'answers' || tab === 'guesses');
+  var q = clean($('search').value), list = $('list');
+  var src = tab === 'log' ? LOG.map(function(x){ return x.w; }) : tab === 'answers' ? D.A : tab === 'guesses' ? D.G : D.X;
+  var items = q ? src.filter(function(w){ return w.indexOf(q) >= 0; }) : src;
+  if(tab !== 'log') items = items.slice().reverse();     // newest additions first
+  list.innerHTML = '';
+  if(tab === 'log' && !cfg.log){ list.innerHTML = '<div class="empty">ما فيه رابط لجدول الكلمات المرفوضة بعد.<br>افتح ⚙️ الإعدادات وحط رابط السكربت.</div>'; $('btn-more').hidden = true; return; }
+  if(tab === 'log' && logErr){ list.innerHTML = '<div class="empty">' + logErr + '</div>'; $('btn-more').hidden = true; return; }
+  if(!items.length){ list.innerHTML = '<div class="empty">' + (q ? 'ما فيه كلمات تطابق البحث' : tab === 'log' ? (logLoaded ? 'ما فيه كلمات مسجّلة حالياً 👍' : 'جاري التحميل...') : 'القائمة فاضية') + '</div>'; $('btn-more').hidden = true; return; }
+  var frag = document.createDocumentFragment();
+  items.slice(0, shown).forEach(function(w){
+    if(tab === 'log'){
+      var x = LOG.filter(function(y){ return y.w === w; })[0] || {};
+      var known = D.sA[w] ? 'صارت جواب' : D.sG[w] ? 'صارت مسموحة' : '';
+      frag.appendChild(row(w, {
+        meta: '×' + (x.n || 1) + (x.last ? ' · ' + fmtDate(x.last) : ''), tag: known,
+        right: [ button('ok', '✓', 'إضافة لكلمات الأجوبة', function(){ if(change(MOVES.toAnswer(w))) logRemove([w]); }),
+                 button('plus', '+', 'إضافة للكلمات المسموحة فقط', function(){ if(change(MOVES.toGuess(w))) logRemove([w]); }) ],
+        left: [ button('del', '✕', 'حذف من القائمة', function(){ logRemove([w]); }) ]
+      }));
+    } else if(tab === 'answers'){
+      frag.appendChild(row(w, {
+        right: [ button('down', '⬇', 'نقل للكلمات المسموحة فقط (ما تصير جواب)', function(){ change(MOVES.answerToGuess(w)); }) ],
+        left: [ button('del', '✕', 'حذف من القاموس كله', function(){ if(confirm('حذف «' + w + '» من القاموس كله؟')) change(MOVES.removeAll(w)); }) ]
+      }));
+    } else if(tab === 'guesses'){
+      var isA = !!D.sA[w];
+      frag.appendChild(row(w, {
+        tag: isA ? 'جواب' : '',
+        right: [ (function(){ var b = button('ok', '✓', 'تخليها كلمة جواب بعد', function(){ change(MOVES.toAnswer(w)); }); b.disabled = isA; return b; })() ],
+        left: [ button('del', '✕', 'حذف من القاموس كله', function(){ if(confirm('حذف «' + w + '» من القاموس كله؟')) change(MOVES.removeAll(w)); }) ]
+      }));
+    } else {
+      frag.appendChild(row(w, {
+        right: [ button('ok', '✓', 'نقل لكلمات الأجوبة', function(){ change(MOVES.toAnswer(w)); }),
+                 button('plus', '+', 'نقل للكلمات المسموحة', function(){ change(MOVES.toGuess(w)); }) ],
+        left: [ button('del', '✕', 'حذف', function(){ change(MOVES.removeExtra(w)); }) ]
+      }));
+    }
+  });
+  list.appendChild(frag);
+  $('btn-more').hidden = items.length <= shown;
+  $('btn-more').textContent = 'عرض المزيد (' + (items.length - shown) + ' كلمة)';
+}
+// ---------------- controls ----------------
+$('tabs').addEventListener('click', function(e){ var t = e.target.closest('.tab'); if(!t) return; tab = t.getAttribute('data-tab'); shown = 200; render(); if(tab === 'log') loadLog(); });
+$('search').addEventListener('input', function(){ shown = 200; render(); });
+$('btn-more').addEventListener('click', function(){ shown += 300; render(); });
+function addWord(){
+  var w = clean($('add-word').value);
+  if(!isWord(w)){ toast('الكلمة لازم تكون 5 حروف عربية'); return; }
+  if(tab === 'answers'){ if(D.sA[w]){ toast('موجودة في الأجوبة'); return; } if(change(MOVES.toAnswer(w))) toast('أُضيفت لكلمات الأجوبة ✓'); }
+  else { if(D.sG[w]){ toast('موجودة في المسموحة'); return; } if(change(MOVES.toGuess(w))) toast('أُضيفت للكلمات المسموحة +'); }
+  $('add-word').value = '';
+}
+$('btn-add').addEventListener('click', addWord);
+$('add-word').addEventListener('keydown', function(e){ if(e.key === 'Enter') addWord(); });
+$('btn-save').addEventListener('click', function(){ save(); });
+window.addEventListener('beforeunload', function(e){ if(pending.length){ e.preventDefault(); e.returnValue = ''; } });
+// settings
+var dlg = $('dlg');
+$('btn-settings').addEventListener('click', function(){
+  $('s-token').value = cfg.token; $('s-repo').value = cfg.repo; $('s-path').value = cfg.path; $('s-log').value = cfg.log; $('s-key').value = cfg.key; $('s-result').textContent = '';
+  dlg.showModal();
+});
+$('s-close').addEventListener('click', function(){ dlg.close(); });
+$('s-save').addEventListener('click', function(){
+  var oldLog = cfg.log;
+  cfg.token = $('s-token').value.trim(); cfg.repo = $('s-repo').value.trim() || 'Jawlah1/BrainG'; cfg.path = $('s-path').value.trim() || 'words.json';
+  cfg.log = $('s-log').value.trim(); cfg.key = $('s-key').value;
+  saveCfg(); dlg.close();
+  load().then(function(){ if(cfg.log !== oldLog && !D.readOnly) save(); loadLog(); });
+});
+$('s-test').addEventListener('click', function(){
+  var res = $('s-result'), tok = $('s-token').value.trim(), repo = $('s-repo').value.trim() || cfg.repo, lg = $('s-log').value.trim(), key = $('s-key').value;
+  res.textContent = 'جاري الاختبار...';
+  var a = tok ? fetch('https://api.github.com/repos/' + repo, { headers:{ Authorization:'Bearer ' + tok } }).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){ return j && j.permissions && j.permissions.push ? 'GitHub: ✔ يقدر يحفظ' : 'GitHub: ✖ المفتاح ما عنده صلاحية الكتابة'; }).catch(function(){ return 'GitHub: ✖ ما اتصل'; }) : Promise.resolve('GitHub: بدون مفتاح (قراءة فقط)');
+  var b = lg ? fetch(lg + '?action=ping&key=' + encodeURIComponent(key)).then(function(r){ return r.json(); }).then(function(j){ return j && j.ok ? ('الجدول: ✔ متصل' + (j.key ? '، وكلمة السر صحيحة' : '، بس كلمة السر غلط')) : 'الجدول: ✖'; }).catch(function(){ return 'الجدول: ✖ ما اتصل'; }) : Promise.resolve('الجدول: بدون رابط');
+  Promise.all([a, b]).then(function(x){ res.textContent = x.join(' — '); });
+});
+// start
+render();
+load().then(loadLog);
+if(!cfg.token) warn('عشان تقدر تضيف وتحذف، افتح <b>⚙️ الإعدادات</b> وحط مفتاح GitHub. بدونه الصفحة للقراءة بس.');
+window.__editor = { D:D, cfg:cfg, pending:function(){ return pending; }, save:save, load:load, loadLog:loadLog, render:render, LOG:function(){ return LOG; } };
+})();
+</script>
+</body>
+</html>
