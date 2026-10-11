@@ -1463,6 +1463,157 @@ body.theme-3 .fs, body.theme-4 .fs, body.theme-5 .fs, body.theme-7 .fs{filter:no
 .pz-pc.ok .pz-in{animation:pz-ok .85s ease-out;}
 @keyframes pz-ok{0%{box-shadow:inset 0 0 0 3px #7dffb0, 0 0 20px 4px #7dffb0;filter:brightness(1.4);}100%{box-shadow:inset 0 0 0 1px rgba(0,0,0,.35), inset 0 0 0 2px rgba(255,255,255,.14);filter:none;}}
 .pz-pc.up .pz-in{box-shadow:0 16px 26px rgba(0,0,0,.6), 0 0 0 3px var(--gold), 0 0 22px rgba(var(--glow),.8);}
+
+/* hawk eye: the two answers on the phone, clearly two grids (more room, each in its own frame, numbered) */
+.memo-wrap-ph.pair .memo-grids{gap:clamp(22px,7vw,40px);margin-top:1.6em;}
+.memo-wrap-ph.pair .memo-grid-box{width:min(40vw,28vh,240px);position:relative;padding:6px;border-radius:14px;border:2px solid var(--border);background:rgba(0,0,0,.18);}
+.memo-wrap-ph.pair .memo-grid-box::before{content:"1";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:4px;font-weight:900;font-size:clamp(13px,2vh,17px);color:var(--sub);}
+.memo-wrap-ph.pair #memo-grid2::before{content:"2";}
+
+/* ===================== Snakes & ladders (لعبة الأفعى) ===================== */
+.sn-disp{--bw:min(70vh,44vw);display:flex;align-items:center;justify-content:center;gap:2.2vw;direction:ltr;}
+.sn-board{position:relative;flex:0 0 auto;width:var(--bw);aspect-ratio:1/1;margin-left:calc(var(--bw) / var(--n) * 1.15);}
+.sn-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(var(--n),1fr);grid-template-rows:repeat(var(--n),1fr);border-radius:10px;overflow:hidden;
+  background:var(--panel2);border:2px solid var(--border);box-shadow:0 14px 30px -12px rgba(0,0,0,.6);}
+.sn-c{position:relative;display:block;background:color-mix(in srgb, var(--gold) 4%, transparent);box-shadow:inset 0 0 0 .5px rgba(127,127,127,.18);}
+.sn-c.alt{background:color-mix(in srgb, var(--gold) 15%, transparent);}
+.sn-c b{position:absolute;left:7%;top:4%;font-size:calc(var(--bw) / var(--n) * .25);font-weight:800;color:var(--sub);opacity:.9;line-height:1;font-variant-numeric:tabular-nums;}
+.sn-c.end{background:linear-gradient(135deg,var(--gold2),var(--gold));}
+.sn-c.end b{inset:0;display:flex;align-items:center;justify-content:center;font-size:calc(var(--bw) / var(--n) * .58);opacity:1;}
+.sn-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;}
+.sn-rail{stroke:#8a5726;stroke-width:.08;stroke-linecap:round;}
+.sn-rung{stroke:#c98d4a;stroke-width:.06;stroke-linecap:round;}
+.sn-under path{fill:none;stroke:rgba(0,0,0,.45);stroke-linecap:round;stroke-linejoin:round;}
+.sn-body path{fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.sn-marks path{fill:none;stroke:rgba(255,255,255,.4);stroke-linecap:round;stroke-dasharray:.05 .13;}
+.sn-head{stroke:rgba(0,0,0,.5);stroke-width:.03;}
+.sn-tongue{stroke:#e03131;stroke-width:.035;fill:none;stroke-linecap:round;}
+.sn-board.swirl .sn-svg{animation:sn-swirl .9s ease-out;}
+.sn-tools, .sn-toks{position:absolute;inset:0;pointer-events:none;}
+.sn-tool{position:absolute;z-index:3;transform:translate(-50%,-50%);font-size:calc(var(--bw) / var(--n) * .52);line-height:1;white-space:nowrap;
+  filter:drop-shadow(0 0 5px rgba(255,255,255,.65));animation:sn-bob 1.5s ease-in-out infinite alternate;}
+.sn-tok{position:absolute;width:calc(100% / var(--n) * .92);aspect-ratio:.8;transform-origin:50% 100%;}
+.sn-hsq{opacity:.42;}
+.sn-tool.got{animation:sn-got .6s ease-out forwards;}
+
+/* v42: the tools' animations */
+.sn-tok{font-size:calc(var(--bw) / var(--n) * .5);}
+.sn-ice{display:none;}
+.sn-tok.frozen .sn-ice{display:block;position:absolute;inset:4% -8% -3%;border-radius:14%;background:linear-gradient(135deg,rgba(215,245,255,.6),rgba(120,200,255,.28) 55%,rgba(215,245,255,.5));
+  border:2px solid rgba(225,250,255,.95);box-shadow:0 0 14px rgba(150,220,255,.85), inset 0 0 12px rgba(255,255,255,.65);}
+.sn-tok.frozen .sn-ch{filter:saturate(.45) brightness(1.15);}
+.sn-tok.dash .sn-ch{filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 12px var(--pc));}
+.sn-tok.dash::before{content:"💨";position:absolute;left:50%;bottom:-6%;transform:translateX(-50%);font-size:1.1em;opacity:.85;}
+.sn-tok.rocket::before{content:"🚀";position:absolute;left:50%;bottom:-30%;transform:translateX(-50%) rotate(-45deg);font-size:1.5em;filter:drop-shadow(0 4px 8px #ff9b3d);}
+.sn-tok.rocket::after{content:"💨";position:absolute;left:50%;bottom:-70%;transform:translateX(-50%);font-size:1.1em;opacity:.8;animation:snf-puff .3s linear infinite;}
+.sn-tok.spin .sn-ch{animation:snf-spiny .45s linear infinite;}
+.sn-tok.notes::after{content:"🎵";position:absolute;right:-25%;top:5%;font-size:1em;animation:snf-note .7s ease-out infinite;}
+.sn-over{position:absolute;left:50%;bottom:96%;transform:translateX(-50%);font-size:1.3em;line-height:1;}
+.sn-gold-over{display:inline-block;animation:snf-rot 1.6s linear infinite;filter:drop-shadow(0 0 8px #ffd34d) drop-shadow(0 0 16px #ffb300);}
+.sn-fx{position:absolute;inset:0;pointer-events:none;z-index:300;}
+.sn-f{position:absolute;transform:translate(-50%,-50%);font-size:calc(var(--bw) / var(--n) * .7);line-height:1;white-space:nowrap;}
+.sn-f span, .sn-f b, .sn-f i{font-style:normal;}
+.sn-f-throw span{display:inline-block;font-size:1.15em;filter:drop-shadow(0 0 8px #9be7ff) drop-shadow(0 0 16px #5bc8ff);}
+.sn-f-burst span{display:block;animation:snf-boom .9s ease-out forwards;}
+.sn-f-burst.big span{font-size:2em;}
+.sn-f-burst i{position:absolute;left:50%;top:50%;font-size:.55em;color:#d8f4ff;animation:snf-shard .9s ease-out forwards;}
+.sn-f-burst.shards i{font-size:.6em;}
+.sn-f-burst i:nth-of-type(1){--dx:-1.3em;--dy:-1.1em;} .sn-f-burst i:nth-of-type(2){--dx:1.3em;--dy:-1.1em;}
+.sn-f-burst i:nth-of-type(3){--dx:-1.2em;--dy:1em;} .sn-f-burst i:nth-of-type(4){--dx:1.2em;--dy:1em;}
+.sn-f-shield b{position:absolute;left:50%;top:50%;width:1.7em;height:1.7em;border-radius:50%;border:3px solid rgba(130,205,255,.95);box-shadow:0 0 16px rgba(130,205,255,.9), inset 0 0 12px rgba(130,205,255,.6);animation:snf-ring .9s ease-out forwards;}
+.sn-f-shield i{display:block;animation:snf-boom .9s ease-out forwards;}
+.sn-f-bury span{display:block;animation:snf-bury 1.1s ease-in forwards;}
+.sn-f-bury b{position:absolute;left:50%;top:70%;width:1.3em;height:.35em;border-radius:50%;background:rgba(90,60,30,.85);transform:translate(-50%,-50%) scale(0);animation:snf-dirt 1.1s ease-out forwards;}
+.sn-f-box span{display:block;animation:snf-boxout .7s ease-in forwards;}
+.sn-f-box b{position:absolute;left:50%;top:50%;font-size:1.25em;transform:translate(-50%,-50%) scale(0);animation:snf-boxin 1.4s ease-out forwards;filter:drop-shadow(0 0 10px #fff);}
+.sn-f-x2 b{display:block;font-weight:900;font-size:1.4em;color:var(--gold);text-shadow:0 0 6px #000, 0 0 14px var(--gold);animation:snf-x2 1.3s ease-out forwards;}
+.sn-f-bolt span{position:absolute;left:50%;top:-1.1em;transform:translateX(-50%);font-size:1.3em;animation:snf-cloud 1s ease-out forwards;}
+.sn-f-bolt b{position:absolute;left:50%;top:-.35em;transform:translateX(-50%);font-size:1.4em;opacity:0;filter:drop-shadow(0 0 10px #ffe14d);animation:snf-zap 1s linear forwards;}
+.sn-f.sn-f-link{left:0;top:0;width:100%;height:100%;transform:none;}
+.sn-f-link b{position:absolute;height:4px;margin-top:-2px;transform-origin:0 50%;border-radius:2px;background:linear-gradient(90deg,#c084fc,#22d3ee,#c084fc);box-shadow:0 0 12px #c084fc;animation:snf-flick .15s linear infinite alternate;}
+.sn-f-link i{position:absolute;transform:translate(-50%,-50%);font-size:.9em;animation:snf-rot2 .6s linear infinite;}
+.sn-f-tornado span{display:inline-block;font-size:2.4em;animation:snf-rot .45s linear infinite;filter:drop-shadow(0 0 12px rgba(255,255,255,.7));}
+@keyframes snf-boom{0%{transform:scale(.3);opacity:1;}60%{transform:scale(1.4);opacity:1;}100%{transform:scale(1.8);opacity:0;}}
+@keyframes snf-shard{0%{transform:translate(-50%,-50%);opacity:1;}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(200deg);opacity:0;}}
+@keyframes snf-ring{0%{transform:translate(-50%,-50%) scale(.6);opacity:1;}100%{transform:translate(-50%,-50%) scale(2);opacity:0;}}
+@keyframes snf-bury{0%{transform:translateY(-1.4em) scale(1.2);opacity:1;}45%{transform:translateY(0) scale(1);opacity:1;}100%{transform:translateY(.4em) scale(.1);opacity:0;}}
+@keyframes snf-dirt{0%,40%{transform:translate(-50%,-50%) scale(0);}60%{transform:translate(-50%,-50%) scale(1.2);}100%{transform:translate(-50%,-50%) scale(.6);opacity:0;}}
+@keyframes snf-boxout{0%{transform:scale(1) rotate(0);}70%{transform:scale(1.3) rotate(-15deg);opacity:1;}100%{transform:scale(1.6);opacity:0;}}
+@keyframes snf-boxin{0%,40%{transform:translate(-50%,-50%) scale(0);}65%{transform:translate(-50%,-90%) scale(1.5);}85%{transform:translate(-50%,-90%) scale(1.3);opacity:1;}100%{transform:translate(-50%,-120%) scale(1);opacity:0;}}
+@keyframes snf-x2{0%{transform:scale(.2);opacity:0;}30%{transform:scale(1.7);opacity:1;}70%{transform:scale(1.3) translateY(-.3em);opacity:1;}100%{transform:scale(1) translateY(-.8em);opacity:0;}}
+@keyframes snf-cloud{0%{opacity:0;transform:translateX(-50%) translateY(-.5em);}20%,80%{opacity:1;transform:translateX(-50%);}100%{opacity:0;}}
+@keyframes snf-zap{0%,25%{opacity:0;}30%,40%{opacity:1;}45%{opacity:0;}50%,62%{opacity:1;}70%,100%{opacity:0;}}
+@keyframes snf-flick{to{opacity:.45;}}
+@keyframes snf-rot{to{transform:rotate(360deg);}}
+@keyframes snf-rot2{to{transform:translate(-50%,-50%) rotate(360deg);}}
+@keyframes snf-spiny{to{transform:rotateY(360deg);}}
+@keyframes snf-note{0%{transform:translateY(0);opacity:1;}100%{transform:translate(.4em,-1.2em);opacity:0;}}
+@keyframes snf-puff{50%{transform:translateX(-50%) scale(1.3);opacity:.5;}}
+/* the phone's note (2 s, never in the way) */
+.sn-toast{position:absolute;left:50%;top:50%;z-index:5;display:flex;flex-direction:column;align-items:center;gap:3px;max-width:82%;padding:10px 18px;border-radius:14px;
+  background:rgba(0,0,0,.74);color:#fff;text-align:center;direction:rtl;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.9);transition:opacity .25s, transform .25s;}
+.sn-toast.on{opacity:1;transform:translate(-50%,-50%) scale(1);}
+.sn-toast b{font-size:18px;font-weight:900;}
+.sn-toast small{font-size:13px;font-weight:700;opacity:.85;}
+@keyframes sn-got{0%{transform:translate(-50%,-50%) scale(1);opacity:1;}100%{transform:translate(-50%,-120%) scale(1.8);opacity:0;}}
+.sn-fsq{opacity:.32;}
+.sn-ring{position:absolute;left:50%;bottom:-2%;width:70%;height:18%;transform:translateX(-50%);border-radius:50%;background:var(--pc);opacity:.85;box-shadow:0 0 10px 2px var(--pc);}
+.sn-tok.turn .sn-ring{animation:sn-pulse .7s ease-in-out infinite alternate;}
+.sn-ch{position:absolute;inset:0;overflow:hidden;}
+.sn-ch img{position:absolute;height:auto;max-width:none;pointer-events:none;}
+.sn-tok.shake .sn-ch{animation:sn-shake .12s linear infinite;}
+.sn-tok.shield::before{content:"";position:absolute;inset:6% -8% -4%;border-radius:50%;border:2px solid rgba(130,205,255,.9);box-shadow:0 0 12px rgba(130,205,255,.8), inset 0 0 12px rgba(130,205,255,.45);}
+.sn-side{display:flex;flex-direction:column;align-items:stretch;gap:1.3vh;width:min(24vw,330px);direction:rtl;}
+.sn-title{font-size:clamp(22px,4vh,40px);font-weight:900;color:var(--gold);text-align:center;}
+.sn-turn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:1.6em;font-size:clamp(17px,2.9vh,28px);font-weight:800;color:var(--text);}
+.sn-turn b{color:var(--gold);}
+.sn-turn em{font-style:normal;font-weight:900;color:var(--text);min-width:1.6em;padding:2px 8px;border-radius:10px;background:var(--panel);text-align:center;font-variant-numeric:tabular-nums;}
+.sn-turn em.low{color:var(--red, #ef4444);}
+.sn-dot{display:inline-block;flex:0 0 auto;width:.75em;height:.75em;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.35);}
+.sn-dice{display:flex;align-items:center;justify-content:center;gap:12px;direction:ltr;min-height:clamp(52px,8vh,76px);}
+.sn-dice .die.mini{width:clamp(40px,6.6vh,66px);height:clamp(40px,6.6vh,66px);}
+.sn-rolling{animation:sn-roll .3s linear infinite;}
+.sn-total{font-size:clamp(30px,5.4vh,52px);font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;}
+.sn-badge{padding:4px 12px;border-radius:999px;background:var(--gold);color:var(--panel2);font-weight:900;font-size:clamp(14px,2.2vh,20px);}
+.sn-msg{min-height:2.8em;text-align:center;font-weight:800;font-size:clamp(15px,2.4vh,22px);color:var(--text);line-height:1.35;}
+.sn-msg.pop{animation:sn-pop .45s ease-out;}
+.sn-list{display:flex;flex-direction:column;gap:4px;max-height:40vh;overflow:hidden;}
+.sn-row{display:grid;grid-template-columns:auto 1fr auto 2.6em;align-items:center;gap:8px;padding:4px 10px;border-radius:10px;font-size:clamp(13px,2vh,18px);color:var(--text);}
+.sn-row.on{background:var(--panel);box-shadow:inset 0 0 0 1px var(--gold);}
+.sn-row b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:800;}
+.sn-row i{font-style:normal;white-space:nowrap;}
+.sn-row em{font-style:normal;font-weight:900;text-align:left;direction:ltr;color:var(--gold);font-variant-numeric:tabular-nums;}
+@keyframes sn-bob{to{transform:translate(-50%,-62%) rotate(-6deg);}}
+@keyframes sn-pulse{to{opacity:.35;transform:translateX(-50%) scale(1.3);}}
+@keyframes sn-shake{0%{transform:translateX(-5%);}50%{transform:translateX(5%);}100%{transform:translateX(-5%);}}
+@keyframes sn-roll{50%{transform:rotate(14deg) scale(.92);}}
+@keyframes sn-pop{0%{transform:scale(.85);opacity:.2;}100%{transform:none;opacity:1;}}
+@keyframes sn-swirl{0%{transform:rotate(-10deg) scale(.88);opacity:.15;}100%{transform:none;opacity:1;}}
+/* phone */
+.snake-wrap-ph{flex:1 1 0;min-height:0;position:relative;display:flex;flex-direction:column;align-items:stretch;gap:1.2vh;padding:1vh 14px calc(1.2vh + env(safe-area-inset-bottom));}
+.sn-ph-top{display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:16px;background:var(--panel);border:1px solid var(--border);direction:rtl;}
+.sn-ph-info{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
+.sn-ph-info b{font-size:clamp(18px,3vh,26px);font-weight:900;color:var(--gold);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sn-ph-info small{font-size:14px;font-weight:700;color:var(--sub);}
+.sn-ph-top .keys-count{font-size:clamp(30px,5vh,46px);min-width:1.5em;text-align:center;}
+#snake-avatar{position:relative;left:auto;right:auto;top:auto;bottom:auto;flex:0 0 auto;width:clamp(52px,8vh,78px);height:clamp(65px,10vh,98px);}
+.sn-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;direction:rtl;}
+.sn-badges:empty{display:none;}
+.sn-badges span{padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--border);font-weight:800;font-size:14px;color:var(--text);}
+.sn-use{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;border-radius:16px;border:2px solid var(--gold);background:var(--panel);color:var(--text);
+  font-family:inherit;font-weight:900;font-size:clamp(16px,2.4vh,20px);cursor:pointer;direction:rtl;box-shadow:0 0 16px -4px var(--gold);}
+.sn-use b{font-size:1.8em;line-height:1;}
+.sn-use span{display:flex;flex-direction:column;align-items:flex-start;gap:2px;}
+.sn-use small{font-size:12px;font-weight:700;color:var(--sub);}
+.sn-use:disabled{opacity:.45;box-shadow:none;cursor:default;}
+.sn-gold{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;direction:ltr;}
+.sn-gold-b{display:flex;justify-content:center;padding:8px 0;border-radius:12px;border:1px solid var(--gold);background:var(--panel);cursor:pointer;}
+.sn-gold-b .die.mini{width:clamp(34px,5.4vh,48px);height:clamp(34px,5.4vh,48px);}
+.dice-tray.sn-tray{min-height:200px;transition:opacity .3s, filter .3s;}
+.dice-tray.sn-tray.off{opacity:.4;filter:grayscale(.6);}
+.sn-grid{border-radius:18px;border-color:rgba(var(--glow),.45);box-shadow:0 0 34px -8px rgba(var(--glow),.6);}
+.sn-c.alt{background:rgba(var(--glow),.16);}
+.sn-use, .sn-ph-top{border-radius:20px;}
 </style>
 </head>
 <body>
@@ -1556,6 +1707,8 @@ body.theme-3 .fs, body.theme-4 .fs, body.theme-5 .fs, body.theme-7 .fs{filter:no
         <div class="settings-box">
           <label>الألعاب التفاعلية المطلوبة</label>
           <div class="game-picker" id="inter-game-picker"></div>
+          <label>موسيقى الألعاب التفاعلية</label>
+          <select id="inter-music-select"><option value="on" selected>تشتغل (على شاشة العرض وقت اللعب)</option><option value="off">بدون موسيقى</option></select>
           <label>عدد جولات الألعاب التفاعلية</label>
           <div class="stepper"><button type="button" class="step-btn" data-step="1" data-for="inter-rounds-input" aria-label="زيادة">+</button><input type="number" id="inter-rounds-input" min="1" max="20" value="3"><button type="button" class="step-btn" data-step="-1" data-for="inter-rounds-input" aria-label="إنقاص">−</button></div>
           <div class="set-sep"></div>
@@ -1598,6 +1751,19 @@ body.theme-3 .fs, body.theme-4 .fs, body.theme-5 .fs, body.theme-7 .fs{filter:no
           <select id="puzzle-hint-select"><option value="off" selected>بدون</option><option value="on">مع لمعة</option></select>
           <label>وقت ترتيب الصورة (بالدقائق)</label>
           <div class="stepper"><button type="button" class="step-btn" data-step="0.5" data-for="puzzle-min-input" aria-label="زيادة">+</button><input type="number" id="puzzle-min-input" min="0.5" max="15" step="0.5" value="1"><button type="button" class="step-btn" data-step="-0.5" data-for="puzzle-min-input" aria-label="إنقاص">−</button></div>
+          <div class="set-sep"></div>
+          <label>حجم لوحة لعبة الأفعى</label>
+          <select id="snake-size-select"><option value="9">9 × 9</option><option value="10" selected>10 × 10</option><option value="11">11 × 11</option><option value="12">12 × 12</option><option value="13">13 × 13</option><option value="14">14 × 14</option><option value="15">15 × 15</option></select>
+          <label>عدد النرد في لعبة الأفعى</label>
+          <select id="snake-dice-select"><option value="1" selected>نرد واحد</option><option value="2">نردين</option></select>
+          <label>آخر اللوحة (لو الرقم أكبر من الباقي)</label>
+          <select id="snake-end-select"><option value="bounce" selected>يوصل النهاية ويرتد للخلف بالباقي</option><option value="exact">لازم الرقم بالضبط (أو أقل)</option></select>
+          <label>رمية إضافية في لعبة الأفعى</label>
+          <select id="snake-extra-select"><option value="on" selected>مع 6 (أو دبل بالنردين)</option><option value="off">بدون</option></select>
+          <label>أدوات لعبة الأفعى</label>
+          <select id="snake-tools-select"><option value="on" selected>مع أدوات</option><option value="off">بدون أدوات</option></select>
+          <label>كمية الأدوات</label>
+          <select id="snake-level-select"><option value="calm">هادئ</option><option value="balanced" selected>متوازن</option><option value="chaos">فوضى</option></select>
           <div class="set-sep"></div>
           <button class="gold" id="btn-start-inter">🎯 ابدأ الألعاب التفاعلية</button>
         </div>
@@ -1757,6 +1923,15 @@ body.theme-3 .fs, body.theme-4 .fs, body.theme-5 .fs, body.theme-7 .fs{filter:no
       <button type="button" class="pz-peek" id="puzzle-peek">👁️ اضغط مطوّلاً لرؤية الصورة</button>
       <div class="rc-avatar hidden" id="puzzle-avatar"></div>
     </div>
+    <!-- Interactive game: snakes & ladders (my turn: throw the dice; a kept tool's button) -->
+    <div id="snake-container" class="snake-wrap-ph hidden">
+      <div class="sn-ph-top"><div class="rc-avatar hidden" id="snake-avatar"></div><div class="sn-ph-info"><b id="snake-turn"></b><small id="snake-pos"></small></div><div class="keys-count" id="snake-count"></div></div>
+      <div class="sn-badges" id="snake-badges"></div>
+      <button type="button" class="sn-use hidden" id="snake-use"></button>
+      <div class="sn-gold hidden" id="snake-gold"></div>
+      <div class="dice-tray sn-tray" id="snake-tray"></div>
+      <div class="sn-toast" id="snake-toast"></div>
+    </div>
     <div id="submitted-label" class="submitted-label hidden" style="text-align:center;">SUBMITED!</div>
     <div class="leader-inline-btns">
       <button class="gold hidden" id="btn-next-round">▶ الجولة التالية</button>
@@ -1853,6 +2028,7 @@ function loadSoundBuffer(key, url){
 loadSoundBuffer('press', ASSET_BASE+'Press.mp3');
 loadSoundBuffer('submit', ASSET_BASE+'Submit.mp3');
 loadSoundBuffer('boom', ASSET_BASE+'Boom.mp3');
+loadSoundBuffer('block-fall', ASSET_BASE+'block_fall.mp3');
 loadSoundBuffer('correct', ASSET_BASE+'Correct.mp3');
 loadSoundBuffer('wrong', ASSET_BASE+'Wrong.mp3');
 loadSoundBuffer('appear', ASSET_BASE+'Appear.mp3');
@@ -2331,14 +2507,14 @@ function fmtScore(n){ return String(Math.round((n||0)*1000)/1000); }
 var els = {};
 ['btn-create-room','btn-show-join','join-box','player-name','room-code-input','btn-join-room','home-status',
  'lobby-host-view','lobby-player-view','room-code-display','room-code-display2','lobby-players','leader-settings','reconnect-banner','lobby-settings-summary',
- 'round-count-input','btn-start-quick','btn-start-bomb','leader-ready-status','btn-ready','btn-leave-lobby','lobby-status','theme-picker','game-picker','bomb-cols-input','bomb-scoring-select','bomb-rounds-box','bomb-rounds-input','flags-rounds-input','btn-start-flags','words-rounds-input','words-attempts-input','words-time-input','words-strict-select','words-bonus-select','btn-start-words','inter-game-picker','inter-rounds-input','inter-sec-input','elec-size-select','elec-sec-input','fall-size-select','fall-pick-select','crash-mode-select','crash-min-input','crash-items-select','gifts-sec-input','gifts-speed-select','gifts-level-select','puzzle-mode-select','puzzle-size-select','puzzle-min-input','puzzle-play-select','puzzle-show-select','puzzle-hint-select','btn-start-inter',
+ 'round-count-input','btn-start-quick','btn-start-bomb','leader-ready-status','btn-ready','btn-leave-lobby','lobby-status','theme-picker','game-picker','bomb-cols-input','bomb-scoring-select','bomb-rounds-box','bomb-rounds-input','flags-rounds-input','btn-start-flags','words-rounds-input','words-attempts-input','words-time-input','words-strict-select','words-bonus-select','btn-start-words','inter-game-picker','inter-music-select','inter-rounds-input','inter-sec-input','elec-size-select','elec-sec-input','fall-size-select','fall-pick-select','crash-mode-select','crash-min-input','crash-items-select','gifts-sec-input','gifts-speed-select','gifts-level-select','puzzle-mode-select','puzzle-size-select','puzzle-min-input','snake-size-select','snake-dice-select','snake-end-select','snake-extra-select','snake-tools-select','snake-level-select','puzzle-play-select','puzzle-show-select','puzzle-hint-select','btn-start-inter',
  'display-wrap','round-indicator','game-name-label','arena-wrap','arena-center','next-round-label',
  'ready-overlay','ready-gtitle','ready-cdnum','round-overlay','ov-title','ov-table','ov-status',
  'pcontrols-wrap','p-round-indicator','p-game-name-label','p-score-label','notif-bar','pgrid-container',
  'counter-container','counter-num','counter-btn','counter-minus-btn','submitted-label','btn-submit',
  'flags-pad-container','flags-remaining','flags-char-img','dpad-up','dpad-left','dpad-right','dpad-down','btn-flags-reset','dpad-up-img','dpad-left-img','dpad-right-img','dpad-down-img',
  'words-container','words-board','words-toast','words-kb','words-giveup',
- 'inter-container','rc-belt','rc-score','rc-timer','rc-recycle','rc-pass','elim-overlay','rc-furnace','char-layer','inter-pick','rc-avatar','faceoff','roundwin','cv-container','cv-fire','cv-belt','cv-box','cv-arrow','cv-pad','cv-avatar','keys-container','keys-count','keys-map','keys-avatar','memo-container','memo-count','memo-grid','memo-grid2','memo-submit','memo-avatar','dice-container','dice-panel','dice-total','dice-count','dice-tray','dice-fix','dice-hint','dice-avatar','elec-container','elec-count','elec-board','elec-avatar','fall-container','fall-ind-ph','fall-count','fall-board','fall-avatar','crash-container','crash-item','crash-pts','crash-cyc','crash-eff','crash-avatar','crash-joy','crash-knob','crash-fire-l','crash-fire-r','gifts-container','gifts-stage','gifts-score','gifts-time','gifts-items','gifts-avatar','gifts-fx','gifts-btns','puzzle-container','puzzle-count','puzzle-moves','puzzle-board','puzzle-peek','puzzle-avatar',
+ 'inter-container','rc-belt','rc-score','rc-timer','rc-recycle','rc-pass','elim-overlay','rc-furnace','char-layer','inter-pick','rc-avatar','faceoff','roundwin','cv-container','cv-fire','cv-belt','cv-box','cv-arrow','cv-pad','cv-avatar','keys-container','keys-count','keys-map','keys-avatar','memo-container','memo-count','memo-grid','memo-grid2','memo-submit','memo-avatar','dice-container','dice-panel','dice-total','dice-count','dice-tray','dice-fix','dice-hint','dice-avatar','elec-container','elec-count','elec-board','elec-avatar','fall-container','fall-ind-ph','fall-count','fall-board','fall-avatar','crash-container','crash-item','crash-pts','crash-cyc','crash-eff','crash-avatar','crash-joy','crash-knob','crash-fire-l','crash-fire-r','gifts-container','gifts-stage','gifts-score','gifts-time','gifts-items','gifts-avatar','gifts-fx','gifts-btns','puzzle-container','puzzle-count','puzzle-moves','puzzle-board','puzzle-peek','puzzle-avatar','snake-container','snake-avatar','snake-turn','snake-pos','snake-count','snake-badges','snake-use','snake-gold','snake-tray','snake-toast',
  'btn-next-round','btn-bomb-new-round','btn-reset-all-scores','btn-rename','my-theme-box','my-theme-picker','display-theme-wrap','btn-bomb-to-lobby','btn-bomb-continue','winner-screen',
  'victory-audio-box','btn-pick-victory-audio','victory-audio-input','victory-audio-status'
 ].forEach(function(id){ els[toCamel(id)] = document.getElementById(id); });
@@ -2660,6 +2836,10 @@ function hostHandleMessage(msg, conn){
     hostTryStartInter(msg.senderId, msg, conn);
   } else if(msg.t === 'inter-score'){
     hostInterScore(msg.senderId, msg);
+  } else if(msg.t === 'snake-roll'){
+    hostSnakeRoll(msg.senderId, msg);
+  } else if(msg.t === 'snake-use'){
+    hostSnakeUse(msg.senderId, msg);
   } else if(msg.t === 'puzzle-done'){
     hostPuzzleDone(msg.senderId, msg, conn);
   } else if(msg.t === 'puzzle-prog'){
@@ -3109,6 +3289,13 @@ function syncLobbySettingsFromLeaderUI(){
     puzzleShow: els.puzzleShowSelect.value === 'hide' ? 'hide' : 'show',
     puzzleHint: els.puzzleHintSelect.value === 'on' ? 'on' : 'off',
     puzzleMin: Math.max(0.5, Math.min(15, Math.round((parseFloat(els.puzzleMinInput.value) || 1)*2)/2)),
+    snakeSize: Math.max(9, Math.min(15, parseInt(els.snakeSizeSelect.value,10) || 10)),
+    snakeDice: els.snakeDiceSelect.value === '2' ? 2 : 1,
+    snakeEnd: els.snakeEndSelect.value === 'exact' ? 'exact' : 'bounce',
+    snakeExtra: els.snakeExtraSelect.value === 'off' ? 'off' : 'on',
+    snakeTools: els.snakeToolsSelect.value === 'off' ? 'off' : 'on',
+    snakeLevel: ['calm','balanced','chaos'].indexOf(els.snakeLevelSelect.value) >= 0 ? els.snakeLevelSelect.value : 'balanced',
+    interMusic: els.interMusicSelect.value === 'off' ? 'off' : 'on',
     interGames: (app.selectedInterGames || []).slice()
   }});
 }
@@ -3153,7 +3340,7 @@ function renderLobbySettingsSummary(g){
     '<div>💣 <b>لعبة القنابل:</b> '+(ls.bombCols||8)+' مراحل — '+bombModeLabel+'</div>' +
     '<div>🚩 <b>لعبة الأعلام:</b> '+(ls.flagsRoundsTotal||5)+' جولة</div>' +
     '<div>🔤 <b>لعبة الكلمات:</b> '+(ls.wordsRoundsTotal||5)+' جولة — '+(ls.wordsAttempts||6)+' محاولات — '+(ls.wordsMinutes||5)+' دقائق للجولة'+(ls.wordsStrict==='any'?' — أي 5 أحرف':' — كلمات القاموس فقط')+(ls.wordsBonus==='off'?' — بدون نقاط المحاولات المتبقية':'')+'</div>' +
-    '<div>🎯 <b>الألعاب التفاعلية:</b> '+escapeHtml(((ls.interGames&&ls.interGames.length)?ls.interGames:['recycle']).map(function(k){ return interGameLabel(k); }).join('، '))+' — '+(ls.interRoundsTotal||3)+' جولات — '+(ls.interSec||20)+' ثانية لكل إقصاء'+(((ls.interGames&&ls.interGames.length)?ls.interGames:[]).indexOf('elec') >= 0 ? ' — الكهرباء: '+(ls.elecSize||4)+'×'+(ls.elecSize||4)+'، '+(ls.elecSec||75)+' ثانية' : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:[]).indexOf('fall') >= 0 ? ' — لا تطيح: '+(ls.fallSize||6)+'×'+(ls.fallSize||6)+'، '+(ls.fallPick||3)+' ث للاختيار' : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:[]).indexOf('crash') >= 0 ? ' — كراش باش: '+(ls.crashMode === 'single' ? 'جولة وحدة' : 'إقصاء')+'، '+(ls.crashMin||1)+' د، الأدوات '+({focus:'تركيز', chaos:'فوضى'}[ls.crashItems] || 'متوازن') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:[]).indexOf('gifts') >= 0 ? ' — الهدايا: '+(ls.giftsSec||45)+' ثانية، '+(ls.giftsSpeed === 'steady' ? 'سرعة ثابتة' : 'متسارعة')+'، السرعة '+(ls.giftsLevel||2)+(ls.giftsLevel == 5 ? ' (المستحيل)' : '') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:[]).indexOf('puzzle') >= 0 ? ' — ترتيب الصورة: '+(ls.puzzleSize||3)+'×'+(ls.puzzleSize||3)+'، '+(ls.puzzleMin||1)+' د، '+(ls.puzzleMode === 'single' ? 'جولة وحدة' : 'إقصاء')+'، '+(ls.puzzlePlay === 'swap' ? 'تبديل' : 'سحب')+'، الصورة '+(ls.puzzleShow === 'hide' ? 'مخفية' : 'ظاهرة')+(ls.puzzleHint === 'on' ? '، مع لمعة' : '') : '')+'</div>' +
+    '<div>🎯 <b>الألعاب التفاعلية:</b> '+escapeHtml(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).map(function(k){ return interGameLabel(k); }).join('، '))+' — '+(ls.interRoundsTotal||3)+' جولات — '+(ls.interSec||20)+' ثانية لكل إقصاء'+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('elec') >= 0 ? ' — الكهرباء: '+(ls.elecSize||4)+'×'+(ls.elecSize||4)+'، '+(ls.elecSec||75)+' ثانية' : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('fall') >= 0 ? ' — لا تطيح: '+(ls.fallSize||6)+'×'+(ls.fallSize||6)+'، '+(ls.fallPick||3)+' ث للاختيار' : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('crash') >= 0 ? ' — كراش باش: '+(ls.crashMode === 'single' ? 'جولة وحدة' : 'إقصاء')+'، '+(ls.crashMin||1)+' د، الأدوات '+({focus:'تركيز', chaos:'فوضى'}[ls.crashItems] || 'متوازن') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('gifts') >= 0 ? ' — الهدايا: '+(ls.giftsSec||45)+' ثانية، '+(ls.giftsSpeed === 'steady' ? 'سرعة ثابتة' : 'متسارعة')+'، السرعة '+(ls.giftsLevel||2)+(ls.giftsLevel == 5 ? ' (المستحيل)' : '') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('puzzle') >= 0 ? ' — ترتيب الصورة: '+(ls.puzzleSize||3)+'×'+(ls.puzzleSize||3)+'، '+(ls.puzzleMin||1)+' د، '+(ls.puzzleMode === 'single' ? 'جولة وحدة' : 'إقصاء')+'، '+(ls.puzzlePlay === 'swap' ? 'تبديل' : 'سحب')+'، الصورة '+(ls.puzzleShow === 'hide' ? 'مخفية' : 'ظاهرة')+(ls.puzzleHint === 'on' ? '، مع لمعة' : '') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('snake') >= 0 ? ' — الأفعى: '+(ls.snakeSize||10)+'×'+(ls.snakeSize||10)+'، '+(ls.snakeDice == 2 ? 'نردين' : 'نرد واحد')+'، '+(ls.snakeEnd === 'exact' ? 'الرقم بالضبط' : 'ارتداد')+(ls.snakeExtra === 'off' ? '' : '، رمية إضافية')+'، '+(ls.snakeTools === 'off' ? 'بدون أدوات' : 'أدوات '+({calm:'هادئة', chaos:'فوضى'}[ls.snakeLevel] || 'متوازنة')) : '')+(ls.interMusic === 'off' ? ' — بدون موسيقى' : '')+'</div>' +
     '<div>🎨 <b>لون شاشة العرض:</b><div class="theme-picker">'+swatchesHtml+'</div></div>';
 }
 
@@ -3191,6 +3378,7 @@ function wordsClockApply(){
 }
 
 function renderAll(){
+  interMusicTick();   // (the display's background music follows the game; silent anywhere else)
   if(!app.game) return;
   applyTheme(currentTheme());
   if(app.game.phase === 'lobby'){
@@ -3409,10 +3597,18 @@ els.btnStartInter.addEventListener('click', function(){
     puzzleShow: els.puzzleShowSelect.value === 'hide' ? 'hide' : 'show',
     puzzleHint: els.puzzleHintSelect.value === 'on' ? 'on' : 'off',
     puzzleMin: Math.max(0.5, Math.min(15, Math.round((parseFloat(els.puzzleMinInput.value) || 1)*2)/2)),
+    snakeSize: Math.max(9, Math.min(15, parseInt(els.snakeSizeSelect.value,10) || 10)),
+    snakeDice: els.snakeDiceSelect.value === '2' ? 2 : 1,
+    snakeEnd: els.snakeEndSelect.value === 'exact' ? 'exact' : 'bounce',
+    snakeExtra: els.snakeExtraSelect.value === 'off' ? 'off' : 'on',
+    snakeTools: els.snakeToolsSelect.value === 'off' ? 'off' : 'on',
+    snakeLevel: ['calm','balanced','chaos'].indexOf(els.snakeLevelSelect.value) >= 0 ? els.snakeLevelSelect.value : 'balanced',
+    music: els.interMusicSelect.value === 'off' ? 'off' : 'on',
     games: (app.selectedInterGames || INTER_GAME_KEYS).slice()});
 });
 els.interRoundsInput.addEventListener('input', syncLobbySettingsFromLeaderUI);
 els.interSecInput.addEventListener('input', syncLobbySettingsFromLeaderUI);
+els.interMusicSelect.addEventListener('change', syncLobbySettingsFromLeaderUI);
 els.elecSizeSelect.addEventListener('change', syncLobbySettingsFromLeaderUI);
 els.elecSecInput.addEventListener('input', syncLobbySettingsFromLeaderUI);
 els.fallSizeSelect.addEventListener('change', syncLobbySettingsFromLeaderUI);
@@ -3428,6 +3624,7 @@ els.puzzlePlaySelect.addEventListener('change', syncLobbySettingsFromLeaderUI);
 els.puzzleShowSelect.addEventListener('change', syncLobbySettingsFromLeaderUI);
 els.puzzleHintSelect.addEventListener('change', syncLobbySettingsFromLeaderUI);
 els.puzzleMinInput.addEventListener('input', syncLobbySettingsFromLeaderUI);
+['snakeSizeSelect','snakeDiceSelect','snakeEndSelect','snakeExtraSelect','snakeToolsSelect','snakeLevelSelect'].forEach(function(k){ els[k].addEventListener('change', syncLobbySettingsFromLeaderUI); });
 // a bigger picture takes longer: the time follows the size (the leader can still change it)
 els.puzzleSizeSelect.addEventListener('change', function(){ els.puzzleMinInput.value = ({3:1, 4:3, 5:6, 6:10})[els.puzzleSizeSelect.value] || 1; syncLobbySettingsFromLeaderUI(); });
 els.btnStartWords.addEventListener('click', function(){
@@ -3672,7 +3869,7 @@ function renderGameScreen(){
   showScreen('screen-game');
   var g = app.game;
   if(g.mode !== 'words') els.wordsContainer.classList.add('hidden');
-  if(g.mode !== 'interactive'){ els.interContainer.classList.add('hidden'); els.elimOverlay.classList.add('hidden'); els.interPick.classList.add('hidden'); els.faceoff.classList.add('hidden'); els.roundwin.classList.add('hidden'); els.cvContainer.classList.add('hidden'); els.keysContainer.classList.add('hidden'); els.memoContainer.classList.add('hidden'); els.diceContainer.classList.add('hidden'); els.elecContainer.classList.add('hidden'); els.fallContainer.classList.add('hidden'); els.crashContainer.classList.add('hidden'); els.giftsContainer.classList.add('hidden'); els.puzzleContainer.classList.add('hidden'); hideCharSprites(); els.arenaWrap.classList.remove('inter-mode'); }
+  if(g.mode !== 'interactive'){ els.interContainer.classList.add('hidden'); els.elimOverlay.classList.add('hidden'); els.interPick.classList.add('hidden'); els.faceoff.classList.add('hidden'); els.roundwin.classList.add('hidden'); els.cvContainer.classList.add('hidden'); els.keysContainer.classList.add('hidden'); els.memoContainer.classList.add('hidden'); els.diceContainer.classList.add('hidden'); els.elecContainer.classList.add('hidden'); els.fallContainer.classList.add('hidden'); els.crashContainer.classList.add('hidden'); els.giftsContainer.classList.add('hidden'); els.puzzleContainer.classList.add('hidden'); els.snakeContainer.classList.add('hidden'); hideCharSprites(); els.arenaWrap.classList.remove('inter-mode'); }
   if(g.mode === 'interactive'){
     if(app.isHost){ els.displayWrap.classList.remove('hidden'); els.pcontrolsWrap.classList.add('hidden'); renderInterDisplay(); }
     else { els.displayWrap.classList.add('hidden'); els.pcontrolsWrap.classList.remove('hidden'); renderInterPlayer(); }
@@ -6060,6 +6257,45 @@ function charImgHtml(key, st, random){
   return '<img alt="" draggable="false" src="'+charFileUrl(f)+'" style="'+charImgCss(key, st, f)+'">';
 }
 
+
+// ---- which way the characters face on the display (the user's table) ----
+// For every picture: flip it or not when the character stands on the LEFT half of the display
+// (first letter) and on the RIGHT half (second letter) - 'F' = flipped, 'N' = as drawn - so they
+// face the middle. Used for the players around the arena and the final face-off; the pictures in
+// the middle (round winner, final winner) and inside the game boards stay as drawn.
+var CHAR_FLIP = {
+  luffy_angry:'NN', luffy_fallen:'NF', luffy_happy:'NN', luffy_normal:'NN', luffy_sad:'NN', luffy_scared:'FN',
+  zoro_angy:'FN', zoro_angy2:'FN', zoro_angy3:'FN', zoro_fallen:'FN', zoro_happy:'NN', zoro_happy2:'FN',
+  zoro_normal:'NN', zoro_normal2:'NF', zoro_sad:'NF', zoro_scared:'FN', zoro_scared2:'FN', zoro_scared3:'NN',
+  naruto_angry:'NF', naruto_fallen:'FN', naruto_happy:'FN', naruto_normal:'NF', naruto_sad:'FN', naruto_scared:'FN',
+  sakura_angry:'FN', sakura_fallen:'FN', sakura_happy:'NF', sakura_normal:'NN', sakura_sad:'NF', sakura_scared:'NF',
+  kakashi_angry:'FN', kakashi_fallen:'NF', kakashi_happy:'NN', kakashi_normal:'NN', kakashi_sad:'FN', kakashi_scared:'FN',
+  goku_angry:'FN', goku_fallen:'FN', goku_happy:'FN', goku_normal:'NN', goku_sad:'FN', goku_scared:'FN',
+  vegeta_angry:'FN', vegeta_fallen:'NF', vegeta_happy:'NN', vegeta_normal:'NF', vegeta_sad:'NF', vegeta_scared:'NF',
+  conan_angry:'FN', conan_fallen:'FN', conan_happy:'FN', conan_normal:'FN', conan_sad:'FN', conan_scared:'FN',
+  conan_case_closed:'NN', conan_cool:'NN', conan_thinking:'FN',
+  haibara_angry:'FN', haibara_fallen:'FN', haibara_happy:'NN', haibara_normal:'FN', haibara_sad:'NF', haibara_scared:'NF',
+  kaito_kid_angry:'FN', kaito_kid_angry2:'FN', kaito_kid_fallen:'FN', kaito_kid_fallen2:'NF', kaito_kid_happy:'NN',
+  kaito_kid_normal:'FN', kaito_kid_sad:'FN', kaito_kid_sad2:'FN', kaito_kid_scared:'FN', kaito_kid_scared2:'FN',
+  levi_angry:'FN', levi_fallen:'FN', levi_happy:'FN', levi_normal:'NN', levi_sad:'FN', levi_scared:'FN',
+  mikasa_angry:'NN', mikasa_fallen:'FN', mikasa_happy:'FN', mikasa_normal:'NN', mikasa_sad:'NN', mikasa_scared:'FN',
+  killua_angry:'NN', killua_fallen:'NF', killua_happy:'NN', killua_normal:'NN', killua_sad:'NN', killua_scared:'NN'
+};
+// side: 'L' / 'R' (anything else = as drawn)
+function charFlipFor(file, side){
+  var f = CHAR_FLIP[file];
+  if(!f || (side !== 'L' && side !== 'R')) return false;
+  return f.charAt(side === 'L' ? 0 : 1) === 'F';
+}
+// the CSS that mirrors a picture placed by charImgCss around the middle of its box (so the
+// character stays exactly where it stands, just facing the other way)
+function charFlipCss(placeCss, flip){
+  if(!flip) return '';
+  var w = parseFloat((/width:([\d.\-]+)%/.exec(placeCss) || [])[1]), l = parseFloat((/left:([\d.\-]+)%/.exec(placeCss) || [])[1]);
+  if(!(w > 0) || isNaN(l)) return ';transform:scaleX(-1)';
+  return ';transform-origin:' + ((50 - l)/w*100).toFixed(2) + '% 50%;transform:scaleX(-1)';
+}
+
 // ---- a character "sprite": the image + its effects, kept alive between frames ----
 var CHAR_FX_HTML = {};   // no symbols over the characters: their own drawings carry those details
 function charMakeSprite(key, cls){
@@ -6079,6 +6315,7 @@ function charSetState(sp, o){
     var file = charFile(sp.key, st, true);          // a random version of the pose each time
     sp.img.src = charFileUrl(file);
     sp.img.style.cssText = charImgCss(sp.key, st, file);
+    sp.file = file; sp.flipKey = null;
     sp.fx.innerHTML = CHAR_FX_HTML[st] || '';
     sp.el.style.setProperty('--head', charHeadTop(sp.key, st, file).toFixed(1)+'%');
     if(sp.state) sp.el.classList.remove('st-'+sp.state);
@@ -6090,6 +6327,9 @@ function charSetState(sp, o){
     }
     sp.state = st;
   }
+  // facing the middle: the table's choice for this picture on this side (o.side: 'L' / 'R'; none = as drawn)
+  var fk = (sp.file || '') + '|' + (o.side || '');
+  if(sp.file && sp.flipKey !== fk){ sp.flipKey = fk; var pc = charImgCss(sp.key, sp.state, sp.file); sp.img.style.cssText = pc + charFlipCss(pc, charFlipFor(sp.file, o.side)); }
   var flags = (o.crown?'c':'')+(o.dim?'d':'')+(o.still?'s':'');
   if(flags !== sp.flags){ sp.flags = flags; sp.el.classList.toggle('crowned', !!o.crown); sp.el.classList.toggle('cs-dim', !!o.dim); sp.el.classList.toggle('cs-still', !!o.still); }
 }
@@ -6192,7 +6432,8 @@ var INTER_GAMES = {
   fall: { label:'لا تطيح! ⬛' },
   crash: { label:'كراش باش 🎨' },
   gifts: { label:'الهدايا 🎁' },
-  puzzle: { label:'ترتيب الصورة 🧩' }
+  puzzle: { label:'ترتيب الصورة 🧩' },
+  snake: { label:'لعبة الأفعى 🐍' }
 };
 var INTER_GAME_KEYS = Object.keys(INTER_GAMES);
 var INTER_READY_MS = 3000;        // countdown before every inner round
@@ -6240,6 +6481,13 @@ function hostTryStartInter(senderId, msg, conn){
     puzzleShow: msg.puzzleShow === 'hide' ? 'hide' : 'show',
     puzzleHint: msg.puzzleHint === 'on' ? 'on' : 'off',
     puzzleMin: Math.max(0.5, Math.min(15, Math.round((parseFloat(msg.puzzleMin) || 1)*2)/2)),
+    snakeSize: Math.max(9, Math.min(15, parseInt(msg.snakeSize,10) || 10)),
+    snakeDice: parseInt(msg.snakeDice,10) === 2 ? 2 : 1,
+    snakeEnd: msg.snakeEnd === 'exact' ? 'exact' : 'bounce',
+    snakeExtra: msg.snakeExtra === 'off' ? 'off' : 'on',
+    snakeTools: msg.snakeTools === 'off' ? 'off' : 'on',
+    snakeLevel: ['calm','balanced','chaos'].indexOf(msg.snakeLevel) >= 0 ? msg.snakeLevel : 'balanced',
+    music: msg.music !== 'off',
     games: games.length ? games : INTER_GAME_KEYS.slice()
   };
   if(g.interConfig.games.indexOf('puzzle') >= 0) puzzleLoadList();   // the picture list, ready before the first puzzle
@@ -6307,6 +6555,7 @@ function hostBeginInterInner(){
   if(it.gameKey === 'crash') crashSetup(it, g.interConfig);
   if(it.gameKey === 'gifts') giftsSetup(it, g.interConfig);
   if(it.gameKey === 'puzzle') puzzleSetup(it, g.interConfig);
+  if(it.gameKey === 'snake') snakeSetup(it, g.interConfig);
   it.elim = null;
   var sig = interSignature(it);
   if(it.alive.length === 2 && hostInterFaceoff(sig)) return;
@@ -6348,9 +6597,10 @@ function hostInterStartActive(sig){
   var g = app.game, it = g.inter;
   if(!it || g.phase !== 'inter-ready' || interSignature(it) !== sig) return;
   it.startAt = syncedNow() + 250;
-  it.endsAt = it.startAt + (it.gameKey === 'conveyor' ? CV_MAX_MS : it.gameKey === 'keys' ? KEYS_PICK_MS : it.gameKey === 'memo' ? memoDuration(it) : it.gameKey === 'dice' ? DICE_MS : it.gameKey === 'elec' ? (g.interConfig.elecSec || 75)*1000 : it.gameKey === 'fall' ? FALL_MAX_MS : it.gameKey === 'crash' ? Math.round((g.interConfig.crashMin || 1)*60000) : it.gameKey === 'gifts' ? it.gifts.dur : it.gameKey === 'puzzle' ? Math.round((g.interConfig.puzzleMin || 1)*60000) : g.interConfig.innerSec*1000);
+  it.endsAt = it.startAt + (it.gameKey === 'conveyor' ? CV_MAX_MS : it.gameKey === 'keys' ? KEYS_PICK_MS : it.gameKey === 'memo' ? memoDuration(it) : it.gameKey === 'dice' ? DICE_MS : it.gameKey === 'elec' ? (g.interConfig.elecSec || 75)*1000 : it.gameKey === 'fall' ? FALL_MAX_MS : it.gameKey === 'crash' ? Math.round((g.interConfig.crashMin || 1)*60000) : it.gameKey === 'gifts' ? it.gifts.dur : it.gameKey === 'puzzle' ? Math.round((g.interConfig.puzzleMin || 1)*60000) : it.gameKey === 'snake' ? SNAKE_MAX_MS : g.interConfig.innerSec*1000);
   if(it.gameKey === 'fall') fallWave(it, it.startAt);   // the first wave starts with the game
   if(it.gameKey === 'crash') crashStart(it);
+  if(it.gameKey === 'snake') snakeStart(it);
   g.phase = 'inter-active';
   broadcastState();
   addTimer(setTimeout(function(){ hostInterCloseInner(sig); }, it.endsAt - syncedNow() + INTER_GRACE_MS));
@@ -6436,6 +6686,7 @@ function hostInterCloseInner(sig){
   if(it.gameKey === 'crash') return;  // (its own clock ends it)
   if(it.gameKey === 'gifts'){ hostGiftsEnd(sig); return; }
   if(it.gameKey === 'puzzle'){ hostPuzzleEnd(sig); return; }
+  if(it.gameKey === 'snake') return;  // (it ends when someone reaches the last square)
   // the lowest score among those still standing is out; a tie is settled at random
   var low = Infinity;
   it.alive.forEach(function(pid){ low = Math.min(low, it.scores[pid]||0); });
@@ -7626,7 +7877,7 @@ function renderFallDisplay(g, it){
     if(prev){
       if(v.stage === 'shuffle') playSound('appear');
       else if(v.stage === 'pick') playSound('submit');
-      else if(v.stage === 'drop'){ playSound('boom'); if(!F.res.fell.length) setTimeout(function(){ playSound('correct'); }, 700); }
+      else if(v.stage === 'drop'){ playSound('block-fall'); if(!F.res.fell.length) setTimeout(function(){ playSound('correct'); }, 700); }   // the tiles falling (with the fallers' pain voices, if any)
     }
   }
 }
@@ -8430,6 +8681,850 @@ function puzzleCharState(it, id, now){
   return 'normal';
 }
 
+
+// ---------------- background music for the interactive games (the display only) ----------------
+// games_music/game_<n>.mp3 in the RandFiles repo, n = the game's place in INTER_MUSIC_ORDER: 0 is the
+// furnace, then the nine games in the order they were added; a game added later gets the next
+// number. It plays quietly while a game is being played, fades out for the gun, the results and the
+// countdowns and picks up where it was, and goes lower still while a character is speaking. A track
+// that isn't uploaded yet is simply silent. The leader can turn it off in the lobby.
+var INTER_MUSIC_ORDER = ['recycle','conveyor','keys','memo','dice','elec','fall','crash','gifts','puzzle','snake'];
+var INTER_MUSIC_VOL = 0.3;        // about a third of the sound effects
+var INTER_MUSIC_DUCK = 0.1;       // while a character speaks
+var interMusic = { url:null, buf:null, loading:null, failed:{}, src:null, gain:null, startedAt:0, offset:0, vol:-1 };
+function interMusicUrl(key){
+  var i = INTER_MUSIC_ORDER.indexOf(key);
+  return i < 0 ? null : ASSET_BASE + 'games_music/game_' + i + '.mp3';
+}
+function interMusicStop(fade){
+  var M = interMusic, ctx = getAudioCtx();
+  if(!M.src || !ctx) return;
+  var src = M.src, gain = M.gain, t = ctx.currentTime, end = t + (fade ? 0.6 : 0.05);
+  if(M.buf) M.offset = (M.offset + (t - M.startedAt)) % M.buf.duration;   // so it carries on from here
+  M.src = null; M.gain = null; M.vol = -1;
+  try{
+    gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(gain.gain.value, t); gain.gain.linearRampToValueAtTime(0, end);
+    src.stop(end + 0.05);
+  }catch(e){}
+}
+function interMusicTick(){
+  if(!interMusic) return;                              // (a draw while the page is still loading)
+  var g = app.game, it = g && g.inter, M = interMusic;
+  var url = (app.isHost && g && g.mode === 'interactive' && it && it.gameKey && g.interConfig && g.interConfig.music !== false) ? interMusicUrl(it.gameKey) : null;
+  if(url !== M.url){                                   // another game (or none): its own track, from the start
+    interMusicStop(true);
+    M.url = url; M.buf = null; M.offset = 0; M.loading = null;
+  }
+  if(!url) return;
+  var ctx = getAudioCtx();
+  if(!ctx) return;
+  if(!M.buf && !M.loading && !M.failed[url]){
+    M.loading = url;
+    try{
+      fetch(url).then(function(r){ if(!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+        .then(function(b){ return new Promise(function(res, rej){ ctx.decodeAudioData(b, res, rej); }); })
+        .then(function(buf){ if(M.loading === url){ M.buf = buf; M.loading = null; } })
+        .catch(function(){ M.failed[url] = true; if(M.loading === url) M.loading = null; });   // (not uploaded yet: silence)
+    }catch(e){ M.failed[url] = true; M.loading = null; }
+  }
+  var want = g.phase === 'inter-active' && !it.elim;   // only while they play (not the gun, results, countdowns)
+  if(want && M.buf && !M.src && ctx.state === 'running'){
+    try{
+      var src = ctx.createBufferSource(), gain = ctx.createGain();
+      src.buffer = M.buf; src.loop = true;
+      src.connect(gain); gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      src.start(0, M.offset % M.buf.duration);
+      M.src = src; M.gain = gain; M.startedAt = ctx.currentTime; M.vol = -1;
+    }catch(e){}
+  }
+  if(!want && M.src) interMusicStop(true);
+  if(M.src){
+    var v = Date.now() < dispVoiceUntil ? INTER_MUSIC_DUCK : INTER_MUSIC_VOL;
+    if(v !== M.vol){
+      M.vol = v;
+      var t = ctx.currentTime;
+      try{ M.gain.gain.cancelScheduledValues(t); M.gain.gain.setValueAtTime(M.gain.gain.value, t); M.gain.gain.linearRampToValueAtTime(v, t + 0.8); }catch(e){}
+    }
+  }
+}
+
+// ---------------- Snakes & ladders (لعبة الأفعى) ----------------
+// An n x n board (9x9 ... 15x15, the leader's choice) numbered from 1 at the bottom-left, winding
+// up row by row. The snakes and ladders are laid out at random every round. Players take turns:
+// whoever's turn it is throws the dice on their phone (1 or 2 dice, the leader's choice) and their
+// character hops that many squares on the display; a ladder's foot takes them up it, a snake's
+// head takes them down along its body. The first to reach the last square wins the round; the
+// others are placed by how far they got (level = a shared place) and the gun takes them from the
+// furthest back. Past the end: bounce back by what's left, or the exact number is needed (the
+// leader's choice); a 6 (a double with two dice) can give another throw (leader's choice).
+// Tools (on/off; calm / balanced / chaos) lie on random squares and are dealt again every three
+// full rounds of turns. Stopping on one takes it: most work at once (shield and charmer wait for
+// the next snake, x2 for the next throw); the golden dice, the freeze and the trap are kept - one
+// at a time - and used from the phone before throwing, within the next two turns.
+var SNAKE_TURN_MS = 15000;        // then the dice are thrown for them
+var SNAKE_AWAY_MS = 2500;         // ...much sooner for a player who has dropped out
+var SNAKE_MAX_MS = 3*60*60000;    // (the round ends when someone reaches the end)
+var SNAKE_ROLL_MS = 1300;         // the dice rolling on the display before the move
+var SNAKE_HOP_MS = 270, SNAKE_FLY_MS = 900;
+var SNAKE_EXTRA_MAX = 2;          // extra throws in a row, at most
+var SNAKE_DEAL_EVERY = 3;         // new tools every 3 full rounds of turns
+var SNAKE_NEAR = 4;               // a snake's head / a ladder's foot this close ahead: scared / happy
+var SNAKE_TOOLS = {
+  shield:{ e:'🛡️', name:'الدرع', w:9 },               // the next snake / lightning / trap does nothing
+  tame:{ e:'🐍', name:'ترويض الأفعى', w:7 },          // stop on a snake's TAIL: climb up its body to its head
+  gold:{ e:'🎲', name:'النرد الذهبي', held:true, w:8 }, // choose your number (1-6) instead of throwing
+  jump:{ e:'⏩', name:'قفزة +5', w:9 },
+  swap:{ e:'🔄', name:'تبديل المكان', w:6 },          // change places with a random player
+  trap:{ e:'💣', name:'الفخ', held:true, w:7 },        // hidden on your square: whoever stops there goes back 5
+  box:{ e:'❓', name:'صندوق المفاجآت', w:9 },          // a random tool - or 3 squares back
+  freeze:{ e:'🧊', name:'التجميد', held:true, w:7 },   // the player just ahead misses their next turn
+  tornado:{ e:'🌪️', name:'الإعصار', w:4 },            // every snake and ladder moves
+  double:{ e:'✖️2', name:'مضاعفة النرد', w:8 },        // the next throw counts double
+  rocket:{ e:'🚀', name:'الصاروخ', w:6 },              // straight to the nearest ladder ahead, and up it
+  bolt:{ e:'⚡', name:'الصاعقة', w:6 }                  // everyone ahead goes back 3
+};
+var SNAKE_TOOL_SHARE = { calm:24, balanced:13, chaos:7 };    // one tool for this many squares
+var SNAKE_COLORS = ['#2f9e44','#e8590c','#7048e8','#1c7ed6','#c2255c','#0b7285','#a87b00','#d6336c'];
+// ---- the board ----
+function snakeXY(n, c){                                       // the middle of square c, in squares from the top-left
+  if(c <= 0) return { x:-0.62, y:n - 0.5 };                   // (0 = not on the board yet)
+  var i = c - 1, row = Math.floor(i/n), col = row % 2 === 0 ? i % n : n - 1 - (i % n);
+  return { x:col + 0.5, y:n - row - 0.5 };
+}
+function snakeRowOf(n, c){ return Math.floor((c - 1)/n); }
+// snakes and ladders at random: no two on one square, none on the first or last square, each at
+// least a row long. keep = squares to leave free (players, tools)
+function snakeLayout(n, keep){
+  var N = n*n, k = Math.max(4, Math.round(N/16)), used = {}, snakes = [], ladders = [];
+  used[1] = used[N] = true;
+  (keep || []).forEach(function(c){ if(c > 0) used[c] = true; });
+  var free = function(lo, hi){ for(var t=0; t<300; t++){ var c = lo + Math.floor(Math.random()*(hi - lo + 1)); if(!used[c]) return c; } return 0; };
+  for(var tries=0; tries<k*60 && (snakes.length < k || ladders.length < k); tries++){
+    var sn = snakes.length < k && (ladders.length >= k || tries % 2 === 0);
+    var a = sn ? free(n + 2, N - 1) : free(2, N - n - 1);     // the head (snake) / the foot (ladder)
+    if(!a) continue;
+    var room = sn ? a - 2 : N - 1 - a, most = Math.max(n, Math.min(Math.round(N*0.42), room));
+    var len = n + Math.floor(Math.random()*(most - n + 1)), b = sn ? a - len : a + len;
+    if(b < 2 || b > N - 1 || used[b] || snakeRowOf(n, a) === snakeRowOf(n, b)) continue;
+    used[a] = used[b] = true;
+    if(sn) snakes.push([a, b, SNAKE_COLORS[snakes.length % SNAKE_COLORS.length], 2 + Math.floor(Math.random()*2)]);
+    else ladders.push([a, b]);
+  }
+  return { snakes:snakes, ladders:ladders };
+}
+// a point along a snake from its head (t=0) to its tail (t=1), in squares: the same curve is
+// drawn and slid down
+function snakePoint(n, sn, t){
+  var H = snakeXY(n, sn[0]), T = snakeXY(n, sn[1]), dx = T.x - H.x, dy = T.y - H.y, L = Math.sqrt(dx*dx + dy*dy) || 1;
+  var amp = Math.min(0.5, 0.16 + L*0.035) * Math.sin(Math.PI*Math.min(1, t*1.15));   // calm at the head and the tail
+  var w = Math.sin(t*Math.PI*2*(sn[3] || 2))*amp;
+  return { x:H.x + dx*t - dy/L*w, y:H.y + dy*t + dx/L*w };
+}
+function snakeFind(L, c){
+  for(var i=0;i<L.snakes.length;i++) if(L.snakes[i][0] === c) return { kind:'snake', sn:L.snakes[i], to:L.snakes[i][1] };
+  for(var j=0;j<L.ladders.length;j++) if(L.ladders[j][0] === c) return { kind:'ladder', to:L.ladders[j][1] };
+  return null;
+}
+function snakeNextLadder(S, c){ var best = 0; S.ladders.forEach(function(l){ if(l[0] > c && (!best || l[0] < best)) best = l[0]; }); return best; }
+function snakeDealTools(it){
+  var S = it.snake;
+  S.tools = {};
+  if(!S.toolsOn) return;
+  var N = S.n*S.n, count = Math.max(2, Math.round(N/(SNAKE_TOOL_SHARE[S.level] || 13))), busy = {};
+  busy[1] = busy[N] = true;
+  S.snakes.forEach(function(s){ busy[s[0]] = busy[s[1]] = true; });
+  S.ladders.forEach(function(l){ busy[l[0]] = busy[l[1]] = true; });
+  Object.keys(S.pos).forEach(function(id){ busy[S.pos[id]] = true; });
+  Object.keys(snakeHost.traps).forEach(function(c){ busy[c] = true; });
+  var types = Object.keys(SNAKE_TOOLS), tot = types.reduce(function(a, t){ return a + SNAKE_TOOLS[t].w; }, 0);
+  for(var k=0, tries=0; k<count && tries<count*30; tries++){
+    var c = 2 + Math.floor(Math.random()*(N - 2));
+    if(busy[c]) continue;
+    busy[c] = true;
+    var r = Math.random()*tot, type = types[0];
+    for(var q=0;q<types.length;q++){ r -= SNAKE_TOOLS[types[q]].w; if(r <= 0){ type = types[q]; break; } }
+    S.tools[c] = type; k++;
+  }
+}
+var snakeHost = { sig:null, traps:{} };                        // the traps stay on the host (hidden)
+function snakeSetup(it, cfg){
+  var n = Math.max(9, Math.min(15, parseInt(cfg.snakeSize, 10) || 10));
+  snakeHost = { sig:interSignature(it), traps:{} };
+  var lay = snakeLayout(n, []);
+  it.denseRank = false;                                        // a shared place counts the players before it
+  it.snake = { n:n, dice: cfg.snakeDice === 2 ? 2 : 1, bounce: cfg.snakeEnd !== 'exact', extra: cfg.snakeExtra !== 'off',
+    toolsOn: cfg.snakeTools !== 'off', level: SNAKE_TOOL_SHARE[cfg.snakeLevel] ? cfg.snakeLevel : 'balanced',
+    snakes:lay.snakes, ladders:lay.ladders, prevLay:null, layAt:0, layoutNo:1, tools:{}, pos:{},
+    order:shuffle(it.alive.slice()), idx:-1, turnNo:0, cycle:0, turnPid:null, phase:'wait', turnEnds:0, rollKey:'', useCount:0,
+    own:{}, held:{}, shield:{}, tame:{}, dblNext:{}, frozen:{}, sad:{}, golden:false, dbl:false, extraRun:0,
+    anims:[], last:null, feed:[], fx:[], taken:[], frozenAt:{}, done:false, winner:null };
+  it.alive.forEach(function(id){ it.snake.pos[id] = 0; it.snake.own[id] = 0; });
+  it.scores = {}; it.alive.forEach(function(id){ it.scores[id] = 0; });
+  snakeDealTools(it);
+}
+function snakeName(pid){ var p = findPlayer(pid); return p ? p.name : ''; }
+// a visual effect for the display (absolute times; the display draws them, see snakeFxDraw)
+var snakeFxNo = 0;
+function snakeFx(S, o){
+  o.id = ++snakeFxNo;
+  var now = syncedNow();
+  S.fx = S.fx.filter(function(f){ return f.at + f.d > now - 500; });
+  S.fx.push(o);
+  if(S.fx.length > 40) S.fx.shift();
+}
+function snakeFeed(S, text, at, pid){
+  S.feed.push({ text:text, at:at || syncedNow(), pid:pid || null });
+  if(S.feed.length > 8) S.feed.shift();
+}
+function snakeStart(it){
+  var sig = interSignature(it);
+  snakeFeed(it.snake, '🎲 أول دور: ' + snakeName(it.snake.order[0]), it.startAt);
+  addTimer(setTimeout(function(){ snakeBeginTurn(sig); }, Math.max(0, it.startAt - syncedNow())));
+}
+function snakeLive(it, S, sig){ var g = app.game; return !!(g && g.inter === it && it.snake === S && !S.done && g.phase === 'inter-active' && interSignature(it) === sig); }
+function snakeNextTurn(it, wait){
+  var sig = interSignature(it);
+  addTimer(setTimeout(function(){ snakeBeginTurn(sig); }, Math.max(0, wait)));
+}
+function snakeBeginTurn(sig){
+  var g = app.game, it = g.inter, S = it && it.snake;
+  if(!S || !snakeLive(it, S, sig)) return;
+  S.order = S.order.filter(function(id){ return it.alive.indexOf(id) >= 0; });
+  S.idx = (S.idx + 1) % S.order.length;
+  if(S.idx === 0 && S.turnNo > 0){                             // a full round of turns done
+    S.cycle++;
+    if(S.cycle % SNAKE_DEAL_EVERY === 0 && S.toolsOn){ snakeDealTools(it); snakeFeed(S, '✨ أدوات جديدة على اللوحة!'); playSound('appear'); }
+  }
+  var pid = S.order[S.idx];
+  S.turnNo++; S.turnPid = pid; S.own[pid] = (S.own[pid] || 0) + 1;
+  S.anims = []; S.golden = false; S.dbl = false; S.extraRun = 0;
+  S.sad[pid] = false;                                          // the gloom lasts until their own turn
+  var h = S.held[pid];
+  if(h && S.own[pid] > h.until){ delete S.held[pid]; snakeFeed(S, SNAKE_TOOLS[h.t].e + ' ' + snakeName(pid) + ' ما استخدم ' + SNAKE_TOOLS[h.t].name + ' — راحت عليه', null, pid); }
+  if(S.frozen[pid]){
+    S.frozen[pid] = false; S.phase = 'skip';
+    snakeFx(S, { type:'burst', pid:pid, e:'🧊', at:syncedNow() + 300, d:1000, shards:true });
+    addTimer(setTimeout(function(){ playSound('glass'); }, 300));
+    snakeFeed(S, '🧊 ' + snakeName(pid) + ' متجمّد — يفوّت دوره', null, pid);
+    broadcastState();
+    snakeNextTurn(it, 2000);
+    return;
+  }
+  snakeOpenRoll(it);
+}
+// the player may throw now (or use a kept tool first)
+function snakeOpenRoll(it){
+  var S = it.snake, pid = S.turnPid, sig = interSignature(it), p = findPlayer(pid);
+  S.phase = 'roll';
+  S.dbl = !!S.dblNext[pid];
+  S.turnEnds = syncedNow() + (p && p.connected === false ? SNAKE_AWAY_MS : SNAKE_TURN_MS);
+  S.rollKey = S.turnNo + '.' + S.extraRun + '.' + S.useCount;
+  var key = S.rollKey;
+  broadcastState();
+  addTimer(setTimeout(function(){                              // time's up: thrown for them
+    if(!snakeLive(it, S, sig) || S.phase !== 'roll' || S.rollKey !== key) return;
+    snakeThrow(it, pid, S.golden ? [1 + Math.floor(Math.random()*6)] : snakeRollVals(S.dice), true);
+  }, S.turnEnds - syncedNow() + 300));
+}
+function snakeRollVals(k){ var v = []; for(var i=0;i<k;i++) v.push(1 + Math.floor(Math.random()*6)); return v; }
+function hostSnakeRoll(pid, msg){
+  var g = app.game, it = g.inter, S = it && it.snake;
+  if(!S || it.gameKey !== 'snake' || !snakeLive(it, S, msg.sig)) return;
+  if(S.phase !== 'roll' || S.turnPid !== pid || msg.key !== S.rollKey) return;
+  var vals = (Array.isArray(msg.vals) ? msg.vals : []).map(function(x){ return x|0; });
+  if(vals.length !== (S.golden ? 1 : S.dice) || vals.some(function(v){ return v < 1 || v > 6; })) return;
+  snakeThrow(it, pid, vals, false);
+}
+// the dice roll on the display for a moment, then the move
+function snakeThrow(it, pid, vals, auto){
+  var S = it.snake, sig = interSignature(it), golden = S.golden, dbl = S.dbl;
+  var total = vals.reduce(function(a, v){ return a + v; }, 0)*(dbl ? 2 : 1);
+  if(dbl) S.dblNext[pid] = false;
+  S.golden = false; S.dbl = false;
+  S.phase = 'thrown';
+  S.last = { pid:pid, vals:vals, total:total, dbl:dbl, golden:golden, auto:auto, at:syncedNow(), key:S.rollKey };
+  if(dbl) snakeFx(S, { type:'x2', pid:pid, at:S.last.at + (golden ? 500 : SNAKE_ROLL_MS) - 300, d:1300 });
+  broadcastState();
+  addTimer(setTimeout(function(){
+    if(!snakeLive(it, S, sig)) return;
+    snakeRoll(it, pid, vals, total, golden);
+  }, golden ? 500 : SNAKE_ROLL_MS));
+}
+// ---- moving ----
+// the hops of a move (bouncing back off the end, or not moving when the exact number is needed)
+function snakeHops(S, from, steps){
+  var N = S.n*S.n, segs = [], cur = from, dir = 1;
+  if(!S.bounce && from + steps > N) return { segs:[], at:from, blocked:true };
+  for(var i=0;i<steps;i++){
+    var nx = cur + dir;
+    if(nx > N){ dir = -1; nx = cur - 1; }
+    segs.push({ k:'hop', a:cur, b:nx, d:SNAKE_HOP_MS });
+    cur = nx;
+  }
+  return { segs:segs, at:cur, blocked:false };
+}
+function snakeTime(segs){ return segs.reduce(function(a, s){ return a + s.d; }, 0); }
+// what happens where a player stops: a trap, a tool, a snake's head, a ladder's foot - and again
+// wherever that takes them. segs grows; ctx collects other players' moves, events and the
+// tornado's moment; returns the square they end up on.
+function snakeLand(it, pid, segs, c, ctx, depth, delay){
+  var S = it.snake, N = S.n*S.n, base = delay || 0, slid = null;
+  var ev = function(e, extra){ var o = { e:e, pid:pid, t:base + snakeTime(segs) }; for(var k in extra) o[k] = extra[k]; ctx.events.push(o); };
+  for(var guard=0; guard<10 && c > 0 && c < N; guard++){
+    // a trap (not the one who set it): back 5 - the shield takes it instead
+    var tr = snakeHost.traps[c];
+    if(tr && tr !== pid){
+      delete snakeHost.traps[c];
+      if(S.shield[pid]){ S.shield[pid] = false; ev('shield'); ctx.fx.push({ type:'shield', pid:pid, t:base + snakeTime(segs), d:900 }); }
+      else {
+        ev('trap', { owner:tr }); S.sad[pid] = true;
+        ctx.fx.push({ type:'burst', e:'💥', c:c, t:base + snakeTime(segs), d:900, big:true });
+        var b5 = Math.max(1, c - 5);
+        segs.push({ k:'ouch', a:c, b:c, d:550 }, { k:'fly', a:c, b:b5, d:SNAKE_FLY_MS });
+        c = b5; continue;
+      }
+    }
+    // a tool (taken by the one moving on their own; nothing is picked up while being pushed about)
+    var tool = !depth && S.tools[c];
+    if(tool){
+      var T = SNAKE_TOOLS[tool];
+      if(T.held && S.held[pid]){ tool = null; }                 // carrying one already: it stays there
+      else {
+        delete S.tools[c];
+        var tk = { c:c, tool:tool, got:tool, pid:pid, t:base + snakeTime(segs) };
+        if(ctx.taken) ctx.taken.push(tk);   // (it stays on the board until they get there)
+        if(tool === 'box'){
+          if(Math.random() < 0.25){
+            ev('boxbad'); S.sad[pid] = true; tk.got = 'prank';
+            ctx.fx.push({ type:'box', pid:pid, e:'🤡', t:base + snakeTime(segs), d:1400 });
+            var b3 = Math.max(1, c - 3);
+            segs.push({ k:'ouch', a:c, b:c, d:450 }, { k:'fly', a:c, b:b3, d:700 });
+            c = b3; continue;
+          }
+          var opts = Object.keys(SNAKE_TOOLS).filter(function(t){ return t !== 'box' && !(SNAKE_TOOLS[t].held && S.held[pid]); });
+          tool = opts[Math.floor(Math.random()*opts.length)]; T = SNAKE_TOOLS[tool];
+          ev('box', { tool:tool }); tk.got = tool;
+          ctx.fx.push({ type:'box', pid:pid, e:T.e, t:base + snakeTime(segs), d:1400 });
+        } else ev('tool', { tool:tool });
+        var r = snakeToolNow(it, pid, tool, segs, c, ctx, base);
+        if(r.stop){ c = r.c; break; }
+        if(r.c !== c){ c = r.c; continue; }
+      }
+    }
+    // the snake charmer on a snake's tail: up its body to its head (and that's where they stay)
+    if(S.tame[pid]){
+      var tl = null;
+      S.snakes.forEach(function(x){ if(x[1] === c && x[0] !== slid) tl = x; });   // (not the tail they just slid down to)
+      if(tl){
+        S.tame[pid] = false;
+        ev('tame');
+        segs.push({ k:'slide', a:c, b:tl[0], sn:tl.slice(), up:true, d:Math.round(1100 + 45*(tl[0] - c)*10/S.n) });
+        c = tl[0]; break;
+      }
+    }
+    // a snake's head / a ladder's foot
+    var f = snakeFind(S, c);
+    if(f && f.kind === 'snake'){
+      if(S.shield[pid]){ S.shield[pid] = false; ev('shield'); ctx.fx.push({ type:'shield', pid:pid, t:base + snakeTime(segs), d:900 }); break; }
+      ev('snake');
+      segs.push({ k:'ouch', a:c, b:c, d:700, why:'snake' });
+      segs.push({ k:'slide', a:c, b:f.to, sn:f.sn.slice(), d:Math.round(900 + 45*(c - f.to)*10/S.n) });
+      S.sad[pid] = true;
+      slid = c;
+      c = f.to; continue;
+    }
+    if(f && f.kind === 'ladder'){
+      segs.push({ k:'climb', a:c, b:f.to, d:Math.round(700 + 35*(f.to - c)*10/S.n) });
+      ev('ladder');
+      c = f.to; continue;
+    }
+    break;
+  }
+  return c;
+}
+// a tool that works the moment it's picked up (or is kept / waits)
+function snakeToolNow(it, pid, tool, segs, c, ctx, base){
+  var S = it.snake, at = base + snakeTime(segs);
+  if(tool === 'shield'){ S.shield[pid] = true; return { c:c }; }
+  if(tool === 'tame'){ S.tame[pid] = true; return { c:c }; }
+  if(tool === 'double'){ S.dblNext[pid] = true; return { c:c }; }
+  if(SNAKE_TOOLS[tool].held){ S.held[pid] = { t:tool, until:(S.own[pid] || 0) + 2 }; return { c:c }; }   // the next two turns
+  if(tool === 'jump'){
+    var mv = snakeHops(S, c, 5);
+    mv.segs.forEach(function(s){ s.jump = true; s.d = 230; segs.push(s); });
+    return { c:mv.at };
+  }
+  if(tool === 'rocket'){
+    var foot = snakeNextLadder(S, c);
+    if(!foot) return { c:c };
+    segs.push({ k:'fly', a:c, b:foot, d:SNAKE_FLY_MS + 300, up:true, rocket:true });
+    return { c:foot };
+  }
+  if(tool === 'swap'){
+    var others = S.order.filter(function(id){ return id !== pid && it.alive.indexOf(id) >= 0; });
+    if(!others.length) return { c:c };
+    var o = others[Math.floor(Math.random()*others.length)], oc = ctx.pos[o] != null ? ctx.pos[o] : S.pos[o];
+    ctx.fx.push({ type:'link', pid:pid, other:o, t:at, d:600 + SNAKE_FLY_MS });
+    segs.push({ k:'ouch', a:c, b:c, d:600, why:'swap' }, { k:'fly', a:c, b:oc, d:SNAKE_FLY_MS, swap:true });
+    ctx.others.push({ pid:o, delay:at, segs:[{ k:'ouch', a:oc, b:oc, d:600, why:'swap' }, { k:'fly', a:oc, b:c, d:SNAKE_FLY_MS, swap:true }], to:c });
+    ctx.pos[o] = c;
+    ctx.events.push({ e:'swapped', pid:pid, other:o, t:at });
+    return { c:oc, stop:true };                                // (where they land after a swap does nothing)
+  }
+  if(tool === 'tornado'){
+    var keep = [c];
+    S.order.forEach(function(id){ keep.push(ctx.pos[id] != null ? ctx.pos[id] : S.pos[id]); });
+    Object.keys(S.tools).forEach(function(q){ keep.push(+q); });
+    Object.keys(snakeHost.traps).forEach(function(q){ keep.push(+q); });
+    if(!ctx.prevLay) ctx.prevLay = { snakes:S.snakes, ladders:S.ladders };
+    var lay = snakeLayout(S.n, keep);
+    S.snakes = lay.snakes; S.ladders = lay.ladders; S.layoutNo++;
+    ctx.layAt = at + 800;
+    ctx.fx.push({ type:'tornado', t:at, d:1700 });
+    return { c:c, stop:true };
+  }
+  if(tool === 'bolt'){
+    S.order.forEach(function(id){
+      var p0 = ctx.pos[id] != null ? ctx.pos[id] : S.pos[id];
+      if(id === pid || p0 <= c || it.alive.indexOf(id) < 0) return;
+      ctx.fx.push({ type:'bolt', pid:id, t:at, d:1000 });
+      if(S.shield[id]){ S.shield[id] = false; ctx.events.push({ e:'shield', pid:id, t:at + 300 }); ctx.fx.push({ type:'shield', pid:id, t:at + 350, d:900 }); return; }
+      var b3 = Math.max(1, p0 - 3), sg = [{ k:'ouch', a:p0, b:p0, d:800 }, { k:'fly', a:p0, b:b3, d:700 }];
+      ctx.events.push({ e:'zapped', pid:id, t:at + 200 }); S.sad[id] = true;
+      var land = snakeLand(it, id, sg, b3, ctx, 1, at);
+      ctx.others.push({ pid:id, delay:at, segs:sg, to:land });
+      ctx.pos[id] = land;
+    });
+    return { c:c };
+  }
+  return { c:c };
+}
+// play the moves (the mover's, plus whoever got swapped / zapped) and carry on afterwards
+function snakePlay(it, pid, segs, to, ctx, then){
+  var S = it.snake, now = syncedNow() + 150, longest = snakeTime(segs);
+  S.anims = [{ pid:pid, at:now, segs:segs }];
+  S.taken = (ctx.taken || []).map(function(x){ return { c:x.c, tool:x.tool, got:x.got, pid:x.pid, at:now + x.t }; });
+  (ctx.fx || []).forEach(function(f){ f.at = now + f.t; delete f.t; snakeFx(S, f); });
+  ctx.others.forEach(function(m){ S.anims.push({ pid:m.pid, at:now + m.delay, segs:m.segs }); longest = Math.max(longest, m.delay + snakeTime(m.segs)); S.pos[m.pid] = m.to; });
+  S.pos[pid] = to;
+  Object.keys(S.pos).forEach(function(id){ it.scores[id] = S.pos[id]; });
+  if(ctx.prevLay){ S.prevLay = ctx.prevLay; S.layAt = now + (ctx.layAt || 0); } else { S.prevLay = null; S.layAt = 0; }
+  S.phase = 'move';
+  ctx.events.forEach(function(ev){ snakeReact(it, ev, now + ev.t); });
+  broadcastState();
+  var sig = interSignature(it);
+  addTimer(setTimeout(function(){ if(snakeLive(it, S, sig)) then(); }, longest + 500));
+}
+// the line under the dice, sounds and voices, each at its moment
+function snakeReact(it, ev, at){
+  var S = it.snake, p = findPlayer(ev.pid), key = p && CHARS[p.character] ? p.character : null, nm = snakeName(ev.pid);
+  var T = ev.tool ? SNAKE_TOOLS[ev.tool] : null;
+  var text = ev.e === 'snake' ? '🐍 ' + nm + ' نزل مع الأفعى!'
+    : ev.e === 'ladder' ? '🪜 ' + nm + ' طلع السلّم!'
+    : ev.e === 'tame' ? '🐍 ' + nm + ' روّض الأفعى وتسلّقها لفوق!'
+    : ev.e === 'shield' ? '🛡️ الدرع حمى ' + nm + '!'
+    : ev.e === 'trap' ? '💣 ' + nm + ' داس على فخ ' + snakeName(ev.owner) + '! 5 للخلف'
+    : ev.e === 'box' ? '❓ صندوق ' + nm + ': ' + T.e + ' ' + T.name
+    : ev.e === 'boxbad' ? '❓ صندوق ' + nm + ' طلع مقلب: 3 للخلف!'
+    : ev.e === 'tool' ? T.e + ' ' + nm + ' أخذ ' + T.name
+    : ev.e === 'swapped' ? '🔄 ' + nm + ' تبادل المكان مع ' + snakeName(ev.other) + '!'
+    : ev.e === 'zapped' ? '⚡ الصاعقة رجّعت ' + nm + ' 3 مربعات!'
+    : ev.e === 'blocked' ? '🎯 ' + nm + ' يحتاج الرقم بالضبط — ما يتحرك'
+    : '';
+  if(ev.e === 'tool' && ev.tool === 'tornado') text = '🌪️ إعصار ' + nm + ' قلب الأفاعي والسلالم!';
+  if(text) snakeFeed(S, text, at, ev.pid);
+  // sound effects only - the characters' voices follow their faces (see snakeVoices)
+  var fx = (ev.e === 'trap' || ev.e === 'zapped') ? 'boom' : (ev.e === 'tool' && ev.tool === 'tornado') ? 'recycle'
+    : (ev.e === 'tool' || ev.e === 'box' || ev.e === 'shield' || ev.e === 'swapped') ? 'appear' : null;
+  if(!fx) return;
+  var sig = interSignature(it), wait = Math.max(0, at - syncedNow());
+  addTimer(setTimeout(function(){ if(app.game && app.game.inter === it && interSignature(it) === sig) playSound(fx); }, wait));
+}
+function snakeRoll(it, pid, vals, total, golden){
+  var S = it.snake, mv = snakeHops(S, S.pos[pid], total), segs = mv.segs;
+  var ctx = { others:[], events:[], pos:{}, prevLay:null, layAt:0, taken:[], fx:[] };
+  if(mv.blocked) ctx.events.push({ e:'blocked', pid:pid, t:0 });
+  var to = mv.blocked ? S.pos[pid] : snakeLand(it, pid, segs, mv.at, ctx, 0, 0);
+  var dbl = S.dice === 1 ? vals[0] === 6 : vals[0] === vals[1];
+  var again = S.extra && !golden && !mv.blocked && dbl && S.extraRun < SNAKE_EXTRA_MAX;
+  snakePlay(it, pid, segs, to, ctx, function(){ snakeAfter(it, pid, again); });
+}
+function snakeAfter(it, pid, again){
+  var S = it.snake, N = S.n*S.n;
+  S.prevLay = null; S.layAt = 0;
+  if(S.pos[pid] >= N){ snakeFinish(it, pid); return; }
+  var w = S.order.filter(function(id){ return S.pos[id] >= N; })[0];   // (a swap can bring someone else home)
+  if(w){ snakeFinish(it, w); return; }
+  if(again){
+    S.extraRun++; S.anims = [];
+    snakeFeed(S, '🎲 رمية إضافية لـ ' + snakeName(pid) + '!', null, pid);
+    playSound('appear');
+    snakeOpenRoll(it);
+    return;
+  }
+  snakeNextTurn(it, 200);
+}
+// ---- a kept tool, used from the phone before throwing ----
+function snakeCanUse(S, pid, t){
+  if(t === 'freeze') return !!snakeAheadOf(S, pid);
+  if(t === 'trap'){ var c = S.pos[pid]; return c > 1 && c < S.n*S.n && !snakeFind(S, c); }
+  return true;
+}
+// who the freeze goes to: the player just ahead (for the one in front: the one just behind)
+function snakeAheadOf(S, pid){
+  var me = S.pos[pid], ahead = null, behind = null;
+  S.order.forEach(function(id){
+    if(id === pid) return;
+    var c = S.pos[id];
+    if(c > me && (!ahead || c < S.pos[ahead])) ahead = id;
+    if(c <= me && (!behind || c > S.pos[behind])) behind = id;
+  });
+  return ahead || behind;
+}
+function hostSnakeUse(pid, msg){
+  var g = app.game, it = g.inter, S = it && it.snake;
+  if(!S || it.gameKey !== 'snake' || !snakeLive(it, S, msg.sig)) return;
+  if(S.phase !== 'roll' || S.turnPid !== pid || msg.key !== S.rollKey) return;
+  var h = S.held[pid];
+  if(!h || h.t !== msg.tool || S.own[pid] > h.until || !snakeCanUse(S, pid, h.t)) return;
+  delete S.held[pid];
+  S.useCount++;
+  var nm = snakeName(pid);
+  if(h.t === 'gold'){ S.golden = true; snakeFeed(S, '🎲 ' + nm + ' يختار رقمه بالنرد الذهبي', null, pid); }
+  else if(h.t === 'trap'){
+    snakeHost.traps[S.pos[pid]] = pid; snakeFeed(S, '💣 ' + nm + ' زرع فخ مخفي...', null, pid);
+    snakeFx(S, { type:'bury', c:S.pos[pid], at:syncedNow(), d:1100 });
+    playSound('press');
+  }
+  else if(h.t === 'freeze'){
+    var tg = snakeAheadOf(S, pid), t0 = syncedNow(), sig = interSignature(it);
+    S.frozen[tg] = true; S.frozenAt[tg] = t0 + 850;
+    snakeFx(S, { type:'throw', pid:pid, other:tg, e:'❄️', at:t0 + 50, d:800 });
+    snakeFx(S, { type:'burst', pid:tg, e:'❄️', at:t0 + 850, d:900 });
+    snakeFeed(S, '🧊 ' + nm + ' جمّد ' + snakeName(tg) + ' — يفوّت دوره الجاي', t0 + 850, pid);
+    playSound('pass');
+    addTimer(setTimeout(function(){ if(app.game && app.game.inter === it && interSignature(it) === sig) playSound('glass'); }, 850));
+  }
+  if(h.t === 'gold') playSound('appear');
+  snakeOpenRoll(it);                                           // (a fresh 15 s to throw)
+}
+// ---- the end: someone reached the last square ----
+function snakeFinish(it, wid){
+  var g = app.game, S = it.snake, sig = interSignature(it);
+  if(S.done) return;
+  S.done = true; S.phase = 'done'; S.winner = wid; S.anims = [];
+  snakeFeed(S, '🏁 ' + snakeName(wid) + ' وصل النهاية وفاز!', null, wid);
+  broadcastState();
+  addTimer(setTimeout(function(){
+    if(app.game !== g || g.inter !== it || g.phase !== 'inter-active' || interSignature(it) !== sig) return;
+    it.innerScores = {}; it.alive.forEach(function(id){ it.innerScores[id] = S.pos[id] || 0; });
+    it.elim = null; it.roundWin = null;
+    // the furthest back goes first; players on the same square share a place
+    var order = it.alive.filter(function(id){ return id !== wid; }).sort(function(a, b){ return (S.pos[a] - S.pos[b]) || (Math.random() - 0.5); });
+    var grp = it.grpCount || 0, last = null;
+    order.forEach(function(id){
+      if(S.pos[id] !== last){ grp++; last = S.pos[id]; }
+      it.out.push({ id:id, inner:it.innerNumber, score:S.pos[id] || 0, grp:grp });
+    });
+    it.grpCount = grp;
+    it.alive = [wid];
+    it.elimQueue = order.slice();
+    it.elimNames = order.map(snakeName).join(' و ');
+    g.phase = 'inter-elim';
+    crashNextGun(sig);
+  }, 2600));
+}
+// a tool on its way to a player (they haven't reached its square yet) doesn't show as theirs
+function snakeSoon(S, id, tool, now){ return (S.taken || []).some(function(x){ return x.pid === id && x.got === tool && now < x.at; }); }
+function snakeHas(S, id, now){
+  var h = S.held[id];
+  return { shield: !!S.shield[id] && !snakeSoon(S, id, 'shield', now), tame: !!S.tame[id] && !snakeSoon(S, id, 'tame', now),
+    dbl: !!S.dblNext[id] && !snakeSoon(S, id, 'double', now), held: h && !snakeSoon(S, id, h.t, now) ? h : null,
+    frozen: !!S.frozen[id] && now >= ((S.frozenAt && S.frozenAt[id]) || 0) };
+}
+// ---- where a character is right now (the display plays the moves) ----
+function snakeLayNow(S, now){ return (S.prevLay && now < S.layAt) ? S.prevLay : S; }
+function snakeSegAt(n, s, f){
+  var P = snakeXY(n, s.a), Q = snakeXY(n, s.b);
+  if(s.k === 'hop') return { x:P.x + (Q.x - P.x)*f, y:P.y + (Q.y - P.y)*f, lift:Math.sin(Math.PI*f)*(s.jump ? 0.75 : 0.42), kind:'hop' };
+  if(s.k === 'ouch') return { x:P.x, y:P.y, lift:0, kind:'ouch', why:s.why };
+  if(s.k === 'slide'){ var e = f < 0.5 ? 2*f*f : 1 - Math.pow(-2*f + 2, 2)/2, q = snakePoint(n, s.sn, s.up ? 1 - e : e); return { x:q.x, y:q.y, lift:s.up ? 0.1*Math.abs(Math.sin(f*Math.PI*10)) : 0, kind:s.up ? 'climb' : 'slide' }; }
+  if(s.k === 'climb'){ var e2 = f*f*(3 - 2*f); return { x:P.x + (Q.x - P.x)*e2, y:P.y + (Q.y - P.y)*e2, lift:0.12*Math.abs(Math.sin(f*Math.PI*8)), kind:'climb' }; }
+  var e3 = f*f*(3 - 2*f);
+  return { x:P.x + (Q.x - P.x)*e3, y:P.y + (Q.y - P.y)*e3, lift:Math.sin(Math.PI*f)*(s.rocket ? 2.2 : 1.6), kind:'fly', up:s.up || s.b > s.a };
+}
+function snakeView(S, pid, now){
+  var n = S.n, A = null;
+  for(var i=0;i<S.anims.length;i++) if(S.anims[i].pid === pid) A = S.anims[i];
+  if(A && now >= A.at){
+    var t = now - A.at;
+    for(var k=0;k<A.segs.length;k++){
+      var s = A.segs[k];
+      if(t < s.d){ var r = snakeSegAt(n, s, t/s.d); r.seg = s; return r; }
+      t -= s.d;
+    }
+  }
+  var waiting = !!(A && now < A.at), at = waiting && A.segs.length ? A.segs[0].a : S.pos[pid];
+  var p = snakeXY(n, at);
+  return { x:p.x, y:p.y, lift:0, kind:'stand', at:at, moving:waiting };
+}
+// the faces: scared near a snake's head, happy near a ladder or the end, pain landing on a snake,
+// angry sliding down it, sad afterwards until their next turn
+function snakeCharState(it, id, now){
+  var S = it.snake;
+  if(!S) return 'normal';
+  if(S.done) return id === S.winner ? 'happy' : 'sad';
+  var v = snakeView(S, id, now);
+  if(v.kind === 'ouch') return v.why === 'swap' ? 'normal' : 'fallen';
+  if(v.kind === 'slide') return 'angry';
+  if(v.kind === 'climb') return 'happy';
+  if(v.kind === 'fly') return v.up ? 'happy' : 'sad';
+  if(v.kind === 'hop') return 'normal';
+  if(!v.moving && ((S.frozen[id] && now >= ((S.frozenAt && S.frozenAt[id]) || 0)) || S.sad[id])) return 'sad';       // (not before their move has played)
+  var c = v.at, N = S.n*S.n, reach = SNAKE_NEAR, L = snakeLayNow(S, now), dS = 0, dL = 0;
+  L.snakes.forEach(function(s){ var d = s[0] - c; if(d > 0 && d <= reach && (!dS || d < dS)) dS = d; });
+  L.ladders.forEach(function(l){ var d = l[0] - c; if(d > 0 && d <= reach && (!dL || d < dL)) dL = d; });
+  if(S.tame[id]) L.snakes.forEach(function(s){ var d = s[1] - c; if(d > 0 && d <= reach && (!dL || d < dL)) dL = d; });   // a tail to climb
+  if(N - c <= reach && (!dL || N - c < dL)) dL = N - c;
+  if(dS && S.shield[id]) dS = 0;                                // protected: nothing to fear
+  if(dS && (!dL || dS <= dL)) return 'scared';
+  if(dL) return 'happy';
+  return 'normal';
+}
+// the characters speak when their face changes: scared, happy, sad, pain (knocked down);
+// angry (sliding down a snake) shows without a word. Hops in between don't count as a change,
+// so someone still near the same snake after a small throw stays quiet.
+var SNAKE_VOICE = { scared:'scared', happy:'happy', sad:'sad', fallen:'pain' };
+var snakeVoice = { sig:null, last:{} };
+function snakeSay(pid, kind){
+  var p = findPlayer(pid);
+  if(!p || !CHARS[p.character]) return;
+  // on the display, one after the other (a short wait); if it's too busy, on the player's phone
+  if(dispVoiceUntil - Date.now() < 2500) hostVoice(pid, p.character, kind, { display:true, maxDur:4 });
+  else hostVoice(pid, p.character, kind, { maxDur:4 });
+}
+function snakeVoices(it, now){
+  var S = it.snake, sig = interSignature(it), first = snakeVoice.sig !== sig;
+  if(first) snakeVoice = { sig:sig, last:{} };
+  if(now < it.startAt) return;
+  S.order.forEach(function(id){
+    if(!interPlayerAlive(it, id)) return;
+    var v = snakeView(S, id, now);
+    if(v.kind === 'hop') return;                                // (passing through)
+    var st = snakeCharState(it, id, now), was = snakeVoice.last[id];
+    if(st === was) return;
+    snakeVoice.last[id] = st;
+    if(first || was === undefined) return;                      // (how they start: no words)
+    if(S.done && id !== S.winner) return;                       // the end: only the winner speaks (the gun does the rest)
+    if(SNAKE_VOICE[st]) snakeSay(id, SNAKE_VOICE[st]);
+  });
+}
+// ---- the tools' effects, drawn on the display over the board ----
+// where a player's head is (in squares), for the effects aimed at them
+function snakeHead(S, views, id, now){
+  var v = (views && views[id]) || snakeView(S, id, now);
+  return { x:v.x, y:v.y + 0.4 - 0.8 - (v.lift || 0)*0.9 };
+}
+function snakeFxDraw(S, n, now, views){
+  var layer = document.getElementById('sn-fx');
+  if(!layer) return;
+  if(!layer._m) layer._m = {};
+  var seen = {}, pct = function(v){ return (v/n*100).toFixed(3) + '%'; };
+  var el = function(f, html){
+    var e = layer._m[f.id];
+    if(!e){ e = document.createElement('div'); e.className = 'sn-f sn-f-' + f.type + (f.big ? ' big' : '') + (f.shards ? ' shards' : ''); e.innerHTML = html; layer.appendChild(e); layer._m[f.id] = e; }
+    seen[f.id] = true;
+    return e;
+  };
+  var put = function(e, p){ e.style.left = pct(p.x); e.style.top = pct(p.y); };
+  (S.fx || []).forEach(function(f){
+    if(now < f.at || now > f.at + f.d) return;
+    var k = (now - f.at)/f.d, e, p, q;
+    if(f.type === 'throw'){                                   // the ice flying from one player to the other
+      p = snakeHead(S, views, f.pid, now); q = snakeHead(S, views, f.other, now);
+      e = el(f, '<span>' + f.e + '</span>');
+      put(e, { x:p.x + (q.x - p.x)*k, y:p.y + (q.y - p.y)*k - Math.sin(Math.PI*k)*1.8 });
+      e.firstChild.style.transform = 'rotate(' + Math.round(k*720) + 'deg) scale(' + (0.8 + k*0.5).toFixed(2) + ')';
+    } else if(f.type === 'burst'){                            // shards / an explosion
+      e = el(f, f.shards ? '<i>' + f.e + '</i><i>' + f.e + '</i><i>' + f.e + '</i><i>' + f.e + '</i>' : '<span>' + f.e + '</span><i>✦</i><i>✦</i><i>✦</i><i>✦</i>');
+      put(e, f.c ? snakeXY(n, f.c) : snakeHead(S, views, f.pid, now));
+    } else if(f.type === 'shield'){                           // the shield takes the hit and bursts
+      e = el(f, '<b></b><i>🛡️</i>'); put(e, snakeHead(S, views, f.pid, now));
+    } else if(f.type === 'bury'){                             // the trap goes into the ground
+      e = el(f, '<span>💣</span><b></b>'); put(e, snakeXY(n, f.c));
+    } else if(f.type === 'box'){                              // the box opens: what was inside
+      e = el(f, '<span>❓</span><b>' + f.e + '</b>'); put(e, snakeHead(S, views, f.pid, now));
+    } else if(f.type === 'x2'){
+      e = el(f, '<b>×2</b>'); put(e, snakeHead(S, views, f.pid, now));
+    } else if(f.type === 'bolt'){                             // a cloud over them, the lightning comes down
+      e = el(f, '<span>☁️</span><b>⚡</b>'); put(e, snakeHead(S, views, f.pid, now));
+    } else if(f.type === 'link'){                             // the two swapping, joined by a magic line
+      p = snakeHead(S, views, f.pid, now); q = snakeHead(S, views, f.other, now);
+      e = el(f, '<b></b><i>🌀</i><i>🌀</i>');
+      var dx = q.x - p.x, dy = q.y - p.y;
+      e.firstChild.style.left = pct(p.x); e.firstChild.style.top = pct(p.y);
+      e.firstChild.style.width = pct(Math.sqrt(dx*dx + dy*dy));
+      e.firstChild.style.transform = 'rotate(' + (Math.atan2(dy, dx)*180/Math.PI).toFixed(1) + 'deg)';
+      put(e.children[1], p); put(e.children[2], q);
+    } else if(f.type === 'tornado'){                          // a whirlwind sweeping across the board
+      e = el(f, '<span>🌪️</span>');
+      put(e, { x:-0.5 + (n + 1)*k, y:n/2 + Math.sin(k*Math.PI*3)*n*0.25 });
+    }
+  });
+  Object.keys(layer._m).forEach(function(k){ if(!seen[k]){ layer._m[k].remove(); delete layer._m[k]; } });
+}
+// ---- the display: the board, the dice, whose turn ----
+function snakeCellHtml(n){
+  var h = '', N = n*n;
+  for(var r=0;r<n;r++) for(var c=0;c<n;c++){
+    var rb = n - 1 - r, num = rb*n + (rb % 2 === 0 ? c + 1 : n - c);
+    h += '<i class="sn-c' + ((r + c) % 2 ? ' alt' : '') + (num === N ? ' end' : '') + '"><b>' + (num === N ? '🏁' : num) + '</b></i>';
+  }
+  return h;
+}
+function snakeSvg(n, L){
+  var h = '', f = function(v){ return v.toFixed(3); };
+  // the square of every snake's head (its colour) and every ladder's foot (wood): stop there and it takes you
+  var mark = function(c, col, cls){ var p = snakeXY(n, c); h += '<rect class="'+cls+'" x="'+f(p.x - 0.5)+'" y="'+f(p.y - 0.5)+'" width="1" height="1" fill="'+col+'"/>'; };
+  L.snakes.forEach(function(s){ mark(s[0], s[2], 'sn-hsq'); });
+  L.ladders.forEach(function(l){ mark(l[0], '#c98d4a', 'sn-fsq'); });
+  L.ladders.forEach(function(l){
+    var A = snakeXY(n, l[0]), B = snakeXY(n, l[1]), dx = B.x - A.x, dy = B.y - A.y, len = Math.sqrt(dx*dx + dy*dy), ux = dx/len, uy = dy/len, px = -uy*0.2, py = ux*0.2;
+    var g = '<line class="sn-rail" x1="'+f(A.x+px)+'" y1="'+f(A.y+py)+'" x2="'+f(B.x+px)+'" y2="'+f(B.y+py)+'"/><line class="sn-rail" x1="'+f(A.x-px)+'" y1="'+f(A.y-py)+'" x2="'+f(B.x-px)+'" y2="'+f(B.y-py)+'"/>';
+    for(var d=0.3; d<len - 0.15; d+=0.38){ var x = A.x + ux*d, y = A.y + uy*d; g += '<line class="sn-rung" x1="'+f(x+px)+'" y1="'+f(y+py)+'" x2="'+f(x-px)+'" y2="'+f(y-py)+'"/>'; }
+    h += '<g class="sn-lad">' + g + '</g>';
+  });
+  L.snakes.forEach(function(s){
+    var pts = [], K = 48;
+    for(var i=0;i<=K;i++) pts.push(snakePoint(n, s, i/K));
+    var under = '', body = '', marks = '', parts = 8;
+    for(var p=0;p<parts;p++){
+      var a = Math.floor(p*K/parts), b = Math.floor((p + 1)*K/parts), d = 'M' + pts.slice(a, b + 1).map(function(q){ return f(q.x) + ' ' + f(q.y); }).join(' L');
+      var w = 0.3 - 0.19*p/(parts - 1);
+      under += '<path d="'+d+'" stroke-width="'+f(w + 0.07)+'"/>';
+      body += '<path d="'+d+'" stroke-width="'+f(w)+'"/>';
+      marks += '<path d="'+d+'" stroke-width="'+f(w*0.38)+'"/>';
+    }
+    var H = pts[0], nx = pts[2], ang = Math.atan2(H.y - nx.y, H.x - nx.x)*180/Math.PI;
+    var head = '<g transform="translate('+f(H.x)+' '+f(H.y)+') rotate('+ang.toFixed(1)+')">' +
+      '<path class="sn-tongue" d="M0.2 0 L0.36 0 M0.36 0 L0.43 -0.05 M0.36 0 L0.43 0.05"/>' +
+      '<ellipse rx="0.25" ry="0.19" fill="'+s[2]+'" class="sn-head"/>' +
+      '<circle cx="0.07" cy="-0.09" r="0.065" fill="#fff"/><circle cx="0.07" cy="0.09" r="0.065" fill="#fff"/>' +
+      '<circle cx="0.095" cy="-0.09" r="0.034" fill="#111"/><circle cx="0.095" cy="0.09" r="0.034" fill="#111"/></g>';
+    h += '<g class="sn-snake"><g class="sn-under">'+under+'</g><g stroke="'+s[2]+'" class="sn-body">'+body+'</g><g class="sn-marks">'+marks+'</g>'+head+'</g>';
+  });
+  return h;
+}
+function renderSnakeDisplay(g, it){
+  var sig = interSignature(it), now = syncedNow(), S = it.snake;
+  if(!S) return;
+  var n = S.n;
+  buildOnce(els.arenaCenter, 'sn|'+sig, function(){
+    els.arenaCenter.innerHTML = '<div class="sn-disp">' +
+      '<div class="sn-board" id="sn-board" style="--n:'+n+'"><div class="sn-grid">'+snakeCellHtml(n)+'</div>' +
+      '<svg class="sn-svg" id="sn-svg" viewBox="0 0 '+n+' '+n+'" preserveAspectRatio="none"></svg><div class="sn-tools" id="sn-tools"></div><div class="sn-toks" id="sn-toks"></div><div class="sn-fx" id="sn-fx"></div></div>' +
+      '<div class="sn-side"><div class="sn-title">لعبة الأفعى 🐍</div><div class="sn-turn" id="sn-turn"></div><div class="sn-dice" id="sn-dice"></div>' +
+      '<div class="sn-msg" id="sn-msg"></div><div class="sn-list" id="sn-list"></div></div></div>';
+  });
+  var board = document.getElementById('sn-board');
+  if(!board) return;
+  if(app.isHost) snakeVoices(it, now);
+  // the snakes and ladders (the old ones stay until the tornado hits)
+  var L = snakeLayNow(S, now), svg = document.getElementById('sn-svg'), lk = (L === S ? 'n' : 'p') + '|' + JSON.stringify([L.snakes, L.ladders]);
+  if(svg._k !== lk){
+    var swirl = svg._k != null && svg._k.charAt(0) === 'p' && L === S;
+    svg._k = lk; svg.innerHTML = snakeSvg(n, L);
+    if(swirl){ board.classList.remove('swirl'); void board.offsetWidth; board.classList.add('swirl'); }
+  }
+  // the tools lying about
+  // (a tool being taken stays until the player reaches its square, then pops)
+  var shown = Object.keys(S.tools).map(function(c){ return [+c, S.tools[c], 0]; });
+  (S.taken || []).forEach(function(x){ if(now < x.at + 600) shown.push([x.c, x.tool, now >= x.at ? 1 : 0]); });
+  var tl = document.getElementById('sn-tools'), tk = JSON.stringify(shown);
+  if(tl._k !== tk){
+    tl._k = tk;
+    tl.innerHTML = shown.map(function(x){
+      var p = snakeXY(n, x[0]);
+      return '<span class="sn-tool'+(x[2] ? ' got' : '')+'" style="left:'+(p.x/n*100).toFixed(3)+'%;top:'+(p.y/n*100).toFixed(3)+'%">'+SNAKE_TOOLS[x[1]].e+'</span>';
+    }).join('');
+  }
+  // the characters: standing ones on the same square side by side, those at the start in a column
+  var toks = document.getElementById('sn-toks'), seen = {};
+  if(!toks._m) toks._m = {};
+  var views = {}, groups = {};
+  S.order.forEach(function(id){
+    if(!interPlayerAlive(it, id) && !S.done) return;
+    var v = views[id] = snakeView(S, id, now);
+    if(v.kind === 'stand'){ (groups[v.at] = groups[v.at] || []).push(id); }
+  });
+  Object.keys(groups).forEach(function(c){
+    var ids = groups[c], k = ids.length;
+    ids.forEach(function(id, i){
+      var v = views[id];
+      if(+c === 0){ v.y = n - 0.5 - i*0.8; v.s = 0.9; }
+      else if(k > 1){ v.x += (i - (k - 1)/2)*Math.min(0.3, 0.9/(k - 1)); v.s = k > 2 ? 0.72 : 0.84; }
+    });
+  });
+  Object.keys(views).forEach(function(id){
+    var v = views[id], pl = findPlayer(id), key = pl && CHARS[pl.character] ? pl.character : null;
+    var e = toks._m[id];
+    if(!e){ e = document.createElement('div'); e.className = 'sn-tok'; e.innerHTML = '<div class="sn-ring"></div><div class="sn-ch"></div><div class="sn-ice"></div><div class="sn-over"></div>'; toks.appendChild(e); toks._m[id] = e; }
+    seen[id] = true;
+    e.style.left = (v.x/n*100).toFixed(3) + '%';
+    e.style.top = ((v.y + 0.4)/n*100).toFixed(3) + '%';         // the feet near the bottom of the square
+    e.style.zIndex = v.kind === 'stand' ? 10 + Math.round(v.y*4) : 200;
+    e.style.setProperty('--pc', crashColor(id));
+    e.style.transform = 'translate(-50%,-100%) translateY(' + (-v.lift*100/1.3).toFixed(1) + '%) scale(' + (v.s || 1) + ')';
+    e.classList.toggle('turn', S.turnPid === id && !S.done);
+    e.classList.toggle('shake', v.kind === 'ouch' && v.why !== 'swap');
+    var Hn = snakeHas(S, id, now), sg = v.seg || {};
+    e.classList.toggle('shield', Hn.shield);
+    e.classList.toggle('frozen', Hn.frozen);
+    e.classList.toggle('dash', !!sg.jump);
+    e.classList.toggle('rocket', !!sg.rocket);
+    e.classList.toggle('spin', !!sg.swap || v.why === 'swap');
+    e.classList.toggle('notes', v.kind === 'climb' && sg.k === 'slide');
+    var over = (S.golden && S.turnPid === id && S.phase === 'roll') ? '🎲' : '';
+    var ov = e.lastChild; if(ov._h !== over){ ov._h = over; ov.innerHTML = over ? '<span class="sn-gold-over">' + over + '</span>' : ''; }
+    var pose = snakeCharState(it, id, now), ch = e.children[1];
+    if(ch._pose !== pose + (key || '')){ ch._pose = pose + (key || ''); ch.innerHTML = key ? charImgHtml(key, pose, false) : '<span class="cr-ini">'+escapeHtml(pl ? pl.name.charAt(0) : '?')+'</span>'; }
+  });
+  Object.keys(toks._m).forEach(function(k){ if(!seen[k]){ toks._m[k].remove(); delete toks._m[k]; } });
+  snakeFxDraw(S, n, now, views);
+  // whose turn, the time left
+  var turn = document.getElementById('sn-turn'), tp = findPlayer(S.turnPid), secs = Math.max(0, Math.ceil((S.turnEnds - now)/1000));
+  var th = S.done ? '🏆 <b>' + escapeHtml(snakeName(S.winner)) + '</b> فاز!'
+    : !tp || now < it.startAt ? 'استعدوا...'
+    : '<span class="sn-dot" style="background:'+crashColor(S.turnPid)+'"></span>دور <b>' + escapeHtml(tp.name) + '</b>' +
+      (S.phase === 'roll' ? '<em class="' + (secs <= 5 ? 'low' : '') + '">' + secs + '</em>' : S.phase === 'skip' ? ' 🧊' : '');
+  if(turn._h !== th){ turn._h = th; turn.innerHTML = th; }
+  // the dice: rolling for a moment, then the numbers
+  var dice = document.getElementById('sn-dice'), Ls = S.last, rolling = !!(Ls && now < Ls.at + (Ls.golden ? 500 : SNAKE_ROLL_MS));
+  var fresh = !!(Ls && Ls.pid === S.turnPid && (S.phase !== 'roll' || Ls.key !== S.rollKey) && !S.done && S.phase !== 'skip');
+  var dk = !fresh ? (S.phase === 'roll' && !S.done ? 'wait' + (S.golden ? 'g' : '') + (S.dbl ? 'd' : '') + S.dice : '') : rolling ? 'roll' + Ls.at : 'v' + Ls.at;
+  if(dice._k !== dk){
+    dice._k = dk;
+    dice.innerHTML = !dk ? ''
+      : !fresh ? (S.golden ? '<span class="sn-badge">🎲 النرد الذهبي</span>' : [1,1].slice(0, S.dice).map(function(){ return dieHtml(0, 'mini blank'); }).join('') + (S.dbl ? '<span class="sn-badge">×2</span>' : ''))
+      : Ls.vals.map(function(v){ return dieHtml(rolling ? 1 + Math.floor(Math.random()*6) : v, 'mini' + (rolling ? ' sn-rolling' : '')); }).join('') +
+        (rolling ? '' : '<b class="sn-total">' + Ls.total + '</b>' + (Ls.dbl ? '<span class="sn-badge">×2</span>' : '') + (Ls.golden ? '<span class="sn-badge">🎲</span>' : ''));
+  }
+  if(rolling && fresh){ var ds = dice.querySelectorAll('.die'); for(var di=0; di<ds.length; di++) if(Math.random() < 0.35) dieSet(ds[di], 1 + Math.floor(Math.random()*6)); }
+  // the latest thing that happened
+  var msg = document.getElementById('sn-msg'), cur = null;
+  S.feed.forEach(function(f){ if(f.at <= now) cur = f; });
+  var mh = cur && now - cur.at < 9000 ? escapeHtml(cur.text) : '';
+  if(msg._h !== mh){ msg._h = mh; msg.innerHTML = mh; msg.classList.remove('pop'); void msg.offsetWidth; if(mh) msg.classList.add('pop'); }
+  // everyone, the furthest ahead first, with what they carry
+  var rows = S.order.filter(function(id){ return interPlayerAlive(it, id) || S.done; }).slice().sort(function(a, b){ return S.pos[b] - S.pos[a]; }).map(function(id){
+    var Hs = snakeHas(S, id, now), marks = (Hs.shield ? '🛡️' : '') + (Hs.tame ? '🐍' : '') + (Hs.dbl ? '✖️2' : '') + (Hs.held ? SNAKE_TOOLS[Hs.held.t].e : '') + (Hs.frozen ? '🧊' : '');
+    return '<div class="sn-row'+(id === S.turnPid && !S.done ? ' on' : '')+'"><span class="sn-dot" style="background:'+crashColor(id)+'"></span><b>'+escapeHtml(snakeName(id))+'</b><i>'+marks+'</i><em>'+(S.pos[id] || '—')+'</em></div>';
+  }).join('');
+  var list = document.getElementById('sn-list');
+  if(list._h !== rows){ list._h = rows; list.innerHTML = rows; }
+}
+
 // ---------------- shared drawing ----------------
 // a pistol, side view, muzzle to the right (drawn in the theme's own colours)
 var INTER_GUN_SVG =
@@ -8544,6 +9639,7 @@ function interDisplayCharState(p, g, it, now){
     if(it.gameKey === 'fall'){ o.state = fallCharState(it, p.id, now); return o; }
     if(it.gameKey === 'crash'){ o.state = crashCharState(it, p.id, now); return o; }
     if(it.gameKey === 'puzzle'){ o.state = puzzleCharState(it, p.id, now); return o; }
+    if(it.gameKey === 'snake'){ o.state = snakeCharState(it, p.id, now); return o; }
     var m = interMoodNow(interFxFor(interSignature(it)), p.id);
     if(it.gameKey === 'conveyor'){
       if(it.cvQueue && it.cvQueue.indexOf(p.id) >= 0) o.state = 'scared';   // box fell, the gun is coming
@@ -8583,6 +9679,7 @@ function syncCharSprites(){
     }
     var o = interDisplayCharState(p, g, it, now);
     o.kx = (r.left + r.width/2) < cx ? -1 : 1;           // knocked away from the middle (the gun)
+    o.side = o.kx < 0 ? 'L' : 'R';                        // and facing the middle (the flip table)
     charSetState(sp, o);
   });
   Object.keys(charSprites).forEach(function(pid){ if(!seen[pid]){ charSprites[pid].el.remove(); delete charSprites[pid]; } });
@@ -8623,7 +9720,7 @@ function renderInterDisplay(){
   }
   if(g.phase === 'inter-ready'){
     var remain = Math.max(0, Math.ceil((it.readyStartAt + INTER_READY_MS - syncedNow())/1000));
-    els.readyGtitle.textContent = interGameLabel(it.gameKey)+(it.gameKey === 'conveyor' ? '' : it.gameKey === 'keys' ? ' — العبور '+it.innerNumber : it.gameKey === 'memo' ? ' — النمط '+it.innerNumber : it.gameKey === 'dice' ? ' — الرمية '+it.innerNumber : it.gameKey === 'elec' ? ' — اللغز '+it.innerNumber : it.gameKey === 'fall' ? '' : it.gameKey === 'crash' ? (it.crash && it.crash.mode === 'single' ? '' : ' — الإقصاء '+it.innerNumber) : it.gameKey === 'gifts' ? ' — الإقصاء '+it.innerNumber : it.gameKey === 'puzzle' ? (it.puzzle && it.puzzle.mode === 'single' ? '' : ' — الإقصاء '+it.innerNumber) : ' — الإقصاء '+it.innerNumber+'/'+interInnerTotal(it));
+    els.readyGtitle.textContent = interGameLabel(it.gameKey)+(it.gameKey === 'conveyor' ? '' : it.gameKey === 'keys' ? ' — العبور '+it.innerNumber : it.gameKey === 'memo' ? ' — النمط '+it.innerNumber : it.gameKey === 'dice' ? ' — الرمية '+it.innerNumber : it.gameKey === 'elec' ? ' — اللغز '+it.innerNumber : it.gameKey === 'fall' ? '' : it.gameKey === 'crash' ? (it.crash && it.crash.mode === 'single' ? '' : ' — الإقصاء '+it.innerNumber) : it.gameKey === 'gifts' ? ' — الإقصاء '+it.innerNumber : it.gameKey === 'puzzle' ? (it.puzzle && it.puzzle.mode === 'single' ? '' : ' — الإقصاء '+it.innerNumber) : it.gameKey === 'snake' ? '' : ' — الإقصاء '+it.innerNumber+'/'+interInnerTotal(it));
     els.readyCdnum.textContent = remain > 0 ? remain : '🚀';
     els.readyOverlay.style.display = 'flex';
     els.arenaCenter.innerHTML = ''; els.arenaCenter._builtKey = null;
@@ -8638,6 +9735,7 @@ function renderInterDisplay(){
     if(it.gameKey === 'fall'){ renderFallDisplay(g, it); return; }
     if(it.gameKey === 'crash'){ renderCrashDisplay(g, it); return; }
     if(it.gameKey === 'puzzle'){ renderPuzzleDisplay(g, it); return; }
+    if(it.gameKey === 'snake'){ renderSnakeDisplay(g, it); return; }
     interRankWatch(g, it);
     if(it.gameKey === 'conveyor'){
       if(it.elim) renderInterElimDisplay(g, it); else renderCvCenter(g, it);
@@ -8697,7 +9795,7 @@ function renderFaceoff(g, it){
     el.innerHTML = '<div class="fo-title">⚔️ المواجهة الأخيرة</div><div class="fo-row">' + f.items.map(function(x, i){
       var p = findPlayer(x.id), key = p && CHARS[p.character] ? p.character : null;
       return (i ? '<div class="fo-vs">VS</div>' : '') +
-        '<div class="fo-side fo-s'+i+'"><div class="fo-char">'+(key ? '<img alt="" draggable="false" src="'+charFileUrl(x.img)+'" style="'+charImgCss(key, x.pose, x.img)+'">' : '')+'</div>' +
+        '<div class="fo-side fo-s'+i+'"><div class="fo-char">'+(key ? '<img alt="" draggable="false" src="'+charFileUrl(x.img)+'" style="'+charImgCss(key, x.pose, x.img)+charFlipCss(charImgCss(key, x.pose, x.img), charFlipFor(x.img, i ? 'R' : 'L'))+'">' : '')+'</div>' +
         '<div class="fo-name">'+escapeHtml(p ? p.name : '')+'</div><div class="fo-cname">'+(key ? CHAR_NAMES[key] : '')+'</div></div>';
     }).join('') + '</div>';
   });
@@ -8988,6 +10086,7 @@ function interPhoneCharState(g, it, alive, outEntry, hitNow, shotLanded){
     if(it.gameKey === 'fall'){ o.state = fallCharState(it, app.myPlayerId, now); return o; }
     if(it.gameKey === 'crash'){ o.state = crashCharState(it, app.myPlayerId, now); return o; }
     if(it.gameKey === 'puzzle'){ o.state = puzzleCharState(it, app.myPlayerId, now); return o; }
+    if(it.gameKey === 'snake'){ o.state = snakeCharState(it, app.myPlayerId, now); return o; }
     var m = rcMoodNow();
     if(it.gameKey === 'conveyor'){
       if(cv.dropped) o.state = 'scared';
@@ -9042,6 +10141,7 @@ function renderInterPlayer(){
     els.crashContainer.classList.add('hidden');
     els.giftsContainer.classList.add('hidden');
     els.puzzleContainer.classList.add('hidden');
+    els.snakeContainer.classList.add('hidden');
     els.interPick.classList.add('hidden');
     interShowElimOverlay(false);
     els.displayWrap.classList.add('hidden');
@@ -9064,6 +10164,7 @@ function renderInterPlayer(){
     els.crashContainer.classList.add('hidden');
     els.giftsContainer.classList.add('hidden');
     els.puzzleContainer.classList.add('hidden');
+    els.snakeContainer.classList.add('hidden');
     interShowElimOverlay(false);
     els.interPick.classList.remove('hidden');
     renderInterPick(g);
@@ -9087,8 +10188,8 @@ function renderInterPlayer(){
   } else {
     interShowElimOverlay(showBroken, false);
   }
-  var conveyor = it.gameKey === 'conveyor', keysG = it.gameKey === 'keys', memoG = it.gameKey === 'memo', diceG = it.gameKey === 'dice', elecG = it.gameKey === 'elec', fallG = it.gameKey === 'fall', crashG = it.gameKey === 'crash', giftsG = it.gameKey === 'gifts', puzzleG = it.gameKey === 'puzzle';
-  els.interContainer.classList.toggle('hidden', conveyor || keysG || memoG || diceG || elecG || fallG || crashG || giftsG || puzzleG);
+  var conveyor = it.gameKey === 'conveyor', keysG = it.gameKey === 'keys', memoG = it.gameKey === 'memo', diceG = it.gameKey === 'dice', elecG = it.gameKey === 'elec', fallG = it.gameKey === 'fall', crashG = it.gameKey === 'crash', giftsG = it.gameKey === 'gifts', puzzleG = it.gameKey === 'puzzle', snakeG = it.gameKey === 'snake';
+  els.interContainer.classList.toggle('hidden', conveyor || keysG || memoG || diceG || elecG || fallG || crashG || giftsG || puzzleG || snakeG);
   els.cvContainer.classList.toggle('hidden', !conveyor);
   els.keysContainer.classList.toggle('hidden', !keysG);
   els.memoContainer.classList.toggle('hidden', !memoG);
@@ -9098,7 +10199,8 @@ function renderInterPlayer(){
   els.crashContainer.classList.toggle('hidden', !crashG);
   els.giftsContainer.classList.toggle('hidden', !giftsG);
   els.puzzleContainer.classList.toggle('hidden', !puzzleG);
-  renderMyChar(g, it, alive, outEntry, hitNow, shotLanded, conveyor ? els.cvBox : keysG ? els.keysAvatar : memoG ? els.memoAvatar : diceG ? els.diceAvatar : elecG ? els.elecAvatar : fallG ? els.fallAvatar : crashG ? els.crashAvatar : giftsG ? els.giftsAvatar : puzzleG ? els.puzzleAvatar : els.rcAvatar);   // conveyor: the character IS the one on the belt
+  els.snakeContainer.classList.toggle('hidden', !snakeG);
+  renderMyChar(g, it, alive, outEntry, hitNow, shotLanded, conveyor ? els.cvBox : keysG ? els.keysAvatar : memoG ? els.memoAvatar : diceG ? els.diceAvatar : elecG ? els.elecAvatar : fallG ? els.fallAvatar : crashG ? els.crashAvatar : giftsG ? els.giftsAvatar : puzzleG ? els.puzzleAvatar : snakeG ? els.snakeAvatar : els.rcAvatar);   // conveyor: the character IS the one on the belt
   if(conveyor){
     if(renderConveyorPlayer(g, it, alive, outEntry)) return;
   } else if(keysG){
@@ -9117,6 +10219,8 @@ function renderInterPlayer(){
     if(renderGiftsPlayer(g, it, alive, outEntry)) return;
   } else if(puzzleG){
     if(renderPuzzlePlayer(g, it, alive, outEntry)) return;
+  } else if(snakeG){
+    if(renderSnakePlayer(g, it, alive, outEntry)) return;
   } else {
     els.interContainer.classList.toggle('rc-dead', !alive);
     els.interContainer.classList.toggle('rc-hold', Date.now() < rc.holdUntil);
@@ -9173,6 +10277,244 @@ function renderInterPlayer(){
   }
 }
 els.elimOverlay.innerHTML = interCrackSvg() + '<div class="elim-text">تم إقصاؤك</div>';
+
+// ---- phone: snakes & ladders. The dice tray of the dice game (hold, swipe, throw - the same
+// physics) with 1 or 2 dice, live only on my turn; the numbers are drawn fairly at the moment of
+// the throw and go to the display. A kept tool (golden dice / freeze / trap) has its button
+// above the tray; the golden dice shows six faces to pick from. ----
+var sd = { sig:null, key:null, n:0, dice:[], rolling:false, holding:false, thrown:false, vals:null, hist:[], lastT:0, clackAt:0,
+  tray:{w:300,h:300}, size:60, sentAt:0, buzzKey:null, usedKey:null, autoAt:0 };
+function sdEls(){ return els.snakeTray.querySelectorAll('.die'); }
+function sdBuild(n){
+  if(sd.n === n && sdEls().length === n) return;
+  sd.n = n;
+  els.snakeTray.innerHTML = [1,2].slice(0, n).map(function(){ return dieHtml(1, 'big'); }).join('');
+  sdLayout(); sdRest();
+}
+function sdLayout(){
+  var r = els.snakeTray.getBoundingClientRect();
+  sd.tray = { w:r.width || 300, h:r.height || 300, left:r.left, top:r.top };
+  sd.size = Math.max(44, Math.min(92, Math.min(sd.tray.w, sd.tray.h)*0.24));
+  Array.prototype.forEach.call(sdEls(), function(el){ el.style.width = el.style.height = sd.size + 'px'; });
+}
+function sdRest(){
+  var w = sd.tray.w, h = sd.tray.h, s = sd.size;
+  sd.dice = [];
+  for(var i=0;i<sd.n;i++){
+    var f = sd.vals && sd.vals[i] ? sd.vals[i] : (i ? 3 : 5);
+    sd.dice.push({ x:w/2 + (i - (sd.n - 1)/2)*s*1.3, y:h - s*1.1, vx:0, vy:0, a:(i ? 10 : -8), va:0, v:f, face:f, swapAt:0 });
+  }
+}
+function sdState(){ var g = app.game, it = g && g.inter; return (it && it.gameKey === 'snake' && it.snake) ? it.snake : null; }
+function sdMyTurn(){
+  var g = app.game, it = g && g.inter, S = sdState();
+  return !!(S && g.phase === 'inter-active' && !S.done && S.phase === 'roll' && S.turnPid === app.myPlayerId && interMeAlive() && sd.sig === interSignature(it));
+}
+function sdCanThrow(){ var S = sdState(); return sdMyTurn() && !S.golden && sd.key === S.rollKey && !sd.thrown && !sd.rolling && syncedNow() < S.turnEnds; }
+function sdClack(strength){
+  var now = Date.now();
+  if(now - sd.clackAt < 60 || strength < 120) return;
+  sd.clackAt = now;
+  playSound('press');
+}
+function sdPoint(e){ return { x:e.clientX - sd.tray.left, y:e.clientY - sd.tray.top, t:performance.now() }; }
+els.snakeTray.addEventListener('pointerdown', function(e){
+  if(!sdCanThrow()) return;
+  e.preventDefault();
+  sdLayout();
+  try{ els.snakeTray.setPointerCapture(e.pointerId); }catch(err){}
+  sd.holding = true;
+  sd.hist = [sdPoint(e)];
+});
+els.snakeTray.addEventListener('pointermove', function(e){
+  if(!sd.holding) return;
+  sd.hist.push(sdPoint(e));
+  if(sd.hist.length > 12) sd.hist.shift();
+});
+function sdSend(){ var S = sdState(); sd.sentAt = Date.now(); sendToHost({t:'snake-roll', sig:sd.sig, key:sd.key, vals:sd.vals.slice()}); }
+function sdRelease(e){
+  if(!sd.holding) return;
+  sd.holding = false;
+  if(!sdCanThrow()){ return; }
+  if(e) sd.hist.push(sdPoint(e));
+  var last = sd.hist[sd.hist.length-1], first = last;
+  for(var i=sd.hist.length-1;i>=0;i--){ first = sd.hist[i]; if(last.t - first.t > 90) break; }
+  var dt = Math.max(16, last.t - first.t)/1000, vx = (last.x - first.x)/dt, vy = (last.y - first.y)/dt, sp = Math.sqrt(vx*vx + vy*vy);
+  if(sp < DP.minThrow){ var ang = -Math.PI/2 + (Math.random()-0.5)*1.2; sp = DP.minThrow + Math.random()*500; vx = Math.cos(ang)*sp; vy = Math.sin(ang)*sp; }
+  else if(sp > DP.maxThrow){ vx *= DP.maxThrow/sp; vy *= DP.maxThrow/sp; sp = DP.maxThrow; }
+  sd.vals = snakeRollVals(sd.n);             // fair numbers, decided now
+  sd.thrown = true; sd.rolling = true;
+  var now = performance.now();
+  sd.dice.forEach(function(d, k){
+    var rot = (Math.random()-0.5)*0.36, c = Math.cos(rot), s = Math.sin(rot), f = 0.85 + Math.random()*0.3;
+    d.vx = (vx*c - vy*s)*f; d.vy = (vx*s + vy*c)*f;
+    d.va = (Math.random() < 0.5 ? -1 : 1)*(240 + sp*0.45 + Math.random()*200);
+    d.v = sd.vals[k]; d.swapAt = now;
+  });
+  playSound('submit');
+  sdSend();
+}
+els.snakeTray.addEventListener('pointerup', sdRelease);
+els.snakeTray.addEventListener('pointercancel', function(){ sdRelease(null); });
+function sdStep(dt, now){
+  var w = sd.tray.w, h = sd.tray.h, s = sd.size, r = s*0.5;
+  if(sd.holding){
+    var p = sd.hist[sd.hist.length-1];
+    sd.dice.forEach(function(d, k){
+      var a = now/90 + k*2.1, tx = p.x + Math.cos(a)*s*0.4, ty = p.y + Math.sin(a*1.3)*s*0.4;
+      d.x += (tx - d.x)*Math.min(1, dt*14); d.y += (ty - d.y)*Math.min(1, dt*14);
+      d.a += 900*dt*(k%2 ? 1 : -1);
+      if(now - d.swapAt > 70){ d.swapAt = now; d.face = 1 + Math.floor(Math.random()*6); }
+      d.x = Math.max(r, Math.min(w-r, d.x)); d.y = Math.max(r, Math.min(h-r, d.y));
+    });
+    if(Math.random() < dt*12) sdClack(200);
+    return;
+  }
+  if(!sd.rolling) return;
+  var moving = false;
+  sd.dice.forEach(function(d){
+    d.x += d.vx*dt; d.y += d.vy*dt; d.a += d.va*dt;
+    var sp = Math.sqrt(d.vx*d.vx + d.vy*d.vy), k = Math.exp(-DP.fr*dt), ns = Math.max(0, sp*k - DP.decel*dt);
+    if(sp > 0){ d.vx *= ns/sp; d.vy *= ns/sp; }
+    d.va *= Math.exp(-DP.afr*dt);
+    if(d.x < r){ d.x = r; sdClack(Math.abs(d.vx)); d.vx = Math.abs(d.vx)*DP.e; d.va += d.vy*0.15; }
+    if(d.x > w-r){ d.x = w-r; sdClack(Math.abs(d.vx)); d.vx = -Math.abs(d.vx)*DP.e; d.va -= d.vy*0.15; }
+    if(d.y < r){ d.y = r; sdClack(Math.abs(d.vy)); d.vy = Math.abs(d.vy)*DP.e; d.va -= d.vx*0.15; }
+    if(d.y > h-r){ d.y = h-r; sdClack(Math.abs(d.vy)); d.vy = -Math.abs(d.vy)*DP.e; d.va += d.vx*0.15; }
+    var spd = Math.sqrt(d.vx*d.vx + d.vy*d.vy);
+    if(spd > 60 && now - d.swapAt > 55 + 9000/Math.max(spd, 1)){ d.swapAt = now; var f; do { f = 1 + Math.floor(Math.random()*6); } while(f === d.face); d.face = f; }
+    if(spd <= 60) d.face = d.v;
+    if(spd > DP.stop || Math.abs(d.va) > 25) moving = true;
+  });
+  if(sd.n === 2){
+    var A = sd.dice[0], B = sd.dice[1], dx = B.x - A.x, dy = B.y - A.y, dist = Math.sqrt(dx*dx + dy*dy), min = s*0.92;
+    if(dist > 0 && dist < min){
+      var nx = dx/dist, ny = dy/dist, over = (min - dist)/2;
+      A.x -= nx*over; A.y -= ny*over; B.x += nx*over; B.y += ny*over;
+      var rel = (B.vx - A.vx)*nx + (B.vy - A.vy)*ny;
+      if(rel < 0){ var imp = -(1 + DP.ee)*rel/2; A.vx -= imp*nx; A.vy -= imp*ny; B.vx += imp*nx; B.vy += imp*ny; A.va += imp*0.4; B.va -= imp*0.4; sdClack(Math.abs(rel)); }
+    }
+  }
+  sd.dice.forEach(function(d){ d.x = Math.max(r, Math.min(w-r, d.x)); d.y = Math.max(r, Math.min(h-r, d.y)); });
+  if(!moving){ sd.rolling = false; sd.dice.forEach(function(d){ d.vx = d.vy = d.va = 0; d.face = d.v; }); }
+}
+function sdDraw(){
+  var list = sdEls();
+  sd.dice.forEach(function(d, k){
+    var el = list[k], s = sd.size;
+    if(!el) return;
+    el.style.transform = 'translate(' + (d.x - s/2).toFixed(1) + 'px,' + (d.y - s/2).toFixed(1) + 'px) rotate(' + d.a.toFixed(1) + 'deg)';
+    dieSet(el, d.face);
+  });
+  els.snakeTray.classList.toggle('holding', sd.holding);
+}
+// the golden dice: pick a face
+els.snakeGold.innerHTML = [1,2,3,4,5,6].map(function(v){ return '<button type="button" class="sn-gold-b" data-v="'+v+'">'+dieHtml(v, 'mini')+'</button>'; }).join('');
+els.snakeGold.addEventListener('click', function(e){
+  var b = e.target.closest && e.target.closest('.sn-gold-b'), S = sdState();
+  if(!b || !sdMyTurn() || !S.golden || sd.thrown || sd.key !== S.rollKey) return;
+  var v = parseInt(b.getAttribute('data-v'), 10);
+  sd.vals = [v]; sd.thrown = true;
+  playSound('submit');
+  sdSend();
+  renderAll();
+});
+// using the kept tool (before throwing)
+els.snakeUse.addEventListener('click', function(){
+  var S = sdState(), h = S && S.held[app.myPlayerId];
+  if(!h || !sdMyTurn() || sd.thrown || sd.holding || sd.rolling || sd.usedKey === S.rollKey || !snakeCanUse(S, app.myPlayerId, h.t)) return;
+  sd.usedKey = S.rollKey;
+  playSound('press');
+  sendToHost({t:'snake-use', sig:sd.sig, key:S.rollKey, tool:h.t});
+  renderAll();
+});
+// a short note when I get a tool (2 s, doesn't take a touch, doesn't cover the dice)
+var SNAKE_TOAST = { shield:'يحميك من أول أفعى أو فخ أو صاعقة', tame:'وقف على ذيل أفعى وتتسلّقها لفوق', gold:'زرها يطلع لك في دورك: تختار رقمك',
+  freeze:'زرها يطلع لك في دورك: تجمّد اللي قدامك', trap:'زرها يطلع لك في دورك: تزرع فخ مكانك', double:'رميتك الجاية تنحسب ضعف',
+  jump:'تقدّمت 5 مربعات!', rocket:'طرت لأقرب سلّم!', swap:'تبادلت المكان!', bolt:'رجّعت اللي قدامك 3 مربعات!', tornado:'تغيّرت الأفاعي والسلالم!', prank:'مقلب! 3 مربعات للخلف' };
+var snakeToastSeen = {};
+function snakeToastTick(S, me, now){
+  var box = els.snakeToast, show = null;
+  (S.taken || []).forEach(function(x){
+    var key = x.pid + '|' + x.c + '|' + x.at;
+    if(x.pid !== me || now < x.at || snakeToastSeen[key]) return;
+    snakeToastSeen[key] = true;
+    if(now - x.at < 1500) show = x;
+  });
+  if(show){
+    var T = SNAKE_TOOLS[show.got], head = show.got === 'prank' ? '🤡 صندوق المفاجآت' : (show.tool === 'box' ? '❓ ' : '') + T.e + ' ' + T.name;
+    box.innerHTML = '<b>' + escapeHtml(head) + '</b><small>' + escapeHtml(SNAKE_TOAST[show.got] || '') + '</small>';
+    box.classList.remove('on'); void box.offsetWidth; box.classList.add('on');
+    clearTimeout(box._t); box._t = setTimeout(function(){ box.classList.remove('on'); }, 2000);
+  }
+}
+function renderSnakePlayer(g, it, alive, outEntry){
+  var sig = interSignature(it), S = it.snake;
+  if(!S) return g.phase === 'inter-active';
+  if(sd.sig !== sig){ sd.sig = sig; sd.key = null; sd.thrown = false; sd.vals = null; sd.rolling = false; sd.holding = false; sd.n = 0; sd.usedKey = null; sd.autoAt = 0; }
+  sdBuild(S.dice);
+  var now = syncedNow(), pnow = performance.now(), me = app.myPlayerId;
+  var dt = sd.lastT ? Math.min(0.033, (pnow - sd.lastT)/1000) : 0;
+  sd.lastT = pnow;
+  var mine = sdMyTurn();
+  // a new chance to throw (my turn / an extra throw / after using a tool)
+  if(mine && sd.key !== S.rollKey){
+    sd.key = S.rollKey; sd.thrown = false; sd.rolling = false; sd.holding = false;
+    sdLayout(); sdRest();
+    if(sd.buzzKey !== S.turnNo + '.' + S.extraRun){
+      sd.buzzKey = S.turnNo + '.' + S.extraRun;
+      playSound('appear');
+      if(navigator.vibrate){ try{ navigator.vibrate([60,40,60]); }catch(e){} }
+    }
+  }
+  // thrown for me (time ran out): the dice show those numbers
+  var L = S.last;
+  if(L && L.pid === me && L.auto && L.at !== sd.autoAt && L.vals.length === sd.n){
+    sd.autoAt = L.at; sd.vals = L.vals.slice(); sd.rolling = false; sd.holding = false;
+    sd.dice.forEach(function(d, k){ d.v = d.face = L.vals[k]; d.vx = d.vy = d.va = 0; });
+  }
+  // the turn moved on: the dice settle on their numbers at once
+  if(S.turnPid !== me && (sd.rolling || sd.holding)){ sd.rolling = false; sd.holding = false; sd.dice.forEach(function(d){ d.vx = d.vy = d.va = 0; d.face = d.v; }); }
+  if(!sd.rolling && !sd.holding) sdLayout();
+  for(var k=0, sub=Math.ceil(dt/0.008); k<sub; k++) sdStep(dt/sub, pnow);
+  sdDraw();
+  // sent but the display hasn't taken it yet: again
+  if(mine && sd.thrown && sd.key === S.rollKey && Date.now() - sd.sentAt > 1500 && sd.vals) sdSend();
+  var canThrow = sdCanThrow(), golden = mine && S.golden && !sd.thrown;
+  els.snakeTray.classList.toggle('off', !(mine && !S.golden) && !sd.rolling);
+  els.snakeGold.classList.toggle('hidden', !golden);
+  // the top: whose turn, the seconds, my square
+  var tp = findPlayer(S.turnPid), secs = Math.max(0, Math.ceil((S.turnEnds - now)/1000));
+  var counting = mine && !sd.thrown && g.phase === 'inter-active';
+  var ct = counting ? String(secs) : '';
+  if(els.snakeCount.textContent !== ct) els.snakeCount.textContent = ct;
+  els.snakeCount.classList.toggle('low', counting && secs <= 5);
+  var who = S.done ? '🏁 ' + snakeName(S.winner) : mine ? 'دورك! 🎲' : tp ? 'دور ' + tp.name : '';
+  if(els.snakeTurn.textContent !== who) els.snakeTurn.textContent = who;
+  var N = S.n*S.n, pos = S.pos[me] || 0, pt = 'مربعك: ' + (pos || 'البداية') + ' / ' + N;
+  if(els.snakePos.textContent !== pt) els.snakePos.textContent = pt;
+  // what I carry: the shield / charmer / x2 as badges, a kept tool as a button
+  var Hm = snakeHas(S, me, now), h = Hm.held, left = h ? h.until - (S.own[me] || 0) + (S.turnPid === me ? 1 : 0) : 0;
+  var badges = (Hm.shield ? '<span>🛡️ درع</span>' : '') + (Hm.tame ? '<span>🐍 ترويض</span>' : '') + (Hm.dbl ? '<span>✖️2 مضاعفة</span>' : '') + (Hm.frozen ? '<span>🧊 متجمّد</span>' : '');
+  if(els.snakeBadges._h !== badges){ els.snakeBadges._h = badges; els.snakeBadges.innerHTML = badges; }
+  var canUse = !!(h && mine && !sd.thrown && !sd.holding && !sd.rolling && sd.usedKey !== S.rollKey && snakeCanUse(S, me, h.t));
+  var uh = h ? '<b>' + SNAKE_TOOLS[h.t].e + '</b><span>استخدم ' + SNAKE_TOOLS[h.t].name + '<small>' + (left > 2 ? 'باقي ' + left + ' أدوار' : left === 2 ? 'باقي دورين' : 'آخر دور لاستخدامها') + '</small></span>' : '';
+  if(els.snakeUse._h !== uh){ els.snakeUse._h = uh; els.snakeUse.innerHTML = uh; }
+  els.snakeUse.classList.toggle('hidden', !h || !alive);
+  els.snakeUse.disabled = !canUse;
+  snakeToastTick(S, me, now);
+  if(g.phase !== 'inter-active') return false;
+  els.notifBar.textContent = outEntry ? 'تم إقصاؤك - تابع الشاشة'
+    : !alive ? 'تابع الشاشة'
+    : now < it.startAt ? 'استعد...'
+    : S.done ? (S.winner === me ? '🏆 وصلت النهاية!' : '🏁 ' + snakeName(S.winner) + ' وصل النهاية')
+    : golden ? '🎲 اختر رقمك'
+    : canThrow ? (h && canUse ? 'استخدم أداتك أو ارمِ النرد 🎲' : 'امسك النرد واسحبه وارمه 🎲')
+    : mine ? '🎲 ...'
+    : S.turnPid === me && S.phase !== 'roll' ? '👀 تابع الشاشة'
+    : 'انتظر دورك — تابع الشاشة';
+  return true;
+}
 
 // ---- phone: the picture puzzle. Two ways (the leader's choice): sliding - drag a piece next to
 // the gap into it; swapping - no gap: tap a piece to lift it, tap another to swap them (tap the
@@ -9612,7 +10954,7 @@ function renderFallPlayer(g, it, alive, outEntry){
     var prev = fp.fxKey; fp.fxKey = key;
     if(prev && v && interPlayerAlive(it, me)){
       if(v.stage === 'pick'){ playSound('submit'); if(navigator.vibrate){ try{ navigator.vibrate(60); }catch(e){} } }
-      else if(v.stage === 'drop'){ if(F.res.fell.indexOf(me) >= 0){ playSound('boom'); if(navigator.vibrate){ try{ navigator.vibrate([80,40,160]); }catch(e){} } } else playSound('correct'); }
+      else if(v.stage === 'drop'){ if(F.res.fell.indexOf(me) >= 0){ playSound('block-fall'); if(navigator.vibrate){ try{ navigator.vibrate([80,40,160]); }catch(e){} } } else playSound('correct'); }
     }
   }
   var ct = v && v.stage === 'pick' && alive ? Math.max(0, (F.pickEnd - now)/1000).toFixed(1) : '';
@@ -9833,7 +11175,7 @@ function diceSend(){ dc.lastSent = Date.now(); sendToHost({t:'dice-fix', sig:dc.
 function diceFix(){
   if(dc.fixed || !dc.vals) return;
   dc.fixed = true;
-  playSound('correct');
+  playSound('submit');   // the same sound as sending an answer in the quick games
   diceSend();
   renderAll();
 }
