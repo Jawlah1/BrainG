@@ -1651,6 +1651,207 @@ body.theme-5 .fg, body.theme-5 .fall-ind-box, body.theme-6 .fg, body.theme-6 .fa
 .sn-use{border-color:var(--metal);box-shadow:0 0 16px -4px rgba(var(--metal-rgb),.8);}
 .sn-ph-info b{color:var(--metal);}
 .sn-gold-b{border-color:var(--metal);border-radius:4px;}
+
+/* ===================== Greed (الطمع) ===================== */
+.gr-c{display:block;border-radius:8%/5.71%;box-shadow:0 3px 8px rgba(0,0,0,.45);-webkit-user-select:none;user-select:none;}
+.gr-stage{--cw:clamp(108px,25vh,260px);--bw:clamp(70px,17vh,170px);position:relative;display:flex;flex-direction:column;align-items:center;gap:1.2vh;direction:ltr;width:min(58vw,1000px);}
+.gr-stage.gr-m{--cw:clamp(88px,18vh,190px);--bw:clamp(52px,11.5vh,120px);width:min(54vw,880px);}
+.gr-stage.gr-l{--cw:clamp(66px,13vh,130px);--bw:clamp(38px,8vh,80px);width:min(52vw,820px);gap:.6vh;}
+.gr-head{display:flex;align-items:center;justify-content:center;gap:14px;min-height:1.5em;font-size:clamp(17px,2.9vh,30px);font-weight:800;color:var(--text);direction:rtl;}
+.gr-who{display:flex;align-items:center;gap:8px;}
+.gr-who b{color:var(--gold);}
+.gr-hic{display:inline-block;height:1.15em;width:auto;vertical-align:-.2em;}
+.gr-time{min-width:1.7em;padding:1px 8px;border-radius:10px;background:var(--panel);text-align:center;font-weight:900;font-variant-numeric:tabular-nums;}
+.gr-time:empty{visibility:hidden;}
+.gr-time.low{color:var(--red, #ef4444);}
+.gr-three{position:relative;margin-top:calc(var(--cw)*.2);display:flex;justify-content:center;gap:clamp(8px,1.4vw,22px);perspective:1100px;min-height:calc(var(--cw)*1.4);}
+.gr-slot{position:relative;isolation:isolate;width:var(--cw);aspect-ratio:5/7;flex:0 0 auto;opacity:0;transform:translate(var(--dx,0),var(--dy,0)) scale(.55) rotate(-8deg);transition:transform .34s cubic-bezier(.2,.8,.3,1), opacity .2s;}
+.gr-slot.in{opacity:1;transform:none;}
+.gr-slot.up{transform:translateY(-10%) scale(1.26);z-index:5;}
+.gr-slot.fly{transform:translate(var(--fx,0),var(--fy,0)) scale(.5);opacity:0;transition:transform .45s ease-in, opacity .45s ease-in;z-index:6;}
+.gr-slot.back2{transform:translate(var(--dx,0),var(--dy,0)) scale(.5) rotate(-12deg);opacity:0;transition:transform .5s ease-in, opacity .5s ease-in;}
+.gr-slot.gone{opacity:0;transform:scale(.8);transition:opacity .25s, transform .25s;}
+.gr-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .62s cubic-bezier(.3,.7,.3,1);}
+.gr-card.flipped{transform:rotateY(180deg);}
+.gr-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:8%/5.71%;box-shadow:0 6px 16px rgba(0,0,0,.5);}
+.gr-face img{display:block;width:100%;height:100%;border-radius:8%/5.71%;}
+.gr-face.front{transform:rotateY(180deg);}
+/* the eye of Peek comes up from behind the card */
+.gr-eye{position:absolute;left:50%;top:0;z-index:-1;width:52%;opacity:0;transform:translate(-50%,0);transition:transform .45s cubic-bezier(.2,.9,.3,1.3), opacity .2s;pointer-events:none;filter:drop-shadow(0 0 8px rgba(255,211,77,.8));}
+.gr-slot.peeked .gr-eye{opacity:1;transform:translate(-50%,-60%);}
+.gr-bottom{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(8px,1.2vw,20px);width:100%;}
+.gr-piles{display:flex;align-items:center;gap:calc(var(--bw)*.1);}
+.gr-deck{position:relative;width:calc(var(--bw)*.64);flex:0 0 auto;}
+.gr-deck img{display:block;width:100%;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5));}
+.gr-deck em, .gr-burn em{position:absolute;left:50%;bottom:-.35em;transform:translateX(-50%);padding:0 7px;border-radius:9px;background:var(--panel);color:var(--gold);font-style:normal;font-weight:900;white-space:nowrap;font-size:clamp(11px,1.7vh,17px);}
+.gr-burn{position:relative;width:calc(var(--bw)*.6);aspect-ratio:5/7;flex:0 0 auto;border-radius:8%/5.71%;}
+.gr-burn.empty{border:2px dashed var(--border);}
+.gr-c.pile{width:100%;filter:brightness(.62) saturate(.8);}
+.gr-coll{position:relative;display:flex;height:calc(var(--bw)*1.42);min-width:0;}
+.gr-row{flex:1 1 0;min-width:0;padding:4px;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:4px;direction:rtl;}
+.gr-c.big{width:var(--gw,var(--bw));animation:gr-land .35s ease-out;}
+.gr-count{min-width:1.5em;font-size:clamp(34px,7vh,76px);font-weight:900;color:var(--gold);text-align:center;font-variant-numeric:tabular-nums;line-height:1;}
+.gr-count.none{visibility:hidden;}
+.gr-count.pop{animation:gr-pop .45s ease-out;}
+.gr-stage.bust .gr-coll{animation:gr-shake .5s linear;}
+.gr-stage.bust .gr-c.big{animation:gr-scatter 1.15s ease-in forwards;}
+.gr-stage.bust .gr-c.big:nth-child(2n){--sx:-140px;--sr:-170deg;}
+.gr-stage.bust .gr-c.big:nth-child(2n+1){--sx:150px;--sr:190deg;}
+.gr-stage.bust .gr-c.big:nth-child(3n){--sx:-60px;--sr:90deg;}
+.gr-stage.seven .gr-c.big.num{animation:gr-glow .8s ease-in-out infinite alternate;}
+.gr-stage.seven .gr-c.big.num:nth-child(2){animation-delay:.1s;} .gr-stage.seven .gr-c.big.num:nth-child(3){animation-delay:.2s;}
+.gr-stage.seven .gr-c.big.num:nth-child(4){animation-delay:.3s;} .gr-stage.seven .gr-c.big.num:nth-child(5){animation-delay:.4s;}
+.gr-stage.seven .gr-c.big.num:nth-child(6){animation-delay:.5s;} .gr-stage.seven .gr-c.big.num:nth-child(7){animation-delay:.6s;}
+.gr-stage.iced .gr-count{color:#a8e0ff;}
+/* a frame only when the collection has something on it */
+.gr-auras{position:absolute;inset:-6px;pointer-events:none;z-index:1;}
+.gr-aura{position:absolute;inset:0;display:block;border-radius:14px;border:3px solid var(--ac);box-shadow:0 0 16px var(--ac), inset 0 0 14px var(--ac);animation:gr-auraon .4s ease-out;pointer-events:none;}
+.gr-aura img{position:absolute;top:0;left:var(--ax,50%);width:clamp(24px,4.6vh,46px);transform:translate(-50%,-55%);filter:drop-shadow(0 0 5px var(--ac));}
+.gr-aura.shield{--ac:rgba(120,195,255,.95);--ax:78%;}
+.gr-aura.second{--ac:rgba(255,95,125,.95);--ax:22%;inset:5px;}
+.gr-aura.ice{--ac:rgba(190,240,255,.95);--ax:50%;inset:-3px;}
+.gr-mini .gr-aura{inset:-5px;border-width:2px;border-radius:9px;}
+.gr-mini .gr-aura.second{inset:-2px;}
+.gr-mini .gr-aura img{width:clamp(16px,2.8vh,28px);}
+/* the burned cards */
+.gr-burnview{position:absolute;inset:0;z-index:12;display:flex;flex-direction:column;gap:1vh;padding:1.4vh 1.2vw;border-radius:16px;background:var(--panel);border:2px solid var(--gold);box-shadow:0 12px 40px rgba(0,0,0,.65);direction:rtl;}
+.gr-bvtitle{flex:0 0 auto;text-align:center;font-size:clamp(18px,3.2vh,32px);font-weight:900;color:var(--gold);}
+.gr-bvgrid{flex:1 1 0;min-height:0;padding:4px;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:4px;direction:ltr;}
+.gr-c.bv{width:var(--gw,60px);}
+.gr-bvnone{flex:1;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:clamp(16px,2.6vh,26px);color:var(--text);}
+.gr-stage.ranking .gr-three, .gr-stage.ranking .gr-bottom, .gr-stage.ranking .gr-head{display:none;}
+.gr-rank{display:flex;flex-direction:column;gap:.7vh;min-width:min(42vw,560px);padding:1.6vh 2vw;border-radius:18px;background:var(--panel);border:1px solid var(--border);direction:rtl;}
+.gr-rtitle{font-size:clamp(20px,3.6vh,36px);font-weight:900;color:var(--gold);text-align:center;}
+.gr-rrow{display:flex;align-items:center;gap:10px;font-size:clamp(15px,2.5vh,26px);font-weight:800;padding:3px 10px;border-radius:9px;opacity:.28;transition:opacity .3s;}
+.gr-rrow.in{opacity:1;}
+.gr-rrow b{flex:1;}
+.gr-rrow em{font-style:normal;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;}
+.gr-rrow.low{background:rgba(220,38,38,.3);box-shadow:inset 0 0 0 2px var(--red, #ef4444);animation:gr-pop .5s ease-out;}
+/* the small collections: coins */
+.gr-minis{position:absolute;inset:0;pointer-events:none;z-index:3;--mw:clamp(20px,3.5vh,36px);}
+.gr-minis.gr-s{--mw:clamp(30px,5.6vh,56px);}
+.gr-minis.gr-m{--mw:clamp(24px,4.6vh,46px);}
+.gr-mini{position:absolute;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:40px;}
+.gr-mini.on .gr-mrow{filter:drop-shadow(0 0 5px var(--gold));}
+.gr-mrow{display:flex;flex-wrap:wrap;justify-content:center;gap:1px;direction:rtl;max-width:calc(var(--mw)*3.5);}
+.gr-mini.wide .gr-mrow{max-width:calc(var(--mw)*7.5);}
+.gr-coin{display:block;width:var(--mw);filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));}
+.gr-mini.iced .gr-mrow{filter:saturate(.45) brightness(1.15) drop-shadow(0 0 6px rgba(160,225,255,.95));}
+.gr-mx{font-size:clamp(20px,3.6vh,36px);font-weight:900;color:var(--red, #ef4444);line-height:1;}
+.gr-mlock{position:absolute;right:-.5em;top:-.5em;font-size:clamp(14px,2.4vh,24px);}
+/* effects */
+.gr-fx{position:absolute;inset:0;pointer-events:none;z-index:20;overflow:hidden;--u:clamp(40px,8vh,84px);}
+.gr-f{position:absolute;direction:ltr;transform:translate(-50%,-50%);line-height:1;font-size:var(--u);white-space:nowrap;}
+.gr-f b, .gr-f i, .gr-f span{font-style:normal;}
+.gr-f-plus, .gr-f-mult{transform:translate(-50%,-100%);}
+.gr-f-plus b{display:block;font-size:.62em;font-weight:900;color:var(--gold);text-shadow:0 0 6px #000, 0 0 16px var(--gold);animation:gr-up 1.2s ease-out forwards;}
+.gr-f-mult b{display:block;font-weight:900;font-size:.75em;color:var(--gold);text-shadow:0 0 6px #000, 0 0 20px var(--gold);animation:gr-stamp 1.3s ease-out forwards;}
+.gr-f-seven b{display:block;font-weight:900;font-size:2.4em;color:var(--gold);text-shadow:0 0 8px #000, 0 0 30px var(--gold);animation:gr-stamp 2.4s ease-out forwards;}
+.gr-f-ice img, .gr-f-heart img, .gr-f-beat img, .gr-f-bin img, .gr-f-pop img, .gr-f-bubble img{display:block;width:1.15em;}
+.gr-f-ice img{filter:drop-shadow(0 0 10px #9be7ff);}
+.gr-f-heart img{animation:gr-stamp 1.1s ease-out forwards;}
+.gr-f-lock b{display:block;font-size:1.3em;filter:drop-shadow(0 0 10px #ffd34d);animation:gr-drop 1s ease-out forwards;}
+.gr-f-pop i, .gr-f-bubble i{display:block;width:2.2em;height:2.2em;border-radius:50%;border:3px solid rgba(130,205,255,.95);box-shadow:0 0 18px rgba(130,205,255,.9), inset 0 0 14px rgba(130,205,255,.6);}
+.gr-f-pop img, .gr-f-bubble img{position:absolute;left:50%;top:50%;margin:-.575em 0 0 -.575em;}
+.gr-f-pop i{animation:gr-burst .8s ease-out forwards;}
+.gr-f-bubble i{animation:gr-grow .8s ease-out forwards;}
+.gr-f-pop img{animation:gr-burst .8s ease-out forwards;}
+.gr-f-bubble img{animation:gr-stamp .8s ease-out forwards;}
+.gr-f-beat img{animation:gr-beat .5s ease-in-out 2;}
+.gr-f-shuffle b{display:block;animation:gr-stamp .9s ease-out forwards;}
+.gr-f-hand{width:calc(var(--u)*1.3);}
+.gr-f-hand .hand{display:block;width:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,.55));}
+.gr-f-hand .hcard{position:absolute;left:14%;top:80%;width:72%;opacity:0;}
+.gr-f-hand.holding .hcard{opacity:1;}
+.gr-f-bin img{width:1.5em;filter:drop-shadow(0 0 10px #ffd34d);}
+.gr-f-bin .bcard{position:absolute;left:50%;top:-180%;width:calc(var(--u)*.9);transform:translateX(-50%);animation:gr-tobin 1.1s ease-in forwards;}
+.gr-f-cardfly .fcard{width:calc(var(--u)*1.2);}
+@keyframes gr-land{0%{transform:scale(1.5);opacity:.3;}100%{transform:none;opacity:1;}}
+@keyframes gr-pop{0%{transform:scale(1);}40%{transform:scale(1.45);}100%{transform:scale(1);}}
+@keyframes gr-auraon{0%{opacity:0;transform:scale(1.08);}100%{opacity:1;transform:none;}}
+@keyframes gr-shake{0%,100%{transform:none;}20%{transform:translateX(-9px) rotate(-1deg);}40%{transform:translateX(9px) rotate(1deg);}60%{transform:translateX(-6px);}80%{transform:translateX(6px);}}
+@keyframes gr-scatter{0%{transform:none;opacity:1;}35%{transform:translate(calc(var(--sx,80px)*.4),-30px) rotate(calc(var(--sr,90deg)*.3));opacity:1;}100%{transform:translate(var(--sx,80px),240px) rotate(var(--sr,90deg));opacity:0;}}
+@keyframes gr-glow{to{filter:brightness(1.35) drop-shadow(0 0 12px #ffd34d);transform:translateY(-6px);}}
+@keyframes gr-up{0%{transform:translateY(0) scale(.7);opacity:0;}20%{opacity:1;transform:translateY(-14px) scale(1.15);}100%{transform:translateY(-70px) scale(1);opacity:0;}}
+@keyframes gr-stamp{0%{transform:scale(.2);opacity:0;}25%{transform:scale(1.5);opacity:1;}70%{transform:scale(1.15);opacity:1;}100%{transform:scale(1.05);opacity:0;}}
+@keyframes gr-drop{0%{transform:translateY(-70px) scale(1.6);opacity:0;}40%{transform:none;opacity:1;}100%{transform:none;opacity:0;}}
+@keyframes gr-burst{0%{transform:scale(.8);opacity:1;}100%{transform:scale(2.2);opacity:0;}}
+@keyframes gr-grow{0%{transform:scale(.2);opacity:0;}100%{transform:scale(1.4);opacity:0;}50%{opacity:1;}}
+@keyframes gr-beat{50%{transform:scale(1.4);}}
+@keyframes gr-tobin{0%{top:-180%;opacity:1;}70%{top:-10%;opacity:1;transform:translateX(-50%) rotate(14deg);}100%{top:10%;opacity:0;transform:translateX(-50%) rotate(30deg) scale(.4);}}
+/* phone */
+.greed-wrap-ph{flex:1 1 0;min-height:0;position:relative;display:flex;flex-direction:column;align-items:stretch;gap:1vh;padding:1vh 12px calc(1.1vh + env(safe-area-inset-bottom));direction:rtl;}
+.gq-top{flex:0 0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;padding:6px 10px;border-radius:14px;background:var(--panel);border:1px solid var(--border);}
+.gq-topr{display:flex;align-items:center;gap:8px;min-width:0;}
+.gq-topr b{min-width:0;font-size:clamp(14px,2.3vh,20px);font-weight:900;line-height:1.15;color:var(--gold);overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
+.gq-topl{display:flex;align-items:center;justify-content:flex-end;gap:8px;}
+.gq-total{font-size:clamp(26px,4.6vh,40px);font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;}
+.gq-top .keys-count{font-size:clamp(24px,4.2vh,36px);min-width:1.3em;text-align:center;}
+.gq-listbtn{padding:4px 8px;border-radius:10px;border:1px solid var(--gold);background:var(--panel2);font-size:clamp(17px,2.8vh,24px);cursor:pointer;}
+#greed-avatar{position:relative;left:auto;right:auto;top:auto;bottom:auto;flex:0 0 auto;width:clamp(44px,6.6vh,64px);height:clamp(55px,8.2vh,80px);}
+.gq-three{flex:0 0 auto;--cw:min(28vw,22vh);gap:2.4vw;perspective:900px;direction:ltr;}
+.greed-wrap-ph.phones .gq-three{--cw:min(27vw,17vh);}
+.gq-three .gr-slot{cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.gq-three.peeking .gr-slot:not(.peeked){animation:gq-peekpulse 1.1s ease-in-out infinite;}
+@keyframes gq-peekpulse{50%{transform:scale(1.03);}}
+.gq-other{position:relative;flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:.6vh;}
+.gq-oname{flex:0 0 auto;text-align:center;font-weight:800;font-size:clamp(14px,2.3vh,19px);color:var(--text);}
+.gq-oname b{color:var(--gold);font-size:1.25em;}
+.gq-cards{position:relative;flex:1 1 0;min-height:0;padding:4px;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:4px;direction:rtl;}
+.gr-c.gq-c{width:var(--gw,18vw);cursor:pointer;animation:gr-land .35s ease-out;}
+.gq-rankrows{width:100%;display:flex;flex-direction:column;gap:5px;}
+.gq-rankrows div{display:flex;justify-content:space-between;padding:6px 12px;border-radius:10px;background:var(--panel);font-weight:800;}
+.gq-rankrows em{font-style:normal;color:var(--gold);}
+.gq-freeze{flex:0 0 auto;width:100%;padding:11px;border-radius:14px;border:2px solid var(--gold);background:var(--panel);color:var(--text);font-family:inherit;font-weight:900;font-size:clamp(16px,2.5vh,21px);cursor:pointer;}
+.gq-freeze.ghost{visibility:hidden;}
+.gq-tools{flex:0 0 auto;display:flex;gap:8px;}
+.gq-tools button{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 4px;border-radius:12px;border:1px solid var(--gold);background:var(--panel2);color:var(--text);font-family:inherit;font-weight:800;font-size:clamp(13px,2.1vh,17px);cursor:pointer;}
+.gq-tools button.on{background:var(--gold);color:var(--panel2);}
+.gq-i{display:inline-block;height:1.35em;width:auto;vertical-align:-.3em;}
+.gq-foot{flex:0 0 auto;display:flex;align-items:center;gap:10px;direction:ltr;}
+.gq-deck{position:relative;flex:0 0 auto;width:clamp(30px,5.4vh,46px);}
+.gq-deck img{display:block;width:100%;}
+.gq-deck em{position:absolute;left:100%;bottom:0;margin-left:3px;font-style:normal;font-weight:900;color:var(--gold);font-size:clamp(11px,1.7vh,15px);}
+.gq-burnbtn{margin-left:auto;padding:6px 10px;border-radius:10px;border:1px solid var(--gold);background:var(--panel2);color:var(--text);font-family:inherit;font-weight:800;font-size:clamp(12px,1.9vh,15px);cursor:pointer;direction:rtl;}
+.gq-burnbtn.off{opacity:.45;border-color:var(--border);cursor:default;}
+.gq-drawer{flex:0 0 auto;width:100%;padding:9px;border-radius:12px 12px 4px 4px;border:1px solid var(--gold);background:var(--panel2);color:var(--text);font-family:inherit;font-weight:800;font-size:clamp(14px,2.3vh,18px);cursor:pointer;}
+.gq-drawer b{color:var(--gold);}
+.gq-mine{position:relative;flex:1 1 0;min-height:clamp(70px,14vh,130px);display:flex;}
+.gq-mine.sheeted{position:absolute;left:12px;right:12px;bottom:calc(1.1vh + 44px + env(safe-area-inset-bottom));height:58%;z-index:6;padding:12px 8px;border-radius:14px;background:var(--panel2);border:1px solid var(--gold);box-shadow:0 -6px 24px rgba(0,0,0,.5);}
+.gq-mine.locked::after{content:"🔒";position:absolute;top:-6px;right:-2px;font-size:22px;}
+.greed-wrap-ph .gr-auras{inset:0;}
+.gq-sheet, .gq-list{position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;gap:7px;padding:10px 12px;overflow-y:auto;background:var(--panel2);border-radius:14px;}
+.gq-list{z-index:7;}
+.gq-burnview{position:absolute;inset:0;z-index:9;display:flex;flex-direction:column;gap:8px;padding:10px 12px;background:var(--panel2);border-radius:14px;}
+.gq-zoom{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:4vh 4vw;background:rgba(0,0,0,.82);cursor:pointer;}
+.gq-zoom img{display:block;width:min(92vw,calc(88vh*5/7));height:auto;border-radius:8%/5.71%;box-shadow:0 12px 40px rgba(0,0,0,.7);animation:gq-zoomin .18s ease-out;}
+@keyframes gq-zoomin{0%{transform:scale(.55);opacity:.3;}100%{transform:none;opacity:1;}}
+.gq-shead{display:flex;align-items:center;justify-content:space-between;font-size:clamp(17px,2.8vh,23px);font-weight:900;color:var(--gold);}
+.gq-shead i{font-style:normal;color:var(--text);font-variant-numeric:tabular-nums;}
+.gq-row{display:flex;align-items:center;gap:8px;width:100%;padding:6px 8px;border-radius:12px;border:1px solid var(--gold);background:var(--panel);color:var(--text);font-family:inherit;text-align:right;cursor:pointer;}
+.gq-row.off{opacity:.42;border-color:var(--border);cursor:default;}
+.gq-lrow.on .gq-row{box-shadow:0 0 10px var(--gold);}
+.gq-row u{text-decoration:none;color:var(--sub);}
+.gq-lcards{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;padding:8px 2px;direction:rtl;}
+.gr-c.gl{width:min(21vw,13vh);cursor:pointer;}
+.gq-av{position:relative;flex:0 0 auto;width:40px;height:50px;overflow:hidden;}
+.gq-av img{position:absolute;height:auto;max-width:none;}
+.gq-rname{display:flex;flex-direction:column;min-width:56px;max-width:30%;}
+.gq-rname.wide{flex:1;max-width:none;}
+.gq-rname b{font-size:15px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.gq-rname small{font-size:12px;color:var(--sub);}
+.gq-rcards{flex:1;display:flex;flex-wrap:wrap;gap:2px;direction:rtl;}
+.gq-rcards .gr-coin{width:clamp(30px,8.6vw,36px);}
+.gq-row em{font-style:normal;font-weight:900;color:var(--gold);min-width:1.6em;text-align:center;}
+.gq-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;direction:ltr;}
+.gq-steal{width:min(27vw,17vh);padding:0;border:none;background:none;cursor:pointer;}
+.gq-steal img{width:100%;}
+.gq-back{flex:0 0 auto;padding:10px;border-radius:12px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-family:inherit;font-weight:800;cursor:pointer;}
+.gq-top, .gq-freeze, .gq-row{border-radius:4px;border-color:rgba(var(--metal-rgb),.55);}
+.gr-who b, .gr-count, .gq-topr b, .gr-deck em, .gr-burn em, .gr-rrow em, .gr-rtitle, .gr-bvtitle, .gr-f-plus b, .gr-f-mult b, .gr-f-seven b, .gq-shead, .gq-row em, .gq-oname b, .gq-drawer b{color:var(--metal);}
+.gr-rtitle, .gr-bvtitle{font-family:var(--f-display);}
+.gq-tools button{border-color:rgba(var(--metal-rgb),.55);border-radius:4px;}
+.gq-tools button.on{background:var(--metal);}
 </style>
 </head>
 <body>
@@ -1801,6 +2002,17 @@ body.theme-5 .fg, body.theme-5 .fall-ind-box, body.theme-6 .fg, body.theme-6 .fa
           <select id="snake-tools-select"><option value="on" selected>مع أدوات</option><option value="off">بدون أدوات</option></select>
           <label>كمية الأدوات</label>
           <select id="snake-level-select"><option value="calm">هادئ</option><option value="balanced" selected>متوازن</option><option value="chaos">فوضى</option></select>
+          <div class="set-sep"></div>
+          <label>طريقة لعب الطمع</label>
+          <select id="greed-mode-select"><option value="elim" selected>جولات إقصاء (الأقل نقاطاً يطلع)</option><option value="single">جولة وحدة (الأعلى يفوز)</option></select>
+          <label>وقت الدور في الطمع</label>
+          <select id="greed-sec-select"><option value="10">10 ثواني</option><option value="15" selected>15 ثانية</option><option value="20">20 ثانية</option><option value="30">30 ثانية</option></select>
+          <label>لو انتهى وقت الدور في الطمع</label>
+          <select id="greed-timeout-select"><option value="freeze" selected>يتجمد (أول دور: سحب عشوائي)</option><option value="draw">سحب عشوائي دائماً</option></select>
+          <label>بطاقات المضاعفة في الطمع</label>
+          <select id="greed-mult-select"><option value="all" selected>تنحسب كلها (x2 و x3 = x6)</option><option value="top">الأعلى فقط (الأقل أو المساوي تنحرق)</option></select>
+          <label>نظام لعب الطمع</label>
+          <select id="greed-view-select"><option value="display" selected>شاشة العرض</option><option value="phones">كل واحد في جواله</option></select>
           <div class="set-sep"></div>
           <button class="gold" id="btn-start-inter">🎯 ابدأ الألعاب التفاعلية</button>
         </div>
@@ -1968,6 +2180,21 @@ body.theme-5 .fg, body.theme-5 .fall-ind-box, body.theme-6 .fg, body.theme-6 .fa
       <div class="dice-tray sn-tray" id="snake-tray"></div>
       <div class="sn-toast" id="snake-toast"></div>
     </div>
+    <!-- Interactive game: greed (the three cards are the buttons) -->
+    <div id="greed-container" class="greed-wrap-ph hidden">
+      <div class="gq-top"><div class="gq-topr"><div class="rc-avatar hidden" id="greed-avatar"></div><b id="greed-turn"></b></div><div class="keys-count" id="greed-count"></div><div class="gq-topl"><button type="button" class="gq-listbtn hidden" id="greed-list-btn">👥</button><div class="gq-total" id="greed-total"></div></div></div>
+      <div class="gr-three gq-three hidden" id="greed-three"></div>
+      <div class="gq-other hidden" id="greed-other"><div class="gq-oname" id="greed-other-name"></div><div class="gq-cards" id="greed-other-cards"></div></div>
+      <button type="button" class="gq-freeze hidden" id="greed-freeze">🔒 جمّد بطاقاتي</button>
+      <div class="gq-tools hidden" id="greed-tools"></div>
+      <div class="gq-mine" id="greed-mine"><div class="gr-auras" id="greed-mine-auras"></div><div class="gq-cards" id="greed-mine-cards"></div></div>
+      <div class="gq-foot"><div class="gq-deck" id="greed-deck"><img alt="" draggable="false" src="https://raw.githubusercontent.com/Jawlah1/RandFiles/main/deck_stack.webp"><em id="greed-left"></em></div><button type="button" class="gq-burnbtn off" id="greed-burn-btn" disabled></button></div>
+      <button type="button" class="gq-drawer hidden" id="greed-drawer"></button>
+      <div class="gq-list hidden" id="greed-list"></div>
+      <div class="gq-sheet hidden" id="greed-sheet"></div>
+      <div class="gq-burnview hidden" id="greed-burnview"></div>
+      <div class="gq-zoom hidden" id="greed-zoom"></div>
+    </div>
     <div id="submitted-label" class="submitted-label hidden" style="text-align:center;">SUBMITED!</div>
     <div class="leader-inline-btns">
       <button class="gold hidden" id="btn-next-round">▶ الجولة التالية</button>
@@ -2079,6 +2306,16 @@ loadSoundBuffer('gun-reload', ASSET_BASE+'gunreload.mp3');
 loadSoundBuffer('gun-shot', ASSET_BASE+'gunshot.mp3');
 loadSoundBuffer('glass', ASSET_BASE+'glass_break.mp3');
 loadSoundBuffer('wrong-click', ASSET_BASE+'wrong_click.mp3');
+// Greed (الطمع): the cards
+loadSoundBuffer('card-draw', ASSET_BASE+'card_draw.wav');
+loadSoundBuffer('card-error', ASSET_BASE+'error.mp3');
+loadSoundBuffer('card-flip', ASSET_BASE+'card_flip.mp3');
+loadSoundBuffer('card-take', ASSET_BASE+'card_take.wav');
+loadSoundBuffer('card-shuffle', ASSET_BASE+'deck_shuffle.wav');
+loadSoundBuffer('card-plus', ASSET_BASE+'plus.mp3');
+loadSoundBuffer('card-second', ASSET_BASE+'second_chance.mp3');
+loadSoundBuffer('card-shield', ASSET_BASE+'shield.mp3');
+loadSoundBuffer('card-trash', ASSET_BASE+'trash.wav');
 function playBuffer(buffer, gainValue){
   var ctx = getAudioCtx();
   if(!ctx || !buffer) return null;
@@ -2544,14 +2781,14 @@ function fmtScore(n){ return String(Math.round((n||0)*1000)/1000); }
 var els = {};
 ['btn-create-room','btn-show-join','join-box','player-name','room-code-input','btn-join-room','home-status',
  'lobby-host-view','lobby-player-view','room-code-display','room-code-display2','lobby-players','leader-settings','reconnect-banner','lobby-settings-summary',
- 'round-count-input','btn-start-quick','btn-start-bomb','leader-ready-status','btn-ready','btn-leave-lobby','lobby-status','theme-picker','game-picker','bomb-cols-input','bomb-scoring-select','bomb-rounds-box','bomb-rounds-input','flags-rounds-input','btn-start-flags','words-rounds-input','words-attempts-input','words-time-input','words-strict-select','words-bonus-select','btn-start-words','inter-game-picker','inter-music-select','inter-rounds-input','inter-sec-input','elec-size-select','elec-sec-input','fall-size-select','fall-pick-select','crash-mode-select','crash-min-input','crash-items-select','gifts-sec-input','gifts-speed-select','gifts-level-select','puzzle-mode-select','puzzle-size-select','puzzle-min-input','snake-size-select','snake-dice-select','snake-end-select','snake-extra-select','snake-tools-select','snake-level-select','puzzle-play-select','puzzle-show-select','puzzle-hint-select','btn-start-inter',
+ 'round-count-input','btn-start-quick','btn-start-bomb','leader-ready-status','btn-ready','btn-leave-lobby','lobby-status','theme-picker','game-picker','bomb-cols-input','bomb-scoring-select','bomb-rounds-box','bomb-rounds-input','flags-rounds-input','btn-start-flags','words-rounds-input','words-attempts-input','words-time-input','words-strict-select','words-bonus-select','btn-start-words','inter-game-picker','inter-music-select','inter-rounds-input','inter-sec-input','elec-size-select','elec-sec-input','fall-size-select','fall-pick-select','crash-mode-select','crash-min-input','crash-items-select','gifts-sec-input','gifts-speed-select','gifts-level-select','puzzle-mode-select','puzzle-size-select','puzzle-min-input','snake-size-select','snake-dice-select','snake-end-select','snake-extra-select','snake-tools-select','snake-level-select','greed-mode-select','greed-sec-select','greed-timeout-select','greed-mult-select','greed-view-select','puzzle-play-select','puzzle-show-select','puzzle-hint-select','btn-start-inter',
  'display-wrap','round-indicator','game-name-label','arena-wrap','arena-center','next-round-label',
  'ready-overlay','ready-gtitle','ready-cdnum','round-overlay','ov-title','ov-table','ov-status',
  'pcontrols-wrap','p-round-indicator','p-game-name-label','p-score-label','notif-bar','pgrid-container',
  'counter-container','counter-num','counter-btn','counter-minus-btn','submitted-label','btn-submit',
  'flags-pad-container','flags-remaining','flags-char-img','dpad-up','dpad-left','dpad-right','dpad-down','btn-flags-reset','dpad-up-img','dpad-left-img','dpad-right-img','dpad-down-img',
  'words-container','words-board','words-toast','words-kb','words-giveup',
- 'inter-container','rc-belt','rc-score','rc-timer','rc-recycle','rc-pass','elim-overlay','rc-furnace','char-layer','inter-pick','rc-avatar','faceoff','roundwin','cv-container','cv-fire','cv-belt','cv-box','cv-arrow','cv-pad','cv-avatar','keys-container','keys-count','keys-map','keys-avatar','memo-container','memo-count','memo-grid','memo-grid2','memo-submit','memo-avatar','dice-container','dice-panel','dice-total','dice-count','dice-tray','dice-fix','dice-hint','dice-avatar','elec-container','elec-count','elec-board','elec-avatar','fall-container','fall-ind-ph','fall-count','fall-board','fall-avatar','crash-container','crash-item','crash-pts','crash-cyc','crash-eff','crash-avatar','crash-joy','crash-knob','crash-fire-l','crash-fire-r','gifts-container','gifts-stage','gifts-score','gifts-time','gifts-items','gifts-avatar','gifts-fx','gifts-btns','puzzle-container','puzzle-count','puzzle-moves','puzzle-board','puzzle-peek','puzzle-avatar','snake-container','snake-avatar','snake-turn','snake-pos','snake-count','snake-badges','snake-use','snake-gold','snake-tray','snake-toast',
+ 'inter-container','rc-belt','rc-score','rc-timer','rc-recycle','rc-pass','elim-overlay','rc-furnace','char-layer','inter-pick','rc-avatar','faceoff','roundwin','cv-container','cv-fire','cv-belt','cv-box','cv-arrow','cv-pad','cv-avatar','keys-container','keys-count','keys-map','keys-avatar','memo-container','memo-count','memo-grid','memo-grid2','memo-submit','memo-avatar','dice-container','dice-panel','dice-total','dice-count','dice-tray','dice-fix','dice-hint','dice-avatar','elec-container','elec-count','elec-board','elec-avatar','fall-container','fall-ind-ph','fall-count','fall-board','fall-avatar','crash-container','crash-item','crash-pts','crash-cyc','crash-eff','crash-avatar','crash-joy','crash-knob','crash-fire-l','crash-fire-r','gifts-container','gifts-stage','gifts-score','gifts-time','gifts-items','gifts-avatar','gifts-fx','gifts-btns','puzzle-container','puzzle-count','puzzle-moves','puzzle-board','puzzle-peek','puzzle-avatar','snake-container','snake-avatar','snake-turn','snake-pos','snake-count','snake-badges','snake-use','snake-gold','snake-tray','snake-toast','greed-container','greed-avatar','greed-turn','greed-count','greed-total','greed-three','greed-freeze','greed-tools','greed-mine','greed-sheet','greed-list-btn','greed-other','greed-other-name','greed-other-cards','greed-mine-auras','greed-mine-cards','greed-deck','greed-left','greed-burn-btn','greed-drawer','greed-list','greed-burnview','greed-zoom',
  'btn-next-round','btn-bomb-new-round','btn-reset-all-scores','btn-rename','my-theme-box','my-theme-picker','display-theme-wrap','btn-bomb-to-lobby','btn-bomb-continue','winner-screen',
  'victory-audio-box','btn-pick-victory-audio','victory-audio-input','victory-audio-status'
 ].forEach(function(id){ els[toCamel(id)] = document.getElementById(id); });
@@ -2873,6 +3110,8 @@ function hostHandleMessage(msg, conn){
     hostTryStartInter(msg.senderId, msg, conn);
   } else if(msg.t === 'inter-score'){
     hostInterScore(msg.senderId, msg);
+  } else if(msg.t === 'greed'){
+    hostGreedMsg(msg.senderId, msg);
   } else if(msg.t === 'snake-roll'){
     hostSnakeRoll(msg.senderId, msg);
   } else if(msg.t === 'snake-use'){
@@ -3136,6 +3375,8 @@ function clientHandleMessage(msg){
     app.myName = msg.name;
     var nameInput = document.getElementById('player-name');
     if(nameInput) nameInput.value = msg.name;
+  } else if(msg.t === 'greed-peek'){
+    gqPeekMsg(msg);
   } else if(msg.t === 'puzzle-ack'){
     if(msg.sig === pzp.sig) pzp.acked = true;   // the display has my finished picture
   } else if(msg.t === 'gift-seq'){
@@ -3339,6 +3580,11 @@ function syncLobbySettingsFromLeaderUI(){
     snakeExtra: els.snakeExtraSelect.value === 'off' ? 'off' : 'on',
     snakeTools: els.snakeToolsSelect.value === 'off' ? 'off' : 'on',
     snakeLevel: ['calm','balanced','chaos'].indexOf(els.snakeLevelSelect.value) >= 0 ? els.snakeLevelSelect.value : 'balanced',
+    greedMode: els.greedModeSelect.value === 'single' ? 'single' : 'elim',
+    greedSec: parseInt(els.greedSecSelect.value,10) || 15,
+    greedTimeout: els.greedTimeoutSelect.value === 'draw' ? 'draw' : 'freeze',
+    greedMult: els.greedMultSelect.value === 'top' ? 'top' : 'all',
+    greedView: els.greedViewSelect.value === 'phones' ? 'phones' : 'display',
     interMusic: els.interMusicSelect.value === 'off' ? 'off' : 'on',
     interGames: (app.selectedInterGames || []).slice()
   }});
@@ -3384,7 +3630,7 @@ function renderLobbySettingsSummary(g){
     '<div>💣 <b>لعبة القنابل:</b> '+(ls.bombCols||8)+' مراحل — '+bombModeLabel+'</div>' +
     '<div>🚩 <b>لعبة الأعلام:</b> '+(ls.flagsRoundsTotal||5)+' جولة</div>' +
     '<div>🔤 <b>لعبة الكلمات:</b> '+(ls.wordsRoundsTotal||5)+' جولة — '+(ls.wordsAttempts||6)+' محاولات — '+(ls.wordsMinutes||5)+' دقائق للجولة'+(ls.wordsStrict==='any'?' — أي 5 أحرف':' — كلمات القاموس فقط')+(ls.wordsBonus==='off'?' — بدون نقاط المحاولات المتبقية':'')+'</div>' +
-    '<div>🎯 <b>الألعاب التفاعلية:</b> '+escapeHtml(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).map(function(k){ return interGameLabel(k); }).join('، '))+' — '+(ls.interRoundsTotal||3)+' جولات — '+(ls.interSec||20)+' ثانية لكل إقصاء'+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('elec') >= 0 ? ' — الكهرباء: '+(ls.elecSize||4)+'×'+(ls.elecSize||4)+'، '+(ls.elecSec||75)+' ثانية' : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('fall') >= 0 ? ' — لا تطيح: '+(ls.fallSize||6)+'×'+(ls.fallSize||6)+'، '+(ls.fallPick||3)+' ث للاختيار' : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('crash') >= 0 ? ' — كراش باش: '+(ls.crashMode === 'single' ? 'جولة وحدة' : 'إقصاء')+'، '+(ls.crashMin||1)+' د، الأدوات '+({focus:'تركيز', chaos:'فوضى'}[ls.crashItems] || 'متوازن') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('gifts') >= 0 ? ' — الهدايا: '+(ls.giftsSec||45)+' ثانية، '+(ls.giftsSpeed === 'steady' ? 'سرعة ثابتة' : 'متسارعة')+'، السرعة '+(ls.giftsLevel||2)+(ls.giftsLevel == 5 ? ' (المستحيل)' : '') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('puzzle') >= 0 ? ' — ترتيب الصورة: '+(ls.puzzleSize||3)+'×'+(ls.puzzleSize||3)+'، '+(ls.puzzleMin||1)+' د، '+(ls.puzzleMode === 'single' ? 'جولة وحدة' : 'إقصاء')+'، '+(ls.puzzlePlay === 'swap' ? 'تبديل' : 'سحب')+'، الصورة '+(ls.puzzleShow === 'hide' ? 'مخفية' : 'ظاهرة')+(ls.puzzleHint === 'on' ? '، مع لمعة' : '') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('snake') >= 0 ? ' — الأفعى: '+(ls.snakeSize||10)+'×'+(ls.snakeSize||10)+'، '+(ls.snakeDice == 2 ? 'نردين' : 'نرد واحد')+'، '+(ls.snakeEnd === 'exact' ? 'الرقم بالضبط' : 'ارتداد')+(ls.snakeExtra === 'off' ? '' : '، رمية إضافية')+'، '+(ls.snakeTools === 'off' ? 'بدون أدوات' : 'أدوات '+({calm:'هادئة', chaos:'فوضى'}[ls.snakeLevel] || 'متوازنة')) : '')+(ls.interMusic === 'off' ? ' — بدون موسيقى' : '')+'</div>' +
+    '<div>🎯 <b>الألعاب التفاعلية:</b> '+escapeHtml(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).map(function(k){ return interGameLabel(k); }).join('، '))+' — '+(ls.interRoundsTotal||3)+' جولات — '+(ls.interSec||20)+' ثانية لكل إقصاء'+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('elec') >= 0 ? ' — الكهرباء: '+(ls.elecSize||4)+'×'+(ls.elecSize||4)+'، '+(ls.elecSec||75)+' ثانية' : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('fall') >= 0 ? ' — لا تطيح: '+(ls.fallSize||6)+'×'+(ls.fallSize||6)+'، '+(ls.fallPick||3)+' ث للاختيار' : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('crash') >= 0 ? ' — كراش باش: '+(ls.crashMode === 'single' ? 'جولة وحدة' : 'إقصاء')+'، '+(ls.crashMin||1)+' د، الأدوات '+({focus:'تركيز', chaos:'فوضى'}[ls.crashItems] || 'متوازن') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('gifts') >= 0 ? ' — الهدايا: '+(ls.giftsSec||45)+' ثانية، '+(ls.giftsSpeed === 'steady' ? 'سرعة ثابتة' : 'متسارعة')+'، السرعة '+(ls.giftsLevel||2)+(ls.giftsLevel == 5 ? ' (المستحيل)' : '') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('puzzle') >= 0 ? ' — ترتيب الصورة: '+(ls.puzzleSize||3)+'×'+(ls.puzzleSize||3)+'، '+(ls.puzzleMin||1)+' د، '+(ls.puzzleMode === 'single' ? 'جولة وحدة' : 'إقصاء')+'، '+(ls.puzzlePlay === 'swap' ? 'تبديل' : 'سحب')+'، الصورة '+(ls.puzzleShow === 'hide' ? 'مخفية' : 'ظاهرة')+(ls.puzzleHint === 'on' ? '، مع لمعة' : '') : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('snake') >= 0 ? ' — الأفعى: '+(ls.snakeSize||10)+'×'+(ls.snakeSize||10)+'، '+(ls.snakeDice == 2 ? 'نردين' : 'نرد واحد')+'، '+(ls.snakeEnd === 'exact' ? 'الرقم بالضبط' : 'ارتداد')+(ls.snakeExtra === 'off' ? '' : '، رمية إضافية')+'، '+(ls.snakeTools === 'off' ? 'بدون أدوات' : 'أدوات '+({calm:'هادئة', chaos:'فوضى'}[ls.snakeLevel] || 'متوازنة')) : '')+(((ls.interGames&&ls.interGames.length)?ls.interGames:INTER_GAME_KEYS).indexOf('greed') >= 0 ? ' — الطمع: '+(ls.greedMode === 'single' ? 'جولة وحدة' : 'إقصاء')+'، '+(ls.greedSec||15)+' ثانية للدور، عند انتهاء الوقت '+(ls.greedTimeout === 'draw' ? 'سحب عشوائي' : 'يتجمد')+'، المضاعفة: '+(ls.greedMult === 'top' ? 'الأعلى فقط' : 'كلها')+'، النظام: '+(ls.greedView === 'phones' ? 'كل واحد في جواله' : 'شاشة العرض') : '')+(ls.interMusic === 'off' ? ' — بدون موسيقى' : '')+'</div>' +
     '<div>🎨 <b>لون شاشة العرض:</b><div class="theme-picker">'+swatchesHtml+'</div></div>';
 }
 
@@ -3647,6 +3893,11 @@ els.btnStartInter.addEventListener('click', function(){
     snakeExtra: els.snakeExtraSelect.value === 'off' ? 'off' : 'on',
     snakeTools: els.snakeToolsSelect.value === 'off' ? 'off' : 'on',
     snakeLevel: ['calm','balanced','chaos'].indexOf(els.snakeLevelSelect.value) >= 0 ? els.snakeLevelSelect.value : 'balanced',
+    greedMode: els.greedModeSelect.value === 'single' ? 'single' : 'elim',
+    greedSec: parseInt(els.greedSecSelect.value,10) || 15,
+    greedTimeout: els.greedTimeoutSelect.value === 'draw' ? 'draw' : 'freeze',
+    greedMult: els.greedMultSelect.value === 'top' ? 'top' : 'all',
+    greedView: els.greedViewSelect.value === 'phones' ? 'phones' : 'display',
     music: els.interMusicSelect.value === 'off' ? 'off' : 'on',
     games: (app.selectedInterGames || INTER_GAME_KEYS).slice()});
 });
@@ -3668,7 +3919,7 @@ els.puzzlePlaySelect.addEventListener('change', syncLobbySettingsFromLeaderUI);
 els.puzzleShowSelect.addEventListener('change', syncLobbySettingsFromLeaderUI);
 els.puzzleHintSelect.addEventListener('change', syncLobbySettingsFromLeaderUI);
 els.puzzleMinInput.addEventListener('input', syncLobbySettingsFromLeaderUI);
-['snakeSizeSelect','snakeDiceSelect','snakeEndSelect','snakeExtraSelect','snakeToolsSelect','snakeLevelSelect'].forEach(function(k){ els[k].addEventListener('change', syncLobbySettingsFromLeaderUI); });
+['greedModeSelect','greedSecSelect','greedTimeoutSelect','greedMultSelect','greedViewSelect','snakeSizeSelect','snakeDiceSelect','snakeEndSelect','snakeExtraSelect','snakeToolsSelect','snakeLevelSelect'].forEach(function(k){ els[k].addEventListener('change', syncLobbySettingsFromLeaderUI); });
 // a bigger picture takes longer: the time follows the size (the leader can still change it)
 els.puzzleSizeSelect.addEventListener('change', function(){ els.puzzleMinInput.value = ({3:1, 4:3, 5:6, 6:10})[els.puzzleSizeSelect.value] || 1; syncLobbySettingsFromLeaderUI(); });
 els.btnStartWords.addEventListener('click', function(){
@@ -3913,7 +4164,7 @@ function renderGameScreen(){
   showScreen('screen-game');
   var g = app.game;
   if(g.mode !== 'words') els.wordsContainer.classList.add('hidden');
-  if(g.mode !== 'interactive'){ els.interContainer.classList.add('hidden'); els.elimOverlay.classList.add('hidden'); els.interPick.classList.add('hidden'); els.faceoff.classList.add('hidden'); els.roundwin.classList.add('hidden'); els.cvContainer.classList.add('hidden'); els.keysContainer.classList.add('hidden'); els.memoContainer.classList.add('hidden'); els.diceContainer.classList.add('hidden'); els.elecContainer.classList.add('hidden'); els.fallContainer.classList.add('hidden'); els.crashContainer.classList.add('hidden'); els.giftsContainer.classList.add('hidden'); els.puzzleContainer.classList.add('hidden'); els.snakeContainer.classList.add('hidden'); hideCharSprites(); els.arenaWrap.classList.remove('inter-mode'); }
+  if(g.mode !== 'interactive'){ els.interContainer.classList.add('hidden'); els.elimOverlay.classList.add('hidden'); els.interPick.classList.add('hidden'); els.faceoff.classList.add('hidden'); els.roundwin.classList.add('hidden'); els.cvContainer.classList.add('hidden'); els.keysContainer.classList.add('hidden'); els.memoContainer.classList.add('hidden'); els.diceContainer.classList.add('hidden'); els.elecContainer.classList.add('hidden'); els.fallContainer.classList.add('hidden'); els.crashContainer.classList.add('hidden'); els.giftsContainer.classList.add('hidden'); els.puzzleContainer.classList.add('hidden'); els.snakeContainer.classList.add('hidden'); els.greedContainer.classList.add('hidden'); hideCharSprites(); greedHideLayers(); els.arenaWrap.classList.remove('inter-mode'); }
   if(g.mode === 'interactive'){
     if(app.isHost){ els.displayWrap.classList.remove('hidden'); els.pcontrolsWrap.classList.add('hidden'); renderInterDisplay(); }
     else { els.displayWrap.classList.add('hidden'); els.pcontrolsWrap.classList.remove('hidden'); renderInterPlayer(); }
@@ -6477,7 +6728,8 @@ var INTER_GAMES = {
   crash: { label:'كراش باش 🎨' },
   gifts: { label:'الهدايا 🎁' },
   puzzle: { label:'ترتيب الصورة 🧩' },
-  snake: { label:'لعبة الأفعى 🐍' }
+  snake: { label:'لعبة الأفعى 🐍' },
+  greed: { label:'الطمع 🃏' }
 };
 var INTER_GAME_KEYS = Object.keys(INTER_GAMES);
 var INTER_READY_MS = 3000;        // countdown before every inner round
@@ -6531,6 +6783,11 @@ function hostTryStartInter(senderId, msg, conn){
     snakeExtra: msg.snakeExtra === 'off' ? 'off' : 'on',
     snakeTools: msg.snakeTools === 'off' ? 'off' : 'on',
     snakeLevel: ['calm','balanced','chaos'].indexOf(msg.snakeLevel) >= 0 ? msg.snakeLevel : 'balanced',
+    greedMode: msg.greedMode === 'single' ? 'single' : 'elim',
+    greedSec: [10,15,20,30].indexOf(parseInt(msg.greedSec,10)) >= 0 ? parseInt(msg.greedSec,10) : 15,
+    greedTimeout: msg.greedTimeout === 'draw' ? 'draw' : 'freeze',
+    greedMult: msg.greedMult === 'top' ? 'top' : 'all',
+    greedView: msg.greedView === 'phones' ? 'phones' : 'display',
     music: msg.music !== 'off',
     games: games.length ? games : INTER_GAME_KEYS.slice()
   };
@@ -6600,6 +6857,7 @@ function hostBeginInterInner(){
   if(it.gameKey === 'gifts') giftsSetup(it, g.interConfig);
   if(it.gameKey === 'puzzle') puzzleSetup(it, g.interConfig);
   if(it.gameKey === 'snake') snakeSetup(it, g.interConfig);
+  if(it.gameKey === 'greed') greedSetup(it, g.interConfig);
   it.elim = null;
   var sig = interSignature(it);
   if(it.alive.length === 2 && hostInterFaceoff(sig)) return;
@@ -6641,10 +6899,11 @@ function hostInterStartActive(sig){
   var g = app.game, it = g.inter;
   if(!it || g.phase !== 'inter-ready' || interSignature(it) !== sig) return;
   it.startAt = syncedNow() + 250;
-  it.endsAt = it.startAt + (it.gameKey === 'conveyor' ? CV_MAX_MS : it.gameKey === 'keys' ? KEYS_PICK_MS : it.gameKey === 'memo' ? memoDuration(it) : it.gameKey === 'dice' ? DICE_MS : it.gameKey === 'elec' ? (g.interConfig.elecSec || 75)*1000 : it.gameKey === 'fall' ? FALL_MAX_MS : it.gameKey === 'crash' ? Math.round((g.interConfig.crashMin || 1)*60000) : it.gameKey === 'gifts' ? it.gifts.dur : it.gameKey === 'puzzle' ? Math.round((g.interConfig.puzzleMin || 1)*60000) : it.gameKey === 'snake' ? SNAKE_MAX_MS : g.interConfig.innerSec*1000);
+  it.endsAt = it.startAt + (it.gameKey === 'conveyor' ? CV_MAX_MS : it.gameKey === 'keys' ? KEYS_PICK_MS : it.gameKey === 'memo' ? memoDuration(it) : it.gameKey === 'dice' ? DICE_MS : it.gameKey === 'elec' ? (g.interConfig.elecSec || 75)*1000 : it.gameKey === 'fall' ? FALL_MAX_MS : it.gameKey === 'crash' ? Math.round((g.interConfig.crashMin || 1)*60000) : it.gameKey === 'gifts' ? it.gifts.dur : it.gameKey === 'puzzle' ? Math.round((g.interConfig.puzzleMin || 1)*60000) : it.gameKey === 'snake' ? SNAKE_MAX_MS : it.gameKey === 'greed' ? GREED_MAX_MS : g.interConfig.innerSec*1000);
   if(it.gameKey === 'fall') fallWave(it, it.startAt);   // the first wave starts with the game
   if(it.gameKey === 'crash') crashStart(it);
   if(it.gameKey === 'snake') snakeStart(it);
+  if(it.gameKey === 'greed') greedStart(it);
   g.phase = 'inter-active';
   broadcastState();
   addTimer(setTimeout(function(){ hostInterCloseInner(sig); }, it.endsAt - syncedNow() + INTER_GRACE_MS));
@@ -6731,6 +6990,7 @@ function hostInterCloseInner(sig){
   if(it.gameKey === 'gifts'){ hostGiftsEnd(sig); return; }
   if(it.gameKey === 'puzzle'){ hostPuzzleEnd(sig); return; }
   if(it.gameKey === 'snake') return;  // (it ends when someone reaches the last square)
+  if(it.gameKey === 'greed') return;  // (it ends when nobody can draw any more)
   // the lowest score among those still standing is out; a tie is settled at random
   var low = Infinity;
   it.alive.forEach(function(pid){ low = Math.min(low, it.scores[pid]||0); });
@@ -8732,7 +8992,7 @@ function puzzleCharState(it, id, now){
 // number. It plays quietly while a game is being played, fades out for the gun, the results and the
 // countdowns and picks up where it was, and goes lower still while a character is speaking. A track
 // that isn't uploaded yet is simply silent. The leader can turn it off in the lobby.
-var INTER_MUSIC_ORDER = ['recycle','conveyor','keys','memo','dice','elec','fall','crash','gifts','puzzle','snake'];
+var INTER_MUSIC_ORDER = ['recycle','conveyor','keys','memo','dice','elec','fall','crash','gifts','puzzle','snake','greed'];
 var INTER_MUSIC_VOL = 0.3;        // about a third of the sound effects
 var INTER_MUSIC_DUCK = 0.1;       // while a character speaks
 var interMusic = { url:null, buf:null, loading:null, failed:{}, src:null, gain:null, startedAt:0, offset:0, vol:-1 };
@@ -9569,6 +9829,778 @@ function renderSnakeDisplay(g, it){
   if(list._h !== rows){ list._h = rows; list.innerHTML = rows; }
 }
 
+// ---------------- Greed (الطمع) ----------------
+// A push-your-luck card collecting game. On a turn three face-down cards are laid out: pick one
+// (by luck) or freeze your cards; the picked card joins your open collection, the other two are
+// shown and go back into the middle of the deck. Numbers score their value; a number you already
+// have knocks you out at once (the gun, and you're out of the whole round). Seven different
+// numbers: +50 and the elimination ends for everyone. When nobody can draw any more, the lowest
+// score goes too (elimination mode), or everyone but the best one by one (one round mode).
+// Score = points kept from earlier eliminations + (numbers + bonus cards) x multipliers + 50 for
+// seven; a knocked out player has 0. Points are only wiped when the big round ends.
+// One deck for 2-6 players, two for 7-12, rebuilt for every elimination. To rebalance, edit here:
+var GREED_NUMS = { 0:2, 1:3, 2:3, 3:4, 4:4, 5:5, 6:6, 7:6, 8:7, 9:7, 10:8, 11:8, 12:8 };   // number -> copies in one deck
+var GREED_BONUS = { 2:4, 5:3, 8:2, 10:1 };      // bonus cards in one deck: value -> copies
+var GREED_MULT = { 2:3, 3:2, 4:1 };             // multipliers in one deck
+var GREED_ACTION_COPIES = 3;                    // each action card in one deck
+var GREED_ACTIONS = ['second','flip','freeze','shield','peek','steal','discard'];
+var GREED_SEVEN = 7, GREED_SEVEN_BONUS = 50, GREED_TWO_DECKS_FROM = 7;
+var GREED_DEAL_MS = 1100, GREED_PICK_MS = 1000, GREED_FLY_MS = 450, GREED_SHOW_MS = 1500, GREED_BACK_MS = 550;
+var GREED_SHUFFLE_MS = 650;                      // the shuffle is heard, then the first cards come
+var GREED_TARGET_MS = 10000, GREED_AWAY_MS = 2500, GREED_FLIP_MS = 1250, GREED_ICE_MS = 850, GREED_HAND_MS = 650, GREED_MAX_MS = 3*60*60000;
+var GREED_NAMES = { second:'Second Chance', flip:'Flip Three', freeze:'Freeze', shield:'Shield', peek:'Peek', steal:'Steal', discard:'Discard' };
+var GREED_FILES = { second:'act_second_chance', flip:'act_flip_three', freeze:'act_freeze', shield:'act_shield', peek:'act_peek', steal:'act_steal', discard:'act_discard' };
+function greedImg(code){
+  var k = code.charAt(0), v = code.slice(1), num = /^[0-9]+$/.test(v);
+  var f = GREED_FILES[code] || (num && k === 'n' ? 'card_' + v : num && k === 'b' ? 'bonus_' + v : num && k === 'm' ? 'mult_' + v : 'back');
+  return ASSET_BASE + f + '.webp';
+}
+function greedCoin(code){ var k = code.charAt(0), v = code.slice(1), num = /^[0-9]+$/.test(v); return ASSET_BASE + 'coin_' + (num && k === 'n' ? v : code) + '.webp'; }
+function greedIcon(name){ return ASSET_BASE + 'icon_' + name + '.webp'; }
+var GREED_DECK_IMG = ASSET_BASE + 'deck_stack.webp';
+var greedLoaded = false;
+function greedPreload(){
+  if(greedLoaded) return; greedLoaded = true;
+  var l = ['back'], i;
+  for(i=0;i<=12;i++) l.push('n'+i);
+  Object.keys(GREED_BONUS).forEach(function(v){ l.push('b'+v); });
+  Object.keys(GREED_MULT).forEach(function(v){ l.push('m'+v); });
+  GREED_ACTIONS.forEach(function(a){ l.push(a); });
+  l.forEach(function(c){ var im = new Image(); im.src = greedImg(c); if(c !== 'back'){ var co = new Image(); co.src = greedCoin(c); } });
+  GREED_ACTIONS.concat(['hand']).forEach(function(n){ var im = new Image(); im.src = greedIcon(n); });
+  var dk = new Image(); dk.src = GREED_DECK_IMG;
+}
+function greedDeck(sets){
+  var d = [], s, n, k;
+  for(s=0;s<sets;s++){
+    for(n=0;n<=12;n++) for(k=0;k<GREED_NUMS[n];k++) d.push('n'+n);
+    Object.keys(GREED_BONUS).forEach(function(v){ for(var c=0;c<GREED_BONUS[v];c++) d.push('b'+v); });
+    Object.keys(GREED_MULT).forEach(function(v){ for(var c=0;c<GREED_MULT[v];c++) d.push('m'+v); });
+    GREED_ACTIONS.forEach(function(a){ for(var c=0;c<GREED_ACTION_COPIES;c++) d.push(a); });
+  }
+  return shuffle(d);
+}
+function greedTotal(P){
+  if(!P || P.status === 'out') return 0;
+  var s = 0, m = 1;
+  P.nums.forEach(function(c){ s += +c.slice(1); });
+  P.acts.forEach(function(c){ if(c.charAt(0) === 'b') s += +c.slice(1); else if(/^m\d/.test(c)) m *= +c.slice(1); });
+  return (P.bank || 0) + s*m + (P.seven ? GREED_SEVEN_BONUS : 0);
+}
+function greedHas(P, code){ return P.acts.indexOf(code) >= 0; }
+function greedDrop(P, code){ var i = P.acts.indexOf(code); if(i >= 0) P.acts.splice(i, 1); }
+var greedHost = { sig:null, deck:[], three:[], steal:null };
+function greedSetup(it, cfg){
+  var ids = it.alive.slice();
+  greedPreload();
+  greedHost = { sig:interSignature(it), deck:greedDeck(ids.length >= GREED_TWO_DECKS_FROM ? 2 : 1), three:[], steal:null };
+  it.denseRank = false;
+  var startAt = it.greed ? it.greed.nextIdx : 0, prev = it.greed && it.greedRound === it.roundNumber ? it.greed : null;
+  it.greedRound = it.roundNumber;
+  it.greed = { mode: cfg.greedMode === 'single' ? 'single' : 'elim', turnMs: Math.max(5, Math.min(60, parseInt(cfg.greedSec, 10) || 15))*1000,
+    timeoutDraw: cfg.greedTimeout === 'draw', multTop: cfg.greedMult === 'top', view: cfg.greedView === 'phones' ? 'phones' : 'display', burned:[], burnOpen:false, order:shuffle(ids), idx:-1, ps:{}, t:null, pick:null, fx:[], mood:{}, left:greedHost.deck.length,
+    key:0, done:false, rank:null, tieAll:false, nextIdx:startAt || 0 };
+  ids.forEach(function(id){
+    var bank = prev && prev.ps[id] ? greedTotal(prev.ps[id]) : 0;
+    it.greed.ps[id] = { bank:bank, nums:[], acts:[], status:'play', seven:false, frozenAt:0, shieldAt:0 };
+    it.scores[id] = bank;
+  });
+}
+function greedLive(it, G, sig){ var g = app.game; return !!(g && g.inter === it && it.greed === G && g.phase === 'inter-active' && interSignature(it) === sig && !G.done); }
+function greedLater(it, fn, ms){
+  var G = it.greed, sig = interSignature(it);
+  addTimer(setTimeout(function(){ if(greedLive(it, G, sig)) fn(); }, Math.max(0, ms)));
+}
+function greedFxAdd(G, o){
+  var now = syncedNow();
+  G.fxNo = (G.fxNo || 0) + 1;
+  o.id = G.fxNo; if(o.at == null) o.at = now;
+  G.fx = G.fx.filter(function(f){ return f.at + f.d > now - 300; });
+  G.fx.push(o);
+}
+function greedMood(G, id, st, ms){ G.mood[id] = [st, syncedNow() + (ms || 2000)]; }
+function greedSync(it){ var G = it.greed; Object.keys(G.ps).forEach(function(id){ it.scores[id] = greedTotal(G.ps[id]); }); G.left = greedHost.deck.length; }
+function greedName(id){ var p = findPlayer(id); return p ? p.name : ''; }
+function greedDraw(){
+  var H = greedHost, G = app.game.inter.greed;
+  if(!H.deck.length){ H.deck = shuffle(G.burned); G.burned = []; playSound('card-shuffle'); }
+  if(!H.deck.length) H.deck = greedDeck(1);            // (everything is in people's hands: a fresh deck)
+  return H.deck.pop();
+}
+function greedBackIntoDeck(c){                         // into the middle: never back on top
+  var d = greedHost.deck, top = Math.max(0, d.length - 6);
+  d.splice(Math.floor(Math.random()*(top + 1)), 0, c);
+}
+function greedStart(it){ playSound('card-shuffle'); greedLater(it, function(){ greedAdvance(it); }, it.startAt - syncedNow() + GREED_SHUFFLE_MS); }
+// the next player who can still play
+function greedAdvance(it){
+  var G = it.greed, n = G.order.length;
+  for(var k=1;k<=n;k++){
+    var i = (G.idx + k) % n, id = G.order[i];
+    if(G.ps[id] && G.ps[id].status === 'play' && interPlayerAlive(it, id)){ G.idx = i; greedBeginTurn(it, id); return; }
+  }
+  greedEnd(it);
+}
+function greedBeginTurn(it, id){
+  var G = it.greed, P = G.ps[id];
+  if(greedHas(P, 'shield')){                           // the shield lasts until your turn comes back
+    greedDrop(P, 'shield'); G.burned.push('shield');
+    greedFxAdd(G, { type:'pop', pid:id, d:800 });
+    playSound('card-shield');
+  }
+  greedDeal(it, id);
+}
+function greedDeal(it, id){
+  var G = it.greed, H = greedHost, now = syncedNow();
+  H.three = [greedDraw(), greedDraw(), greedDraw()];
+  G.key++;
+  G.pick = null; G.burnOpen = false;
+  G.t = { pid:id, key:G.key, stage:'deal', dealAt:now, shown:{}, peeked:{}, picked:null, ends:0 };
+  greedSync(it);
+  broadcastState();
+  [0, 330, 660].forEach(function(ms){ greedLater(it, function(){ playSound('card-draw'); }, ms); });
+  greedLater(it, function(){ greedOpen(it); }, GREED_DEAL_MS);
+}
+// the player's choice: touch a card, freeze, or use a kept card first
+function greedOpen(it){
+  var G = it.greed, T = G.t, P = G.ps[T.pid], p = findPlayer(T.pid), away = p && p.connected === false;
+  G.key++;
+  T.key = G.key; T.stage = 'choose'; G.pick = null;
+  T.ends = syncedNow() + (away ? GREED_AWAY_MS : G.turnMs);
+  var key = T.key;
+  broadcastState();
+  greedLater(it, function(){
+    if(G.t !== T || T.key !== key || T.stage !== 'choose') return;
+    if((away || !G.timeoutDraw) && (P.nums.length || P.acts.length)) greedFreezeSelf(it, T.pid);
+    else greedPick(it, Math.floor(Math.random()*3));
+  }, T.ends - syncedNow() + 250);
+}
+function greedPick(it, i){
+  var G = it.greed, T = G.t, now = syncedNow();
+  T.stage = 'pick'; T.picked = i; T.shown[i] = greedHost.three[i];
+  T.pickAt = now; T.landAt = now + GREED_PICK_MS;
+  G.key++; T.key = G.key;
+  broadcastState();
+  playSound('card-flip');
+  greedLater(it, function(){ playSound('card-take'); }, GREED_PICK_MS);
+  greedLater(it, function(){ greedLanded(it, i); }, GREED_PICK_MS + GREED_FLY_MS);
+}
+function greedLanded(it, i){
+  var G = it.greed, T = G.t, H = greedHost, code = H.three[i], id = T.pid, res = greedApply(it, id, code, false), now = syncedNow();
+  T.gone = true;
+  T.revealAt = now + 150; T.backAt = T.revealAt + GREED_SHOW_MS;
+  [0,1,2].forEach(function(k){ if(k !== i) T.shown[k] = H.three[k]; });
+  greedSync(it);
+  broadcastState();
+  playSound('card-flip');
+  greedLater(it, function(){ playSound('card-draw'); [0,1,2].forEach(function(k){ if(k !== i) greedBackIntoDeck(H.three[k]); }); H.three = []; greedSync(it); }, 150 + GREED_SHOW_MS);
+  greedLater(it, function(){
+    greedAfter(it, res, id, function(){ greedAdvance(it); });
+  }, 150 + GREED_SHOW_MS + GREED_BACK_MS);
+}
+// what a card does as it joins a player. Returns what has to happen next
+function greedApply(it, id, code, forced){
+  var G = it.greed, P = G.ps[id], k = code.charAt(0), H = greedHost, nm = greedName(id);
+  if(k === 'n'){
+    if(P.nums.indexOf(code) >= 0){
+      if(greedHas(P, 'second')){                       // saved: both burn and the turn starts over
+        greedDrop(P, 'second'); G.burned.push('second', code);
+        greedFxAdd(G, { type:'heart', pid:id, code:code, d:1100 });
+        greedMood(G, id, 'happy', 2200);
+        playSound('card-second');
+        return forced ? 'next' : 'restart';
+      }
+      P.status = 'out';
+      G.burned.push(code);
+      P.nums.concat(P.acts).forEach(function(c){ G.burned.push(c); });
+      G.bust = { pid:id, code:code, at:syncedNow(), nums:P.nums.slice(), acts:P.acts.slice() };
+      P.nums = []; P.acts = [];
+      greedFxAdd(G, { type:'smash', pid:id, code:code, d:1300 });
+      greedMood(G, id, 'fallen', 2400);
+      playSound('card-error');
+      return 'bust';
+    }
+    P.nums.push(code);
+    if(P.nums.length >= GREED_SEVEN){
+      P.seven = true; P.status = 'seven';
+      greedFxAdd(G, { type:'seven', pid:id, d:2400 });
+      greedMood(G, id, 'happy', 3000);
+      playSound('correct');
+      return 'seven';
+    }
+    return 'next';
+  }
+  if(k === 'b'){
+    P.acts.push(code);
+    greedFxAdd(G, { type:'plus', pid:id, text:'+' + code.slice(1), d:1200 });
+    greedMood(G, id, 'happy', 1800);
+    playSound('card-plus');
+    return 'next';
+  }
+  if(/^m\d/.test(code)){
+    if(G.multTop){                                     // only the best one counts: a weaker or equal one burns
+      var held = P.acts.filter(function(c){ return /^m\d/.test(c); })[0];
+      if(held && +held.slice(1) >= +code.slice(1)){ G.burned.push(code); greedFxAdd(G, { type:'plus', pid:id, text:'🔥', d:900 }); playSound('glass'); return 'next'; }
+      if(held){ greedDrop(P, held); G.burned.push(held); }
+    }
+    P.acts.push(code);
+    greedFxAdd(G, { type:'mult', pid:id, text:'×' + code.slice(1), d:1300 });
+    greedMood(G, id, 'happy', 1800);
+    playSound('card-plus');
+    return 'next';
+  }
+  if(code === 'second'){
+    if(greedHas(P, 'second')){ G.burned.push(code); greedFxAdd(G, { type:'plus', pid:id, text:'🔥', d:900 }); return 'next'; }   // one at a time
+    P.acts.push(code);
+    greedFxAdd(G, { type:'beat', pid:id, d:1000 });
+    greedMood(G, id, 'happy', 1800);
+    playSound('card-second');
+    return 'next';
+  }
+  if(code === 'shield'){
+    if(greedHas(P, 'shield')){ G.burned.push(code); return 'next'; }
+    P.acts.push(code);
+    greedFxAdd(G, { type:'bubble', pid:id, d:800 });
+    playSound('card-shield');
+    return 'next';
+  }
+  if(code === 'peek' || code === 'steal' || code === 'discard'){ P.acts.push(code); return 'next'; }
+  G.burned.push(code);                                   // freeze / flip three: played at once
+  return 'target:' + code;
+}
+function greedAfter(it, res, id, cont){
+  if(res === 'next') return cont();
+  if(res === 'restart') return greedDeal(it, id);
+  if(res === 'seven') return greedEnd(it);
+  if(res === 'bust') return greedGun(it, id, cont);
+  if(res.indexOf('target:') === 0) return greedTarget(it, res.slice(7), id, cont);
+  cont();
+}
+// who can be chosen: not out, not frozen, not shielded; nobody else = yourself
+function greedTargets(it, kind, by){
+  var G = it.greed, l = G.order.filter(function(id){
+    var P = G.ps[id];
+    if(id === by && kind === 'steal') return false;
+    if(!P || P.status !== 'play' || greedHas(P, 'shield') || !interPlayerAlive(it, id)) return false;
+    return kind !== 'steal' || P.nums.length + P.acts.length > 0;
+  });
+  return l;
+}
+function greedTarget(it, kind, by, cont){
+  var G = it.greed, allowed = greedTargets(it, kind, by), T = G.t;
+  if(!allowed.length){ return cont(); }
+  if(allowed.length === 1){ greedDoTarget(it, kind, by, allowed[0], cont); return; }
+  G.key++;
+  var key = G.key;
+  T.pid = by; T.stage = 'target'; T.key = key; T.gone = true; T.shown = {}; T.picked = null;
+  G.pick = { kind:kind, by:by, allowed:allowed, ends:syncedNow() + GREED_TARGET_MS, key:key };
+  greedHost.pickCont = cont;
+  broadcastState();
+  greedLater(it, function(){
+    if(!G.pick || G.pick.key !== key) return;
+    var a = G.pick.allowed; greedResolveTarget(it, a[Math.floor(Math.random()*a.length)]);
+  }, GREED_TARGET_MS + 200);
+}
+function greedResolveTarget(it, id){
+  var G = it.greed, Pk = G.pick, cont = greedHost.pickCont;
+  G.pick = null; greedHost.pickCont = null;
+  greedDoTarget(it, Pk.kind, Pk.by, id, cont);
+}
+function greedDoTarget(it, kind, by, id, cont){
+  var G = it.greed, now = syncedNow();
+  G.key++;
+  if(kind === 'freeze'){
+    greedFxAdd(G, { type:'ice', pid:by, other:id, at:now + 50, d:GREED_ICE_MS });
+    playSound('pass');
+    G.ps[id].status = 'frozen'; G.ps[id].frozenAt = now + GREED_ICE_MS; G.ps[id].byOther = id !== by;
+    if(id !== by) greedMood(G, id, 'angry', 2400);
+    greedLater(it, function(){ playSound('glass'); }, GREED_ICE_MS);
+    if(G.t){ G.t.stage = 'wait'; G.t.gone = true; G.t.shown = {}; G.t.key = G.key; }
+    broadcastState();
+    greedLater(it, cont, GREED_ICE_MS + 900);
+    return;
+  }
+  // flip three: their collection comes to the middle and three cards turn by themselves
+  greedFxAdd(G, { type:'cardfly', pid:by, other:id, code:'flip', d:800 });
+  playSound('card-draw');
+  if(G.t){ G.t.stage = 'wait'; G.t.gone = true; G.t.shown = {}; G.t.key = G.key; }
+  broadcastState();
+  greedLater(it, function(){ greedFlipRun(it, id, 0, [], cont); }, 850);
+}
+function greedFlipRun(it, id, n, pend, cont){
+  var G = it.greed, P = G.ps[id], now = syncedNow();
+  var finish = function(){
+    if(G.ps[id].status !== 'play' || !pend.length) return cont();
+    var kind = pend.shift();
+    greedTarget(it, kind, id, function(){ finish(); });
+  };
+  if(n >= 3 || P.status !== 'play') return finish();
+  var code = greedDraw();
+  G.key++;
+  G.t = { pid:id, key:G.key, stage:'flip', flipN:n + 1, flipCode:code, flipAt:now, shown:{}, peeked:{}, picked:null, ends:0, gone:true };
+  greedSync(it);
+  broadcastState();
+  playSound('card-draw');
+  greedLater(it, function(){ playSound('card-flip'); }, 65);
+  greedLater(it, function(){
+    playSound('card-take');
+    var res = greedApply(it, id, code, true);
+    greedSync(it);
+    broadcastState();
+    if(res === 'seven') return greedLater(it, function(){ greedEnd(it); }, 700);
+    if(res === 'bust') return greedLater(it, function(){ greedGun(it, id, function(){ finish(); }); }, 900);
+    if(res.indexOf('target:') === 0) pend.push(res.slice(7));
+    greedLater(it, function(){ greedFlipRun(it, id, n + 1, pend, cont); }, 500);
+  }, GREED_FLIP_MS);
+}
+function greedFreezeSelf(it, id){
+  var G = it.greed, T = G.t;
+  var H3 = greedHost.three, now3 = syncedNow();
+  T.stage = 'stamp'; T.stampAt = now3; T.gone = true; T.shown = {};
+  [0,1,2].forEach(function(k){ if(H3[k]) T.shown[k] = H3[k]; });
+  T.revealAt = now3 + 150; T.backAt = T.revealAt + GREED_SHOW_MS;
+  G.key++; T.key = G.key;
+  G.ps[id].status = 'frozen'; G.ps[id].frozenAt = syncedNow(); G.ps[id].byOther = false;
+  greedFxAdd(G, { type:'lock', pid:id, d:1000 });
+  playSound('submit');
+  greedMood(G, id, 'happy', 1500);
+  greedSync(it);
+  broadcastState();
+  playSound('card-flip');
+  greedLater(it, function(){ playSound('card-draw'); greedReturnThree(); greedSync(it); }, 150 + GREED_SHOW_MS);
+  greedLater(it, function(){ greedAdvance(it); }, 150 + GREED_SHOW_MS + GREED_BACK_MS);
+}
+// ---- the gun in the middle of the game ----
+function greedGun(it, id, cont){
+  var g = app.game, G = it.greed, sig = interSignature(it);
+  it.grpCount = (it.grpCount || 0) + 1;
+  it.out.push({ id:id, inner:it.innerNumber, score:0, grp:it.grpCount });
+  it.alive = it.alive.filter(function(x){ return x !== id; });
+  it.elimQueue = [id];
+  it.elimNames = greedName(id);
+  it.roundWin = null;
+  G.pick = null;
+  if(it.alive.length <= 1){                            // the last one standing has won the round
+    G.done = true;
+    it.innerScores = {}; Object.keys(G.ps).forEach(function(x){ it.innerScores[x] = greedTotal(G.ps[x]); });
+    g.phase = 'inter-elim';
+    hostKeysNextGun(sig);
+    return;
+  }
+  var vp = findPlayer(id), vk = vp && CHARS[vp.character] ? vp.character : null;
+  var scared = vk ? voiceChoose(vk, 'scared', 4) : null, lose = vk ? voiceChoose(vk, 'lose', 6) : null;
+  var wait = Math.max(INTER_ELIM_SHOT_MS, scared ? 250 + Math.min(scared.dur, 4)*1000 + 300 : 0);
+  it.elimQueue = [];
+  it.elim = { id:id, at:syncedNow(), shotAt:syncedNow() + wait, tie:false, key:sig + '|' + id, mid:true };
+  interElimVoice = { key:it.elim.key, scared:scared, lose:lose };
+  broadcastState();
+  var key = it.elim.key;
+  greedLater(it, function(){
+    if(!it.elim || it.elim.key !== key) return;
+    it.elim = null; it.elimNames = null;
+    cont();
+  }, wait + INTER_ELIM_PANEL_MS + 300);
+}
+// ---- the end of an elimination: the scores, one by one, then the gun ----
+function greedEnd(it){
+  var g = app.game, G = it.greed, sig = interSignature(it);
+  if(G.rank) return;
+  var ids = it.alive.slice();
+  ids.forEach(function(id){ if(G.ps[id].status === 'play'){ G.ps[id].status = 'frozen'; G.ps[id].frozenAt = syncedNow(); G.ps[id].byOther = false; } });
+  G.t = null; G.pick = null;
+  greedSync(it);
+  var score = function(id){ return greedTotal(G.ps[id]); };
+  var low = Math.min.apply(null, ids.map(score)), high = Math.max.apply(null, ids.map(score));
+  G.rank = { at:syncedNow(), rows:ids.slice().sort(function(a, b){ return score(b) - score(a); }).map(function(id){ return { id:id, s:score(id) }; }),
+    low:G.mode === 'single' ? null : low, tie:low === high };
+  broadcastState();
+  var wait = 900 + G.rank.rows.length*650 + 900;
+  greedLater(it, function(){
+    G.done = true;
+    it.elim = null; it.elimQueue = []; it.roundWin = null; it.elimNames = null;
+    it.innerScores = {}; ids.forEach(function(id){ it.innerScores[id] = score(id); });
+    if(G.mode === 'single'){
+      var order = ids.slice().sort(function(a, b){ return score(a) - score(b) || Math.random() - 0.5; }), grp = it.grpCount || 0, last = null, losers = [];
+      order.forEach(function(id){
+        if(score(id) === high) return;
+        if(score(id) !== last){ grp++; last = score(id); }
+        it.out.push({ id:id, inner:it.innerNumber, score:score(id), grp:grp });
+        losers.push(id);
+      });
+      it.grpCount = grp;
+      it.alive = ids.filter(function(id){ return score(id) === high; });
+      it.elimQueue = losers.slice();
+      it.elimNames = losers.map(greedName).join(' و ');
+      g.phase = 'inter-elim';
+      crashNextGun(sig);
+      return;
+    }
+    if(low === high){ G.tieAll = true; g.phase = 'inter-elim'; broadcastState(); return; }   // all level: nobody
+    var out = shuffle(ids.filter(function(id){ return score(id) === low; }));
+    it.grpCount = (it.grpCount || 0) + 1;
+    out.forEach(function(id){ it.out.push({ id:id, inner:it.innerNumber, score:low, grp:it.grpCount }); });
+    it.alive = ids.filter(function(id){ return out.indexOf(id) < 0; });
+    it.elimQueue = out.slice();
+    it.elimNames = out.map(greedName).join(' و ');
+    g.phase = 'inter-elim';
+    hostKeysNextGun(sig);
+  }, wait);
+}
+// ---- messages from the phones ----
+function hostGreedMsg(pid, msg){
+  var g = app.game, it = g.inter, G = it && it.greed;
+  if(!G || it.gameKey !== 'greed' || g.phase !== 'inter-active' || it.elim || G.done || msg.sig !== interSignature(it)) return;
+  var T = G.t, a = msg.a;
+  if(a === 'target' && G.pick && G.pick.key === msg.key && G.pick.by === pid && G.pick.kind !== 'steal' && G.pick.allowed.indexOf(msg.id) >= 0){ greedResolveTarget(it, msg.id); return; }
+  if(!T || T.pid !== pid || msg.key !== T.key) return;
+  var P = G.ps[pid];
+  if(a === 'burnview'){ if(T.stage === 'choose'){ G.burnOpen = !G.burnOpen; broadcastState(); } return; }
+  G.burnOpen = false;
+  if(T.stage === 'stealpick' && a === 'stealcard'){ greedStealTake(it, parseInt(msg.i, 10)); return; }
+  if(T.stage === 'stealwho' && a === 'stealwho' && G.pick.allowed.indexOf(msg.id) >= 0){ greedStealWho(it, msg.id); return; }
+  if((T.stage === 'stealwho' || T.stage === 'discard') && a === 'back'){ greedOpen(it); return; }
+  if(T.stage === 'discard' && a === 'discardcard'){ greedDiscard(it, msg.code); return; }
+  if(T.stage !== 'choose') return;
+  if(a === 'draw'){ var i = parseInt(msg.i, 10); if(i >= 0 && i < 3) greedPick(it, i); return; }
+  if(a === 'freeze'){ if(P.nums.length || P.acts.length) greedFreezeSelf(it, pid); return; }
+  if(a === 'peek' && greedHas(P, 'peek')){
+    var k = parseInt(msg.i, 10);
+    if(!(k >= 0 && k < 3) || T.peeked[k]) return;
+    greedDrop(P, 'peek'); G.burned.push('peek');
+    T.peeked[k] = true;
+    playSound('appear');
+    var conn = app.connections.filter(function(c){ return c.playerId === pid && c.open; })[0];
+    if(conn){ try{ conn.send({t:'greed-peek', sig:msg.sig, turn:T.dealAt, i:k, code:greedHost.three[k]}); }catch(e){} }
+    greedOpen(it);
+    return;
+  }
+  if(a === 'steal' && greedHas(P, 'steal')){
+    var ok = greedTargets(it, 'steal', pid);
+    if(!ok.length) return;
+    G.key++;
+    T.stage = 'stealwho'; T.key = G.key;
+    G.pick = { kind:'steal', by:pid, allowed:ok, ends:syncedNow() + GREED_TARGET_MS, key:G.key };
+    var kk = G.key;
+    broadcastState();
+    greedLater(it, function(){ if(G.pick && G.pick.key === kk) greedOpen(it); }, GREED_TARGET_MS + 200);
+    return;
+  }
+  if(a === 'discard' && greedHas(P, 'discard') && P.nums.length){
+    G.key++;
+    T.stage = 'discard'; T.key = G.key; T.ends = syncedNow() + GREED_TARGET_MS;
+    var kd = G.key;
+    broadcastState();
+    greedLater(it, function(){ if(G.t === T && T.key === kd) greedOpen(it); }, GREED_TARGET_MS + 200);
+  }
+}
+function greedReturnThree(){ greedHost.three.forEach(function(c){ greedBackIntoDeck(c); }); greedHost.three = []; }
+function greedStealWho(it, victim){
+  var G = it.greed, T = G.t, P = G.ps[T.pid], V = G.ps[victim];
+  greedDrop(P, 'steal'); G.burned.push('steal');
+  greedHost.steal = { victim:victim, cards:shuffle(V.nums.concat(V.acts)) };
+  G.key++;
+  T.stage = 'stealpick'; T.key = G.key; T.ends = syncedNow() + GREED_TARGET_MS;
+  G.pick = { kind:'stealcard', by:T.pid, victim:victim, count:greedHost.steal.cards.length, ends:T.ends, key:G.key };
+  greedFxAdd(G, { type:'shuffle', pid:victim, d:900 });
+  playSound('recycle');
+  var key = G.key;
+  broadcastState();
+  greedLater(it, function(){ if(G.pick && G.pick.key === key) greedStealTake(it, Math.floor(Math.random()*greedHost.steal.cards.length)); }, GREED_TARGET_MS + 200);
+}
+function greedStealTake(it, i){
+  var G = it.greed, T = G.t, S = greedHost.steal, id = T.pid;
+  if(!S || !(i >= 0 && i < S.cards.length)) return;
+  var code = S.cards[i], V = G.ps[S.victim], at = syncedNow();
+  G.pick = null; greedHost.steal = null;
+  G.key++; T.key = G.key; T.stage = 'stealfly';
+  greedFxAdd(G, { type:'hand', pid:id, other:S.victim, code:code, at:at, d:GREED_HAND_MS*2 });
+  playSound('pass');
+  broadcastState();
+  greedLater(it, function(){
+    playSound('card-take');
+    var vi = V.nums.indexOf(code);
+    if(vi >= 0) V.nums.splice(vi, 1); else greedDrop(V, code);
+    greedMood(G, S.victim, 'angry', 2400);
+    greedSync(it);
+    broadcastState();
+  }, GREED_HAND_MS);
+  greedLater(it, function(){
+    var res = greedApply(it, id, code, false);
+    greedSync(it);
+    broadcastState();
+    if(res === 'bust'){ greedReturnThree(); return greedLater(it, function(){ greedGun(it, id, function(){ greedAdvance(it); }); }, 1000); }
+    if(res === 'seven'){ greedReturnThree(); return greedLater(it, function(){ greedEnd(it); }, 700); }
+    if(res === 'restart') return greedOpen(it);           // saved: the turn carries on with the same cards
+    if(res.indexOf('target:') === 0) return greedTarget(it, res.slice(7), id, function(){ greedOpen(it); });
+    greedOpen(it);
+  }, GREED_HAND_MS*2 + 100);
+}
+function greedDiscard(it, code){
+  var G = it.greed, T = G.t, P = G.ps[T.pid], i = P.nums.indexOf(code);
+  if(i < 0 || !greedHas(P, 'discard')) return;
+  greedDrop(P, 'discard'); G.burned.push('discard', code);
+  P.nums.splice(i, 1);
+  G.key++; T.stage = 'discarding'; T.key = G.key;
+  greedFxAdd(G, { type:'bin', pid:T.pid, code:code, d:1100 });
+  playSound('card-trash');
+  greedSync(it);
+  broadcastState();
+  greedLater(it, function(){ greedOpen(it); }, 1150);
+}
+// ---- faces: the voices follow them (like the snake game) ----
+function greedCharState(it, id, now){
+  var G = it.greed, P = G && G.ps[id];
+  if(!P) return 'normal';
+  var m = G.mood[id];
+  if(m && now < m[1]) return m[0];
+  if(P.status === 'frozen') return 'normal';
+  if(G.t && G.t.pid === id && P.nums.length >= 5) return 'scared';
+  return 'normal';
+}
+var GREED_VOICE = { scared:'scared', happy:'happy', sad:'sad', angry:'angry', fallen:'pain' };
+var greedVoice = { sig:null, last:{} };
+function greedVoices(it, now){
+  var G = it.greed, sig = interSignature(it), first = greedVoice.sig !== sig;
+  if(first) greedVoice = { sig:sig, last:{} };
+  Object.keys(G.ps).forEach(function(id){
+    var st = greedCharState(it, id, now), was = greedVoice.last[id];
+    if(st === was) return;
+    greedVoice.last[id] = st;
+    if(first || was === undefined || !GREED_VOICE[st]) return;
+    snakeSay(id, GREED_VOICE[st]);
+  });
+}
+// ---- the display ----
+function greedCardHtml(code, cls){ return '<img class="gr-c '+(cls||'')+'" alt="" draggable="false" data-code="'+code+'" src="'+greedImg(code)+'">'; }
+// numbers first and then the action cards: in a right-to-left row the numbers sit on the right,
+// the action cards on the left, and when a row is full the action cards are the ones that wrap
+function greedCollHtml(P, cls){ return P.nums.map(function(c){ return greedCardHtml(c, cls + ' num'); }).join('') + P.acts.map(function(c){ return greedCardHtml(c, cls + ' act'); }).join(''); }
+function greedIconHtml(name, cls){ return '<img class="'+(cls||'gr-ic')+'" alt="" draggable="false" src="'+greedIcon(name)+'">'; }
+function greedSetHtml(el, h){ if(el._h !== h){ el._h = h; el.innerHTML = h; } }
+// the biggest card size that shows all n cards in this box, in as many rows as it takes
+function greedFit(el, n, maxW){
+  if(!n) return;
+  var W = el.clientWidth - 8, H = el.clientHeight - 8, gap = 4, best = 0;   // (8: the box's padding)
+  if(W <= 0 || H <= 0) return;
+  for(var r=1;r<=6;r++){
+    var c = Math.ceil(n/r), w = Math.min((W - (c - 1)*gap)/c, ((H - (r - 1)*gap)/r)*5/7, maxW);
+    if(w > best) best = w;
+  }
+  var v = Math.floor(best) + 'px';
+  if(el._gw !== v){ el._gw = v; el.style.setProperty('--gw', v); }
+}
+// a frame around a collection that has something on it: the card's own colour and symbol
+function greedAuraHtml(P, now){
+  var h = '';
+  if(P.status === 'out') return h;
+  if(greedHas(P, 'shield')) h += '<i class="gr-aura shield">'+greedIconHtml('shield')+'</i>';
+  if(greedHas(P, 'second')) h += '<i class="gr-aura second">'+greedIconHtml('second')+'</i>';
+  if(P.status === 'frozen' && P.byOther && now >= P.frozenAt) h += '<i class="gr-aura ice">'+greedIconHtml('freeze')+'</i>';
+  return h;
+}
+function greedBurnSorted(G){
+  var rank = function(c){ var k = c.charAt(0), n = /^[nbm]\d/.test(c); return n ? (k === 'n' ? 0 : k === 'b' ? 100 : 200) + (+c.slice(1)) : 300 + GREED_ACTIONS.indexOf(c); };
+  return G.burned.slice().sort(function(a, b){ return rank(a) - rank(b); });
+}
+function greedBurnViewHtml(G, zoom){
+  var l = greedBurnSorted(G);
+  return '<div class="gr-bvtitle">🔥 البطاقات المحروقة ('+l.length+')</div>' +
+    (l.length ? '<div class="gr-bvgrid">'+l.map(function(c){ return greedCardHtml(c, 'bv'+(zoom ? ' gz' : '')); }).join('')+'</div>' : '<div class="gr-bvnone">ما فيه بطاقات محروقة للحين</div>');
+}
+function greedSizeClass(n){ return n <= 4 ? 'gr-s' : (n <= 8 ? 'gr-m' : 'gr-l'); }
+// the small collections (coins) by the characters, on a layer of their own (the slots are redrawn every frame)
+function greedMinis(g, it, G, now){
+  var wr = els.arenaWrap.getBoundingClientRect(), layer = document.getElementById('gr-minis');
+  if(!layer){ layer = document.createElement('div'); layer.id = 'gr-minis'; layer.className = 'gr-minis'; els.arenaWrap.appendChild(layer); layer._m = {}; }
+  layer.className = 'gr-minis ' + greedSizeClass(g.players.length);
+  var slotOf = {};
+  Array.prototype.forEach.call(els.arenaWrap.querySelectorAll('.player-slot'), function(s){ var st = s.querySelector('.char-stage'); if(st) slotOf[st.getAttribute('data-pid')] = s; });
+  Object.keys(G.ps).forEach(function(id){
+    var P = G.ps[id], e = layer._m[id], slot = slotOf[id];
+    if(!e){ e = document.createElement('div'); e.className = 'gr-mini'; layer.appendChild(e); layer._m[id] = e; }
+    if(!slot){ e.style.display = 'none'; return; }
+    e.style.display = '';
+    var r = slot.getBoundingClientRect(), sprite = charSprites[id], sr = sprite ? sprite.el.getBoundingClientRect() : r;
+    var cx = r.left - wr.left + r.width/2, cy = sr.top - wr.top + sr.height/2, midCol = cx > wr.width*0.3 && cx < wr.width*0.7;
+    e.classList.toggle('wide', midCol);                // above or below the table: long and flat, out of its way
+    if(midCol){
+      var bottomRow = r.top - wr.top > wr.height*0.5;
+      e.style.left = cx + 'px';
+      if(bottomRow){ e.style.top = (sr.top - wr.top - 2) + 'px'; e.style.transform = 'translate(-50%,-100%)'; }
+      else { e.style.top = (r.bottom - wr.top + 3) + 'px'; e.style.transform = 'translateX(-50%)'; }
+    } else if(cx < wr.width/2){
+      e.style.left = (sr.right - wr.left + 6) + 'px'; e.style.top = cy + 'px'; e.style.transform = 'translateY(-50%)';
+    } else {
+      e.style.left = (sr.left - wr.left - 6) + 'px'; e.style.top = cy + 'px'; e.style.transform = 'translate(-100%,-50%)';
+    }
+    var frozen = P.status === 'frozen' && now >= P.frozenAt;
+    var coin = function(c){ return '<img class="gr-coin" alt="" draggable="false" src="'+greedCoin(c)+'">'; };
+    var h = P.status === 'out' ? '<span class="gr-mx">✖</span>' :
+      '<div class="gr-mrow">' + P.nums.concat(P.acts).map(coin).join('') + '</div>' + greedAuraHtml(P, now) +
+      (frozen && !P.byOther ? '<span class="gr-mlock">🔒</span>' : '');
+    greedSetHtml(e, h);
+    e.classList.toggle('iced', frozen && !!P.byOther);
+    e.classList.toggle('on', !!(G.t && G.t.pid === id));
+  });
+}
+function greedHideLayers(){
+  var a = document.getElementById('gr-minis'); if(a) a.remove();
+  var b = document.getElementById('gr-fx'); if(b) b.remove();
+}
+function greedPointOf(G, id, wr){                     // where an effect aimed at a player goes
+  if(G.t && G.t.pid === id){ var c = document.getElementById('gr-count'); if(c){ var q = c.getBoundingClientRect(); return { x:q.left + q.width/2 - wr.left, y:q.top + q.height/2 - wr.top, top:q.top - wr.top }; } }
+  var sp = charSprites[id];
+  if(sp){ var r = sp.el.getBoundingClientRect(); return { x:r.left + r.width/2 - wr.left, y:r.top + r.height*0.45 - wr.top, top:r.top - wr.top }; }
+  return { x:wr.width/2, y:wr.height/2, top:wr.height/2 };
+}
+function greedFxDraw(G, now){
+  var wr = els.arenaWrap.getBoundingClientRect(), layer = document.getElementById('gr-fx');
+  if(!layer){ layer = document.createElement('div'); layer.id = 'gr-fx'; layer.className = 'gr-fx'; els.arenaWrap.appendChild(layer); layer._m = {}; }
+  var seen = {};
+  G.fx.forEach(function(f){
+    if(now < f.at || now > f.at + f.d) return;
+    var k = (now - f.at)/f.d, e = layer._m[f.id], p = f.pid ? greedPointOf(G, f.pid, wr) : { x:wr.width/2, y:wr.height/2, top:wr.height/2 }, q = f.other ? greedPointOf(G, f.other, wr) : p;
+    if(!e){
+      e = document.createElement('div');
+      e.className = 'gr-f gr-f-' + f.type;
+      var inner = { plus:'<b>'+escapeHtml(f.text||'')+'</b>', mult:'<b>'+escapeHtml(f.text||'')+'</b>', ice:greedIconHtml('freeze'), heart:greedIconHtml('second')+'<i></i>', smash:'<i></i>', seven:'<b>+'+GREED_SEVEN_BONUS+'</b>',
+        lock:'<b>🔒</b>', pop:'<i></i>'+greedIconHtml('shield'), bubble:'<i></i>'+greedIconHtml('shield'), beat:greedIconHtml('second'), hand:greedIconHtml('hand', 'hand') + (f.code ? greedCardHtml(f.code, 'hcard') : ''), bin:greedIconHtml('discard')+(f.code ? greedCardHtml(f.code, 'bcard') : ''), shuffle:'<b>🔀</b>',
+        cardfly:greedCardHtml(f.code || 'back', 'fcard') }[f.type] || '';
+      e.innerHTML = inner;
+      layer.appendChild(e); layer._m[f.id] = e;
+    }
+    seen[f.id] = true;
+    if(f.type === 'ice' || f.type === 'cardfly'){
+      e.style.left = (p.x + (q.x - p.x)*k) + 'px'; e.style.top = (p.y + (q.y - p.y)*k - Math.sin(Math.PI*k)*wr.height*0.14) + 'px';
+      e.firstChild.style.transform = 'rotate(' + Math.round(k*540) + 'deg)';
+    } else if(f.type === 'hand'){
+      var t = k < 0.5 ? k*2 : 2 - k*2;                 // out to the victim, back with the card
+      e.style.left = (p.x + (q.x - p.x)*t) + 'px'; e.style.top = (p.y + (q.y - p.y)*t) + 'px';
+      e.classList.toggle('holding', k >= 0.5);
+    } else if(f.type === 'plus' || f.type === 'mult'){  // above the points, never over them
+      e.style.left = p.x + 'px'; e.style.top = (p.top - 4) + 'px';
+    } else {
+      e.style.left = p.x + 'px'; e.style.top = p.y + 'px';
+    }
+  });
+  Object.keys(layer._m).forEach(function(i){ if(!seen[i]){ layer._m[i].remove(); delete layer._m[i]; } });
+}
+// ---- the three cards: the same drawing and the same moves on the display and on the phones ----
+// ctx: deck = where they come from and go back to, target(code) = where a taken card flies, peek(i) = a card only I may see
+function greedThreeDraw(box, T, now, ctx){
+  var key = T.dealAt + '|' + (T.stage === 'flip' ? 'f' + T.flipAt : 'x');
+  if(box._k !== key){
+    box._k = key;
+    var one = function(i, cls){ return '<div class="gr-slot'+cls+'" data-i="'+i+'">'+greedIconHtml('peek', 'gr-eye')+'<div class="gr-card"><div class="gr-face back"><img alt="" src="'+greedImg('back')+'"></div><div class="gr-face front"></div></div></div>'; };
+    box.innerHTML = T.stage === 'flip' ? one(0, ' forced') : one(0, '') + one(1, '') + one(2, '');
+    var dk = ctx.deck ? ctx.deck.getBoundingClientRect() : null, br = box.getBoundingClientRect();
+    Array.prototype.forEach.call(box.children, function(s){
+      if(dk && dk.width){
+        s.style.setProperty('--dx', (dk.left + dk.width/2 - br.left - s.offsetLeft - s.offsetWidth/2) + 'px');
+        s.style.setProperty('--dy', (dk.top + dk.height/2 - br.top - s.offsetTop - s.offsetHeight/2) + 'px');
+      }
+      void s.offsetWidth;
+    });
+  }
+  Array.prototype.forEach.call(box.children, function(s){
+    var i = +s.getAttribute('data-i'), secret = T.stage !== 'flip' && T.peeked && T.peeked[i] && ctx.peek ? ctx.peek(i) : null;
+    var code = T.stage === 'flip' ? T.flipCode : (T.shown[i] || secret), front = s.querySelector('.front'), inner = s.querySelector('.gr-card');
+    if(code && front._c !== code){ front._c = code; front.innerHTML = '<img alt="" src="'+greedImg(code)+'">'; }
+    if(T.stage === 'flip'){ inner.classList.toggle('flipped', now >= T.flipAt + 350); s.classList.add('in'); return; }
+    var mine = T.picked === i, gone = T.gone || T.stage === 'stamp' || T.stage === 'wait' || T.stage === 'target';
+    inner.classList.toggle('flipped', !!code && (!!secret || (mine ? now >= T.pickAt + 200 : !!(T.revealAt && now >= T.revealAt))));
+    s.classList.toggle('in', now >= T.dealAt + i*330);
+    s.classList.toggle('up', mine && now < T.landAt);
+    s.classList.toggle('peeked', !!(T.peeked && T.peeked[i]) && !mine && !T.revealAt);
+    var fly = mine && now >= T.landAt;
+    s.classList.toggle('fly', fly);
+    s.classList.toggle('back2', !mine && !!T.backAt && now >= T.backAt);
+    s.classList.toggle('gone', gone && !T.revealAt);
+    if(fly && !s._flew && code){
+      s._flew = true;
+      var el = ctx.target ? ctx.target(code) : null;
+      if(el){
+        var tr = el.getBoundingClientRect(), sr = s.getBoundingClientRect();
+        s.style.setProperty('--fx', (tr.left + tr.width/2 - sr.left - sr.width/2) + 'px');
+        s.style.setProperty('--fy', (tr.top + tr.height/2 - sr.top - sr.height/2) + 'px');
+      }
+    }
+  });
+}
+function greedStageLabel(G, T){
+  var ic = function(n){ return greedIconHtml(n, 'gr-hic'); };
+  return T.stage === 'target' ? (G.pick && G.pick.kind === 'flip' ? ic('flip') + ' Flip Three: ' : ic('freeze') + ' Freeze: ') + 'يختار لاعب' :
+    T.stage === 'stealwho' ? ic('hand') + ' يختار مين يسرق' : T.stage === 'stealpick' ? ic('hand') + ' يختار بطاقة من ' + escapeHtml(greedName(G.pick ? G.pick.victim : '')) :
+    T.stage === 'discard' ? ic('discard') + ' يختار رقم يرميه' : T.stage === 'flip' ? ic('flip') + ' Flip Three — ' + T.flipN + ' من 3' : 'دور';
+}
+function renderGreedDisplay(g, it){
+  var sig = interSignature(it), now = syncedNow(), G = it.greed;
+  if(!G) return;
+  greedPreload();
+  greedVoices(it, now);
+  greedMinis(g, it, G, now);
+  greedFxDraw(G, now);
+  if(it.elim){ renderInterElimDisplay(g, it); return; }      // the gun, in the middle of the game
+  buildOnce(els.arenaCenter, 'gr|'+sig, function(){
+    els.arenaCenter.innerHTML = '<div class="gr-stage '+greedSizeClass(g.players.length)+'" id="gr-stage">' +
+      '<div class="gr-head"><div class="gr-who" id="gr-who"></div><div class="gr-time" id="gr-time"></div></div>' +
+      '<div class="gr-three" id="gr-three"></div>' +
+      '<div class="gr-bottom"><div class="gr-piles"><div class="gr-deck" id="gr-deck"><img alt="" draggable="false" src="'+GREED_DECK_IMG+'"><em id="gr-left"></em></div><div class="gr-burn" id="gr-burn"></div></div>' +
+      '<div class="gr-coll" id="gr-coll"><div class="gr-auras" id="gr-auras"></div><div class="gr-row" id="gr-row"></div></div>' +
+      '<div class="gr-count" id="gr-count"></div></div>' +
+      '<div class="gr-burnview hidden" id="gr-burnview"></div><div class="gr-rank hidden" id="gr-rank"></div></div>';
+  });
+  var stage = document.getElementById('gr-stage');
+  if(!stage) return;
+  var T = G.t, who = document.getElementById('gr-who'), time = document.getElementById('gr-time'), P = T ? G.ps[T.pid] : null;
+  document.getElementById('gr-left').textContent = G.left;
+  var pile = document.getElementById('gr-burn'), bn = G.burned.length;
+  greedSetHtml(pile, (bn ? greedCardHtml(G.burned[bn - 1], 'pile') : '') + '<em>🔥 '+bn+'</em>');
+  pile.classList.toggle('empty', !bn);
+  // ---- the scores one by one, at the end ----
+  var rankBox = document.getElementById('gr-rank');
+  stage.classList.toggle('ranking', !!G.rank);
+  rankBox.classList.toggle('hidden', !G.rank);
+  if(G.rank){
+    var hr = '<div class="gr-rtitle">النتائج</div>' + G.rank.rows.map(function(r, i){
+      var show = now >= G.rank.at + 500 + (G.rank.rows.length - 1 - i)*650;
+      var loser = G.rank.low != null && !G.rank.tie && r.s === G.rank.low && now >= G.rank.at + 900 + G.rank.rows.length*650;
+      return '<div class="gr-rrow'+(show ? ' in' : '')+(loser ? ' low' : '')+'"><span class="sn-dot" style="background:'+crashColor(r.id)+'"></span><b>'+escapeHtml(greedName(r.id))+'</b><em>'+(show ? r.s : '')+'</em></div>';
+    }).join('');
+    greedSetHtml(rankBox, hr);
+    return;
+  }
+  var rowEl = document.getElementById('gr-row'), cnt = document.getElementById('gr-count');
+  if(!T){ if(who.innerHTML){ who.innerHTML = ''; who._h = ''; } greedSetHtml(rowEl, ''); cnt.classList.add('none'); return; }
+  // ---- whose turn, the time ----
+  var wh = '<span class="sn-dot" style="background:'+crashColor(T.pid)+'"></span><span>' + greedStageLabel(G, T) + '</span> <b>' + escapeHtml(greedName(T.pid)) + '</b>';
+  greedSetHtml(who, wh);
+  var endAt = G.pick ? G.pick.ends : T.ends, secs = Math.max(0, Math.ceil((endAt - now)/1000));
+  var tt = endAt && (T.stage === 'choose' || G.pick || T.stage === 'discard') ? String(secs) : '';
+  if(time.textContent !== tt) time.textContent = tt;
+  time.classList.toggle('low', secs <= 5);
+  // ---- the big collection and its counter (the number comes with the collection) ----
+  var busting = !!(G.bust && G.bust.pid === T.pid && now < G.bust.at + 1200), shownP = busting ? { nums:G.bust.nums, acts:G.bust.acts } : P;
+  greedSetHtml(rowEl, greedCollHtml(shownP, 'big'));
+  greedFit(rowEl, shownP.nums.length + shownP.acts.length, rowEl.clientHeight*5/7);
+  greedSetHtml(document.getElementById('gr-auras'), greedAuraHtml(P, now));
+  var total = greedTotal(P), noCards = !busting && !P.nums.length && !P.acts.length && !total;
+  cnt.classList.toggle('none', noCards);
+  if(cnt.textContent !== String(total)){ cnt.textContent = total; if(!noCards){ cnt.classList.remove('pop'); void cnt.offsetWidth; cnt.classList.add('pop'); } }
+  stage.classList.toggle('bust', busting);
+  stage.classList.toggle('seven', G.fx.some(function(f){ return f.type === 'seven' && now >= f.at && now < f.at + f.d; }));
+  stage.classList.toggle('iced', P.status === 'frozen' && now >= P.frozenAt);
+  // ---- the three cards ----
+  greedThreeDraw(document.getElementById('gr-three'), T, now, { deck:document.getElementById('gr-deck'), target:function(){ return rowEl; } });
+  // ---- the burned cards, asked for from the phone of whoever's turn it is ----
+  var bv = document.getElementById('gr-burnview'), bvOpen = !!G.burnOpen && T.stage === 'choose';
+  bv.classList.toggle('hidden', !bvOpen);
+  if(bvOpen){
+    greedSetHtml(bv, greedBurnViewHtml(G, false));
+    var gridEl = bv.querySelector('.gr-bvgrid'); if(gridEl) greedFit(gridEl, bn, 200);
+  }
+}
+
 // ---------------- shared drawing ----------------
 // a pistol, side view, muzzle to the right (drawn in the theme's own colours)
 var INTER_GUN_SVG =
@@ -9684,6 +10716,7 @@ function interDisplayCharState(p, g, it, now){
     if(it.gameKey === 'crash'){ o.state = crashCharState(it, p.id, now); return o; }
     if(it.gameKey === 'puzzle'){ o.state = puzzleCharState(it, p.id, now); return o; }
     if(it.gameKey === 'snake'){ o.state = snakeCharState(it, p.id, now); return o; }
+    if(it.gameKey === 'greed'){ o.state = greedCharState(it, p.id, now); return o; }
     var m = interMoodNow(interFxFor(interSignature(it)), p.id);
     if(it.gameKey === 'conveyor'){
       if(it.cvQueue && it.cvQueue.indexOf(p.id) >= 0) o.state = 'scared';   // box fell, the gun is coming
@@ -9746,6 +10779,8 @@ function renderInterDisplay(){
   els.nextRoundLabel.classList.add('hidden');
   renderPlayerSlotsInter();
   syncCharSprites();
+  if(it.gameKey === 'greed' && it.greed && g.phase === 'inter-elim') greedMinis(g, it, it.greed, syncedNow());
+  else if(!(it.gameKey === 'greed' && it.greed && g.phase === 'inter-active')) greedHideLayers();
   if(g.phase !== 'inter-final') els.faceoff.classList.add('hidden');
   if(g.phase !== 'inter-elim') els.roundwin.classList.add('hidden');
   var sig = interSignature(it);
@@ -9764,7 +10799,7 @@ function renderInterDisplay(){
   }
   if(g.phase === 'inter-ready'){
     var remain = Math.max(0, Math.ceil((it.readyStartAt + INTER_READY_MS - syncedNow())/1000));
-    els.readyGtitle.textContent = interGameLabel(it.gameKey)+(it.gameKey === 'conveyor' ? '' : it.gameKey === 'keys' ? ' — العبور '+it.innerNumber : it.gameKey === 'memo' ? ' — النمط '+it.innerNumber : it.gameKey === 'dice' ? ' — الرمية '+it.innerNumber : it.gameKey === 'elec' ? ' — اللغز '+it.innerNumber : it.gameKey === 'fall' ? '' : it.gameKey === 'crash' ? (it.crash && it.crash.mode === 'single' ? '' : ' — الإقصاء '+it.innerNumber) : it.gameKey === 'gifts' ? ' — الإقصاء '+it.innerNumber : it.gameKey === 'puzzle' ? (it.puzzle && it.puzzle.mode === 'single' ? '' : ' — الإقصاء '+it.innerNumber) : it.gameKey === 'snake' ? '' : ' — الإقصاء '+it.innerNumber+'/'+interInnerTotal(it));
+    els.readyGtitle.textContent = interGameLabel(it.gameKey)+(it.gameKey === 'conveyor' ? '' : it.gameKey === 'keys' ? ' — العبور '+it.innerNumber : it.gameKey === 'memo' ? ' — النمط '+it.innerNumber : it.gameKey === 'dice' ? ' — الرمية '+it.innerNumber : it.gameKey === 'elec' ? ' — اللغز '+it.innerNumber : it.gameKey === 'fall' ? '' : it.gameKey === 'crash' ? (it.crash && it.crash.mode === 'single' ? '' : ' — الإقصاء '+it.innerNumber) : it.gameKey === 'gifts' ? ' — الإقصاء '+it.innerNumber : it.gameKey === 'puzzle' ? (it.puzzle && it.puzzle.mode === 'single' ? '' : ' — الإقصاء '+it.innerNumber) : it.gameKey === 'snake' ? '' : it.gameKey === 'greed' ? (it.greed && it.greed.mode === 'single' ? '' : ' — الإقصاء '+it.innerNumber) : ' — الإقصاء '+it.innerNumber+'/'+interInnerTotal(it));
     els.readyCdnum.textContent = remain > 0 ? remain : '🚀';
     els.readyOverlay.style.display = 'flex';
     els.arenaCenter.innerHTML = ''; els.arenaCenter._builtKey = null;
@@ -9780,6 +10815,7 @@ function renderInterDisplay(){
     if(it.gameKey === 'crash'){ renderCrashDisplay(g, it); return; }
     if(it.gameKey === 'puzzle'){ renderPuzzleDisplay(g, it); return; }
     if(it.gameKey === 'snake'){ renderSnakeDisplay(g, it); return; }
+    if(it.gameKey === 'greed'){ renderGreedDisplay(g, it); return; }
     interRankWatch(g, it);
     if(it.gameKey === 'conveyor'){
       if(it.elim) renderInterElimDisplay(g, it); else renderCvCenter(g, it);
@@ -9913,7 +10949,7 @@ function renderInterElimDisplay(g, it){
     }
   }
   var panel = document.getElementById('elim-panel');
-  var showPanel = (!e || now >= e.shotAt + INTER_ELIM_PANEL_MS) && (!it.roundWin || now >= it.roundWin.until) && !(it.elimQueue && it.elimQueue.length);
+  var showPanel = !(e && e.mid) && (!e || now >= e.shotAt + INTER_ELIM_PANEL_MS) && (!it.roundWin || now >= it.roundWin.until) && !(it.elimQueue && it.elimQueue.length);
   if(panel && showPanel && panel.classList.contains('hidden')){
     var html = '';
     if(it.roundResults){
@@ -9924,6 +10960,8 @@ function renderInterElimDisplay(g, it){
       });
       html += '</table>';
       if(victim) html = '<div class="elim-sub">تم إقصاء '+escapeHtml(it.elimNames || victim.name)+(e.tie?' (تعادل - بالقرعة)':'')+'</div>' + html;
+    } else if(it.greed && it.greed.tieAll && !e){
+      html = '<div class="elim-title res">🤝 تعادل الكل!</div><div class="elim-sub">ما أحد طلع — إقصاء جديد</div>';
     } else if(it.puzzle && it.puzzle.tieAll && !e){
       html = '<div class="elim-title res">🧩 ما أحد كمّل الصورة!</div><div class="elim-sub">ما أحد طلع — صورة جديدة</div>';
     } else if(it.gifts && it.gifts.tieAll && !e){
@@ -10131,6 +11169,7 @@ function interPhoneCharState(g, it, alive, outEntry, hitNow, shotLanded){
     if(it.gameKey === 'crash'){ o.state = crashCharState(it, app.myPlayerId, now); return o; }
     if(it.gameKey === 'puzzle'){ o.state = puzzleCharState(it, app.myPlayerId, now); return o; }
     if(it.gameKey === 'snake'){ o.state = snakeCharState(it, app.myPlayerId, now); return o; }
+    if(it.gameKey === 'greed'){ o.state = greedCharState(it, app.myPlayerId, now); return o; }
     var m = rcMoodNow();
     if(it.gameKey === 'conveyor'){
       if(cv.dropped) o.state = 'scared';
@@ -10186,6 +11225,7 @@ function renderInterPlayer(){
     els.giftsContainer.classList.add('hidden');
     els.puzzleContainer.classList.add('hidden');
     els.snakeContainer.classList.add('hidden');
+    els.greedContainer.classList.add('hidden');
     els.interPick.classList.add('hidden');
     interShowElimOverlay(false);
     els.displayWrap.classList.add('hidden');
@@ -10209,6 +11249,7 @@ function renderInterPlayer(){
     els.giftsContainer.classList.add('hidden');
     els.puzzleContainer.classList.add('hidden');
     els.snakeContainer.classList.add('hidden');
+    els.greedContainer.classList.add('hidden');
     interShowElimOverlay(false);
     els.interPick.classList.remove('hidden');
     renderInterPick(g);
@@ -10232,8 +11273,8 @@ function renderInterPlayer(){
   } else {
     interShowElimOverlay(showBroken, false);
   }
-  var conveyor = it.gameKey === 'conveyor', keysG = it.gameKey === 'keys', memoG = it.gameKey === 'memo', diceG = it.gameKey === 'dice', elecG = it.gameKey === 'elec', fallG = it.gameKey === 'fall', crashG = it.gameKey === 'crash', giftsG = it.gameKey === 'gifts', puzzleG = it.gameKey === 'puzzle', snakeG = it.gameKey === 'snake';
-  els.interContainer.classList.toggle('hidden', conveyor || keysG || memoG || diceG || elecG || fallG || crashG || giftsG || puzzleG || snakeG);
+  var conveyor = it.gameKey === 'conveyor', keysG = it.gameKey === 'keys', memoG = it.gameKey === 'memo', diceG = it.gameKey === 'dice', elecG = it.gameKey === 'elec', fallG = it.gameKey === 'fall', crashG = it.gameKey === 'crash', giftsG = it.gameKey === 'gifts', puzzleG = it.gameKey === 'puzzle', snakeG = it.gameKey === 'snake', greedG = it.gameKey === 'greed';
+  els.interContainer.classList.toggle('hidden', conveyor || keysG || memoG || diceG || elecG || fallG || crashG || giftsG || puzzleG || snakeG || greedG);
   els.cvContainer.classList.toggle('hidden', !conveyor);
   els.keysContainer.classList.toggle('hidden', !keysG);
   els.memoContainer.classList.toggle('hidden', !memoG);
@@ -10244,7 +11285,8 @@ function renderInterPlayer(){
   els.giftsContainer.classList.toggle('hidden', !giftsG);
   els.puzzleContainer.classList.toggle('hidden', !puzzleG);
   els.snakeContainer.classList.toggle('hidden', !snakeG);
-  renderMyChar(g, it, alive, outEntry, hitNow, shotLanded, conveyor ? els.cvBox : keysG ? els.keysAvatar : memoG ? els.memoAvatar : diceG ? els.diceAvatar : elecG ? els.elecAvatar : fallG ? els.fallAvatar : crashG ? els.crashAvatar : giftsG ? els.giftsAvatar : puzzleG ? els.puzzleAvatar : snakeG ? els.snakeAvatar : els.rcAvatar);   // conveyor: the character IS the one on the belt
+  els.greedContainer.classList.toggle('hidden', !greedG);
+  renderMyChar(g, it, alive, outEntry, hitNow, shotLanded, conveyor ? els.cvBox : keysG ? els.keysAvatar : memoG ? els.memoAvatar : diceG ? els.diceAvatar : elecG ? els.elecAvatar : fallG ? els.fallAvatar : crashG ? els.crashAvatar : giftsG ? els.giftsAvatar : puzzleG ? els.puzzleAvatar : snakeG ? els.snakeAvatar : greedG ? els.greedAvatar : els.rcAvatar);   // conveyor: the character IS the one on the belt
   if(conveyor){
     if(renderConveyorPlayer(g, it, alive, outEntry)) return;
   } else if(keysG){
@@ -10265,6 +11307,8 @@ function renderInterPlayer(){
     if(renderPuzzlePlayer(g, it, alive, outEntry)) return;
   } else if(snakeG){
     if(renderSnakePlayer(g, it, alive, outEntry)) return;
+  } else if(greedG){
+    if(renderGreedPlayer(g, it, alive, outEntry)) return;
   } else {
     els.interContainer.classList.toggle('rc-dead', !alive);
     els.interContainer.classList.toggle('rc-hold', Date.now() < rc.holdUntil);
@@ -10311,16 +11355,246 @@ function renderInterPlayer(){
     var mine = it.roundResults.filter(function(r){ return r.id===app.myPlayerId; })[0];
     els.notifBar.textContent = mine ? (mine.winner ? '👑 آخر الصامدين! +'+mine.points : 'انتهت الجولة: +'+mine.points) : 'انتهت الجولة';
   } else {
-    els.notifBar.textContent = (it.puzzle && it.puzzle.tieAll && !it.elim) ? '🧩 ما أحد كمّل — ما أحد طلع' : (it.gifts && it.gifts.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.crash && it.crash.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.elec && it.elec.tieAll && !it.elim) ? '⚡ ما أحد وصّل — ما أحد طلع' : (it.dice && it.dice.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.memo && it.memo.allOk && !it.elim) ? '🦅 الكل صح — ما أحد طلع' : (it.keys && it.keys.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : hitNow ? 'تم إقصاؤك' : (alive ? ('✔ نجوت - تم إقصاء '+(victim?victim.name:'')) : 'تم إقصاء '+(victim?victim.name:''));
+    els.notifBar.textContent = (it.greed && it.greed.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.puzzle && it.puzzle.tieAll && !it.elim) ? '🧩 ما أحد كمّل — ما أحد طلع' : (it.gifts && it.gifts.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.crash && it.crash.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.elec && it.elec.tieAll && !it.elim) ? '⚡ ما أحد وصّل — ما أحد طلع' : (it.dice && it.dice.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.memo && it.memo.allOk && !it.elim) ? '🦅 الكل صح — ما أحد طلع' : (it.keys && it.keys.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : hitNow ? 'تم إقصاؤك' : (alive ? ('✔ نجوت - تم إقصاء '+(victim?victim.name:'')) : 'تم إقصاء '+(victim?victim.name:''));
   }
   if(isLeader && (!it.elim || syncedNow() >= it.elim.shotAt + 700) && !(it.elimQueue && it.elimQueue.length)){
-    els.btnNextRound.textContent = !it.roundResults ? (it.gameKey === 'keys' ? '▶ العبور التالي' : it.gameKey === 'memo' ? '▶ النمط التالي' : it.gameKey === 'dice' ? '▶ الرمية التالية' : it.gameKey === 'elec' ? '▶ اللغز التالي' : it.gameKey === 'crash' ? '▶ الإقصاء التالي' : it.gameKey === 'gifts' ? '▶ الإقصاء التالي' : it.gameKey === 'puzzle' ? '▶ الصورة التالية' : '▶ الإقصاء التالي ('+(it.innerNumber+1)+'/'+interInnerTotal(it)+')')
+    els.btnNextRound.textContent = !it.roundResults ? (it.gameKey === 'keys' ? '▶ العبور التالي' : it.gameKey === 'memo' ? '▶ النمط التالي' : it.gameKey === 'dice' ? '▶ الرمية التالية' : it.gameKey === 'elec' ? '▶ اللغز التالي' : it.gameKey === 'crash' ? '▶ الإقصاء التالي' : it.gameKey === 'gifts' ? '▶ الإقصاء التالي' : it.gameKey === 'puzzle' ? '▶ الصورة التالية' : it.gameKey === 'greed' ? '▶ الإقصاء التالي' : '▶ الإقصاء التالي ('+(it.innerNumber+1)+'/'+interInnerTotal(it)+')')
       : (it.roundNumber < g.interConfig.roundsTotal ? '▶ الجولة التالية' : (hostTopTied(g) ? '▶ ⚖️ جولة كسر التعادل' : '▶ عرض النتيجة النهائية'));
     els.btnNextRound.classList.remove('hidden');
     els.btnBombToLobby.classList.remove('hidden');
   }
 }
 els.elimOverlay.innerHTML = interCrackSvg() + '<div class="elim-text">تم إقصاؤك</div>';
+
+// ---- phone: greed. On my turn the three cards are the buttons, freeze and any kept card I can use
+// below them, my collection at the bottom. In the "each on their phone" system the table is on every
+// phone: the three cards and the cards of whoever's turn it is, my own cards in a drawer that opens
+// by itself on my turn, and a button for the list of players. Touching any card makes it big. ----
+var gq = { sig:null, peeks:{}, peekMode:false, sentKey:null, buzz:null, drawer:false, list:false, listId:null };
+function gqState(){ var g = app.game, it = g && g.inter; return (it && it.gameKey === 'greed' && it.greed) ? it : null; }
+function gqSend(o){
+  var it = gqState(); if(!it) return;
+  o.t = 'greed'; o.sig = interSignature(it);
+  sendToHost(o);
+}
+els.greedThree.addEventListener('click', function(e){
+  var it = gqState(), b = e.target.closest && e.target.closest('.gr-slot'); if(!it || !b) return;
+  var G = it.greed, T = G.t, me = app.myPlayerId, i = +b.getAttribute('data-i');
+  if(!T || T.pid !== me || T.stage !== 'choose' || gq.sentKey === T.key) return;
+  if(gq.peekMode){
+    if(T.peeked[i]) return;
+    gq.peekMode = false; gq.sentKey = T.key;
+    playSound('press');
+    gqSend({ a:'peek', key:T.key, i:i });
+    renderAll();
+    return;
+  }
+  gq.sentKey = T.key;
+  playSound('press');
+  gqSend({ a:'draw', key:T.key, i:i });
+});
+els.greedFreeze.addEventListener('click', function(){
+  var it = gqState(); if(!it) return;
+  var T = it.greed.t;
+  if(!T || T.pid !== app.myPlayerId || T.stage !== 'choose' || gq.sentKey === T.key) return;
+  gq.sentKey = T.key;
+  playSound('submit');
+  gqSend({ a:'freeze', key:T.key });
+});
+els.greedTools.addEventListener('click', function(e){
+  var it = gqState(), b = e.target.closest && e.target.closest('button'); if(!it || !b) return;
+  var T = it.greed.t, a = b.getAttribute('data-a');
+  if(!T || T.pid !== app.myPlayerId || T.stage !== 'choose') return;
+  playSound('press');
+  if(a === 'peek'){ gq.peekMode = !gq.peekMode; renderAll(); return; }
+  gqSend({ a:a, key:T.key });
+});
+els.greedSheet.addEventListener('click', function(e){
+  var it = gqState(), b = e.target.closest && e.target.closest('[data-pick]'); if(!it || !b) return;
+  var G = it.greed, T = G.t, v = b.getAttribute('data-pick'), k = b.getAttribute('data-k');
+  playSound('press');
+  if(k === 'target') gqSend({ a:'target', key:G.pick.key, id:v });
+  else if(k === 'stealwho') gqSend({ a:'stealwho', key:T.key, id:v });
+  else if(k === 'stealcard') gqSend({ a:'stealcard', key:T.key, i:+v });
+  else if(k === 'discard') gqSend({ a:'discardcard', key:T.key, code:v });
+  else if(k === 'back') gqSend({ a:'back', key:T.key });
+});
+function gqBurnToggle(){
+  var it = gqState(); if(!it) return;
+  var T = it.greed.t;
+  if(!T || T.pid !== app.myPlayerId || T.stage !== 'choose') return;
+  playSound('press');
+  gqSend({ a:'burnview', key:T.key });
+}
+els.greedBurnBtn.addEventListener('click', gqBurnToggle);
+els.greedBurnview.addEventListener('click', function(e){
+  if(e.target.closest && e.target.closest('.gz')) return;
+  gqBurnToggle();
+});
+els.greedDrawer.addEventListener('click', function(){ gq.drawer = !gq.drawer; playSound('press'); renderAll(); });
+els.greedListBtn.addEventListener('click', function(){ gq.list = !gq.list; gq.listId = null; playSound('press'); renderAll(); });
+els.greedList.addEventListener('click', function(e){
+  if(e.target.closest && e.target.closest('.gz')) return;
+  var r = e.target.closest && e.target.closest('[data-lid]'), c = e.target.closest && e.target.closest('.gq-back');
+  if(c){ gq.list = false; gq.listId = null; }
+  else if(r){ var id = r.getAttribute('data-lid'); gq.listId = gq.listId === id ? null : id; }
+  else return;
+  playSound('press');
+  renderAll();
+});
+// touch a card: it comes up big enough to read; touch again and it goes back
+els.greedContainer.addEventListener('click', function(e){
+  var c = e.target.closest && e.target.closest('img.gz'); if(!c) return;
+  e.stopPropagation();
+  els.greedZoom.innerHTML = '<img alt="" draggable="false" src="'+greedImg(c.getAttribute('data-code'))+'">';
+  els.greedZoom.classList.remove('hidden');
+  playSound('press');
+}, true);
+els.greedZoom.addEventListener('click', function(){ els.greedZoom.classList.add('hidden'); els.greedZoom.innerHTML = ''; playSound('press'); });
+function gqPeekMsg(msg){ gq.peeks[msg.turn + '|' + msg.i] = msg.code; }
+function gqMiniRow(P){ return P.nums.concat(P.acts).map(function(c){ return '<img class="gr-coin" alt="" draggable="false" src="'+greedCoin(c)+'">'; }).join(''); }
+function gqWhy(P){ return !P ? '' : P.status === 'out' ? '✖ خارج' : P.status !== 'play' ? (P.byOther ? 'مجمَّد' : '🔒 مجمّد') : greedHas(P, 'shield') ? 'محمي' : greedHas(P, 'second') ? 'فرصة ثانية' : ''; }
+function gqAvatar(p){ return p && CHARS[p.character] ? '<span class="gq-av">'+charImgHtml(p.character, 'normal', false)+'</span>' : ''; }
+function gqSheet(it, G, me, now){
+  var sh = els.greedSheet, T = G.t, Pk = G.pick, h = '', key = '', ic = function(n){ return greedIconHtml(n, 'gq-i'); };
+  var row = function(id, kind){
+    var p = findPlayer(id), P = G.ps[id], ok = !!(Pk && Pk.allowed.indexOf(id) >= 0);
+    return '<button type="button" class="gq-row'+(ok ? '' : ' off')+'"'+(ok ? ' data-pick="'+escapeHtml(id)+'" data-k="'+kind+'"' : ' disabled')+'>'+gqAvatar(p)+
+      '<span class="gq-rname"><b>'+escapeHtml(p ? p.name : '')+(id === me ? ' (أنا)' : '')+'</b><small>'+gqWhy(P)+'</small></span><span class="gq-rcards">'+(P ? gqMiniRow(P) : '')+'</span><em>'+greedTotal(P)+'</em></button>';
+  };
+  if(Pk && Pk.by === me && (Pk.kind === 'freeze' || Pk.kind === 'flip')){
+    key = 'target|'+Pk.key;
+    h = '<div class="gq-shead"><span>'+(Pk.kind === 'flip' ? ic('flip')+' مين يسحب 3 بطاقات؟' : ic('freeze')+' مين تجمّد؟')+'</span> <i id="gq-sclock"></i></div>' + G.order.filter(function(id){ return G.ps[id].status !== 'out'; }).map(function(id){ return row(id, 'target'); }).join('');
+  } else if(T && T.pid === me && T.stage === 'stealwho'){
+    key = 'who|'+T.key;
+    h = '<div class="gq-shead"><span>'+ic('hand')+' مين تسرق منه؟</span> <i id="gq-sclock"></i></div>' + G.order.filter(function(id){ return id !== me && G.ps[id].status !== 'out'; }).map(function(id){ return row(id, 'stealwho'); }).join('') +
+      '<button type="button" class="gq-back" data-pick="1" data-k="back">رجوع</button>';
+  } else if(T && T.pid === me && T.stage === 'stealpick' && Pk){
+    key = 'card|'+T.key;
+    var c = ''; for(var i=0;i<Pk.count;i++) c += '<button type="button" class="gq-steal" data-pick="'+i+'" data-k="stealcard">'+greedCardHtml('back', '')+'</button>';
+    h = '<div class="gq-shead"><span>'+ic('hand')+' اختر بطاقة من '+escapeHtml(greedName(Pk.victim))+'</span> <i id="gq-sclock"></i></div><div class="gq-grid">'+c+'</div>';
+  } else if(T && T.pid === me && T.stage === 'discard'){
+    key = 'disc|'+T.key;
+    var P0 = G.ps[me];
+    h = '<div class="gq-shead"><span>'+ic('discard')+' أي رقم ترميه؟</span> <i id="gq-sclock"></i></div><div class="gq-grid">'+P0.nums.map(function(cd){ return '<button type="button" class="gq-steal" data-pick="'+cd+'" data-k="discard">'+greedCardHtml(cd, '')+'</button>'; }).join('')+'</div>' +
+      '<button type="button" class="gq-back" data-pick="1" data-k="back">رجوع</button>';
+  }
+  sh.classList.toggle('hidden', !key);
+  if(key && sh._k !== key){ sh._k = key; sh.innerHTML = h; }
+  if(!key) sh._k = null;
+  var ck = document.getElementById('gq-sclock');
+  if(ck){ var endAt = Pk ? Pk.ends : (T ? T.ends : 0), s = String(Math.max(0, Math.ceil((endAt - now)/1000))); if(ck.textContent !== s) ck.textContent = s; }
+}
+// the list of players: everyone's points; touch a player and their cards open
+function gqList(it, G, me){
+  els.greedList.classList.toggle('hidden', !gq.list);
+  if(!gq.list) return;
+  var rows = G.order.slice().sort(function(a, b){ return greedTotal(G.ps[b]) - greedTotal(G.ps[a]); }).map(function(id){
+    var p = findPlayer(id), P = G.ps[id], open = gq.listId === id;
+    return '<div class="gq-lrow'+(G.t && G.t.pid === id ? ' on' : '')+'"><button type="button" class="gq-row" data-lid="'+escapeHtml(id)+'">'+gqAvatar(p)+
+      '<span class="gq-rname wide"><b>'+escapeHtml(p ? p.name : '')+(id === me ? ' (أنا)' : '')+'</b><small>'+gqWhy(P)+'</small></span><em>'+greedTotal(P)+'</em><u>'+(open ? '▲' : '▼')+'</u></button>' +
+      (open ? '<div class="gq-lcards">'+(P.nums.length + P.acts.length ? greedCollHtml(P, 'gl gz') : '<small>ما عنده بطاقات</small>')+'</div>' : '')+'</div>';
+  }).join('');
+  greedSetHtml(els.greedList, '<div class="gq-shead"><span>👥 اللاعبين</span></div>' + rows + '<button type="button" class="gq-back">إغلاق</button>');
+}
+function renderGreedPlayer(g, it, alive, outEntry){
+  var sig = interSignature(it), G = it.greed, me = app.myPlayerId, now = syncedNow();
+  if(!G) return g.phase === 'inter-active';
+  greedPreload();
+  if(gq.sig !== sig){ gq = { sig:sig, peeks:{}, peekMode:false, sentKey:null, buzz:null, drawer:false, list:false, listId:null }; }
+  var T = G.t, P = G.ps[me], phones = G.view === 'phones', mine = !!(T && T.pid === me && alive && g.phase === 'inter-active');
+  var choosing = mine && T.stage === 'choose' && !it.elim;
+  if(!choosing) gq.peekMode = false;
+  if(mine && gq.buzz !== T.dealAt){                     // my turn: anything big closes, the table is mine
+    gq.buzz = T.dealAt; gq.drawer = false; gq.list = false;
+    els.greedZoom.classList.add('hidden');
+    if(navigator.vibrate){ try{ navigator.vibrate([60,40,60]); }catch(e){} }
+  }
+  els.greedContainer.classList.toggle('phones', phones);
+  // the top line: who, the time in the middle, my points
+  var who = !T ? (G.rank ? '🏁 النتائج' : 'استعد') : T.pid === me ? (G.pick && G.pick.by === me ? 'اختر 👇' : 'دورك!') :
+    phones ? greedStageLabel(G, T) + ' ' + escapeHtml(greedName(T.pid)) : 'دور ' + escapeHtml(greedName(T.pid));
+  greedSetHtml(els.greedTurn, who);
+  var total = P ? greedTotal(P) : 0, ts = String(total);
+  if(els.greedTotal.textContent !== ts) els.greedTotal.textContent = ts;
+  var secs = T ? Math.max(0, Math.ceil(((G.pick ? G.pick.ends : T.ends) - now)/1000)) : 0;
+  var timed = !!T && !it.elim && (T.stage === 'choose' || !!G.pick) && (mine || phones), ct = timed ? String(secs) : '';
+  if(els.greedCount.textContent !== ct) els.greedCount.textContent = ct;
+  els.greedCount.classList.toggle('low', timed && secs <= 5);
+  els.greedListBtn.classList.toggle('hidden', !phones);
+  // the piles
+  var left = String(G.left); if(els.greedLeft.textContent !== left) els.greedLeft.textContent = left;
+  greedSetHtml(els.greedBurnBtn, '🔥 المحروقة ('+G.burned.length+')');
+  els.greedBurnBtn.disabled = !choosing;
+  els.greedBurnBtn.classList.toggle('off', !choosing);
+  // the three cards (only on my turn, unless everyone plays on their phones)
+  var showThree = !!T && !it.elim && (mine || phones) && T.stage !== 'wait' && T.stage !== 'target';
+  els.greedThree.classList.toggle('hidden', !showThree);
+  els.greedThree.classList.toggle('peeking', gq.peekMode);
+  // whose cards are on the table
+  var other = phones && !!T && !mine && !it.elim, oth = other ? G.ps[T.pid] : null, ranked = phones && !!G.rank;
+  els.greedOther.classList.toggle('hidden', !other && !ranked);
+  if(other && oth){
+    greedSetHtml(els.greedOtherName, 'بطاقات '+escapeHtml(greedName(T.pid))+': <b>'+greedTotal(oth)+'</b>');
+    greedSetHtml(els.greedOtherCards, '<div class="gr-auras">'+greedAuraHtml(oth, now)+'</div>'+greedCollHtml(oth, 'gq-c gz'));
+    greedFit(els.greedOtherCards, oth.nums.length + oth.acts.length, window.innerWidth*0.22);
+  } else if(ranked){
+    greedSetHtml(els.greedOtherName, '🏁 النتائج');
+    greedSetHtml(els.greedOtherCards, '<div class="gq-rankrows">'+G.rank.rows.map(function(r){ return '<div><b>'+escapeHtml(greedName(r.id))+'</b><em>'+r.s+'</em></div>'; }).join('')+'</div>');
+  }
+  if(showThree){
+    greedThreeDraw(els.greedThree, T, now, {
+      deck:els.greedDeck,
+      target:function(){ return mine ? els.greedMineCards : els.greedOtherCards; },
+      peek:function(i){ return mine ? gq.peeks[T.dealAt + '|' + i] : null; }
+    });
+  }
+  // buttons
+  var canFreeze = choosing && P && (P.nums.length + P.acts.length > 0);
+  els.greedFreeze.classList.toggle('hidden', !mine);          // (it keeps its place: the cards below don't jump)
+  els.greedFreeze.classList.toggle('ghost', !canFreeze);
+  var tools = '', tool = function(a, name, label, on){ return '<button type="button" data-a="'+a+'" class="'+(on ? 'on' : '')+'">'+greedIconHtml(name, 'gq-i')+' '+label+'</button>'; };
+  if(choosing && P){
+    if(greedHas(P, 'peek')) tools += tool('peek', 'peek', 'Peek', gq.peekMode);
+    if(greedHas(P, 'steal') && greedTargets(it, 'steal', me).length) tools += tool('steal', 'hand', 'Steal');
+    if(greedHas(P, 'discard') && P.nums.length) tools += tool('discard', 'discard', 'Discard');
+  }
+  greedSetHtml(els.greedTools, tools);
+  els.greedTools.classList.toggle('hidden', !tools);
+  // my collection: always there, or in its drawer
+  var hasP = !!P && P.status !== 'out', count = P ? P.nums.length + P.acts.length : 0, drawerOn = phones && !mine && hasP;
+  els.greedDrawer.classList.toggle('hidden', !drawerOn);
+  if(drawerOn) greedSetHtml(els.greedDrawer, (gq.drawer ? '▼' : '▲') + ' بطاقاتي: <b>' + total + '</b>');
+  var mineOpen = !phones || mine || gq.drawer;
+  els.greedMine.classList.toggle('hidden', !mineOpen);
+  els.greedMine.classList.toggle('sheeted', drawerOn && gq.drawer);
+  greedSetHtml(els.greedMineCards, P ? greedCollHtml(P, 'gq-c gz') : '');
+  greedSetHtml(els.greedMineAuras, P ? greedAuraHtml(P, now) : '');
+  if(mineOpen) greedFit(els.greedMineCards, count, window.innerWidth*0.3);
+  var frozen = !!(P && P.status === 'frozen' && now >= P.frozenAt);
+  els.greedMine.classList.toggle('locked', frozen && !P.byOther);
+  // the burned cards on my phone too, while they're open on my turn
+  var bvOpen = !!G.burnOpen && choosing;
+  els.greedBurnview.classList.toggle('hidden', !bvOpen);
+  if(bvOpen){
+    greedSetHtml(els.greedBurnview, greedBurnViewHtml(G, true) + '<button type="button" class="gq-back">إغلاق</button>');
+    var bg = els.greedBurnview.querySelector('.gr-bvgrid'); if(bg) greedFit(bg, G.burned.length, 120);
+  }
+  gqList(it, G, me);
+  gqSheet(it, G, me, now);
+  if(g.phase !== 'inter-active') return false;
+  var watch = phones ? '' : 'تابع الشاشة';
+  els.notifBar.textContent = it.elim && phones ? '💥 تم إقصاء ' + greedName(it.elim.id)
+    : outEntry ? (phones ? 'تم إقصاؤك' : 'تم إقصاؤك - تابع الشاشة')
+    : !alive ? watch
+    : now < it.startAt ? 'استعد...'
+    : gq.peekMode ? 'المس ورقة عشان تشوفها'
+    : choosing ? (canFreeze ? 'المس ورقة للسحب، أو جمّد بطاقاتك' : 'المس ورقة للسحب')
+    : (P && P.status === 'frozen') ? (P.byOther ? 'تم تجميد بطاقاتك' : '🔒 جمّدت بطاقاتك')
+    : mine ? '🃏 ...'
+    : (phones ? 'انتظر دورك' : 'تابع الشاشة — انتظر دورك');
+  return true;
+}
 
 // ---- phone: snakes & ladders. The dice tray of the dice game (hold, swipe, throw - the same
 // physics) with 1 or 2 dice, live only on my turn; the numbers are drawn fairly at the moment of
