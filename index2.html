@@ -1632,7 +1632,7 @@ body.theme-3 .fs, body.theme-4 .fs, body.theme-5 .fs, body.theme-7 .fs{filter:no
 .gr-slot.in{opacity:1;transform:none;}
 .gr-slot.up{transform:translateY(-10%) scale(1.26);z-index:5;}
 .gr-slot.fly{transform:translate(var(--fx,0),var(--fy,0)) scale(.5);opacity:0;transition:transform .45s ease-in, opacity .45s ease-in;z-index:6;}
-.gr-slot.back2{transform:translate(var(--dx,0),var(--dy,0)) scale(.5) rotate(-12deg);opacity:0;transition:transform .5s ease-in, opacity .5s ease-in;}
+.gr-slot.back2{transform:translate(var(--bx,var(--dx,0)),var(--by,var(--dy,0))) scale(.34) rotate(-20deg);opacity:0;z-index:6;filter:sepia(1) saturate(3.2) hue-rotate(-18deg) brightness(.72);transition:transform .5s ease-in, opacity .5s cubic-bezier(.8,0,1,.6), filter .32s ease-in;}
 .gr-slot.gone{opacity:0;transform:scale(.8);transition:opacity .25s, transform .25s;}
 .gr-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .62s cubic-bezier(.3,.7,.3,1);}
 .gr-card.flipped{transform:rotateY(180deg);}
@@ -1728,7 +1728,7 @@ body.theme-3 .fs, body.theme-4 .fs, body.theme-5 .fs, body.theme-7 .fs{filter:no
 .gr-f-hand.holding .hcard{opacity:1;}
 .gr-f-bin img{width:1.5em;filter:drop-shadow(0 0 10px #ffd34d);}
 .gr-f-bin .bcard{position:absolute;left:50%;top:-180%;width:calc(var(--u)*.9);transform:translateX(-50%);animation:gr-tobin 1.1s ease-in forwards;}
-.gr-f-cardfly .fcard{width:calc(var(--u)*1.2);}
+.gr-f-cardfly .fcard, .gr-f-raise .fcard{width:calc(var(--u)*1.2);}
 @keyframes gr-land{0%{transform:scale(1.5);opacity:.3;}100%{transform:none;opacity:1;}}
 @keyframes gr-pop{0%{transform:scale(1);}40%{transform:scale(1.45);}100%{transform:scale(1);}}
 @keyframes gr-auraon{0%{opacity:0;transform:scale(1.08);}100%{opacity:1;transform:none;}}
@@ -1809,6 +1809,9 @@ body.theme-3 .fs, body.theme-4 .fs, body.theme-5 .fs, body.theme-7 .fs{filter:no
 .gq-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;direction:ltr;}
 .gq-steal{width:min(27vw,17vh);padding:0;border:none;background:none;cursor:pointer;}
 .gq-steal img{width:100%;}
+.gq-sheet .gq-back{position:sticky;bottom:0;flex:0 0 auto;z-index:2;}
+.gq-sum{width:min(21vw,14vh);}
+.gq-steal.off{opacity:.3;filter:grayscale(.85);cursor:default;}
 .gq-back{flex:0 0 auto;padding:10px;border-radius:12px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-family:inherit;font-weight:800;cursor:pointer;}
 .gq-top{border-color:rgba(var(--glow),.45);box-shadow:0 0 24px -10px rgba(var(--glow),.6);}
 .gq-freeze{box-shadow:0 0 16px -4px rgba(var(--glow),.8);}
@@ -9785,24 +9788,24 @@ function renderSnakeDisplay(g, it){
 // ---------------- Greed (الطمع) ----------------
 // A push-your-luck card collecting game. On a turn three face-down cards are laid out: pick one
 // (by luck) or freeze your cards; the picked card joins your open collection, the other two are
-// shown and go back into the middle of the deck. Numbers score their value; a number you already
+// shown and burn (an empty deck is made again from the burned cards). Numbers score their value; a number you already
 // have knocks you out at once (the gun, and you're out of the whole round). Seven different
 // numbers: +50 and the elimination ends for everyone. When nobody can draw any more, the lowest
 // score goes too (elimination mode), or everyone but the best one by one (one round mode).
 // Score = points kept from earlier eliminations + (numbers + bonus cards) x multipliers + 50 for
 // seven; a knocked out player has 0. Points are only wiped when the big round ends.
 // One deck for 2-6 players, two for 7-12, rebuilt for every elimination. To rebalance, edit here:
-var GREED_NUMS = { 0:2, 1:3, 2:3, 3:4, 4:4, 5:5, 6:6, 7:6, 8:7, 9:7, 10:8, 11:8, 12:8 };   // number -> copies in one deck
+var GREED_NUMS = { 0:1, 1:2, 2:3, 3:4, 4:4, 5:5, 6:6, 7:6, 8:7, 9:8, 10:9, 11:10, 12:10 };   // number -> copies in one deck
 var GREED_BONUS = { 2:4, 5:3, 8:2, 10:1 };      // bonus cards in one deck: value -> copies
 var GREED_MULT = { 2:3, 3:2, 4:1 };             // multipliers in one deck
-var GREED_ACTION_COPIES = 3;                    // each action card in one deck
-var GREED_ACTIONS = ['second','flip','freeze','shield','peek','steal','discard'];
+var GREED_ACTION_COPIES = { second:3, flip:3, freeze:1, shield:3, peek:3, steal:3, discard:3, summon:1 };   // action cards in one deck
+var GREED_ACTIONS = ['second','flip','freeze','shield','peek','steal','discard','summon'];
 var GREED_SEVEN = 7, GREED_SEVEN_BONUS = 50, GREED_TWO_DECKS_FROM = 7;
 var GREED_DEAL_MS = 1100, GREED_PICK_MS = 1000, GREED_FLY_MS = 450, GREED_SHOW_MS = 1500, GREED_BACK_MS = 550;
 var GREED_SHUFFLE_MS = 650;                      // the shuffle is heard, then the first cards come
 var GREED_TARGET_MS = 10000, GREED_AWAY_MS = 2500, GREED_FLIP_MS = 1250, GREED_ICE_MS = 850, GREED_HAND_MS = 650, GREED_MAX_MS = 3*60*60000;
-var GREED_NAMES = { second:'Second Chance', flip:'Flip Three', freeze:'Freeze', shield:'Shield', peek:'Peek', steal:'Steal', discard:'Discard' };
-var GREED_FILES = { second:'act_second_chance', flip:'act_flip_three', freeze:'act_freeze', shield:'act_shield', peek:'act_peek', steal:'act_steal', discard:'act_discard' };
+var GREED_NAMES = { second:'Second Chance', flip:'Flip Three', freeze:'Freeze', shield:'Shield', peek:'Peek', steal:'Steal', discard:'Discard', summon:'Summon' };
+var GREED_FILES = { second:'act_second_chance', flip:'act_flip_three', freeze:'act_freeze', shield:'act_shield', peek:'act_peek', steal:'act_steal', discard:'act_discard', summon:'act_summon' };
 function greedImg(code){
   var k = code.charAt(0), v = code.slice(1), num = /^[0-9]+$/.test(v);
   var f = GREED_FILES[code] || (num && k === 'n' ? 'card_' + v : num && k === 'b' ? 'bonus_' + v : num && k === 'm' ? 'mult_' + v : 'back');
@@ -9829,7 +9832,7 @@ function greedDeck(sets){
     for(n=0;n<=12;n++) for(k=0;k<GREED_NUMS[n];k++) d.push('n'+n);
     Object.keys(GREED_BONUS).forEach(function(v){ for(var c=0;c<GREED_BONUS[v];c++) d.push('b'+v); });
     Object.keys(GREED_MULT).forEach(function(v){ for(var c=0;c<GREED_MULT[v];c++) d.push('m'+v); });
-    GREED_ACTIONS.forEach(function(a){ for(var c=0;c<GREED_ACTION_COPIES;c++) d.push(a); });
+    GREED_ACTIONS.forEach(function(a){ for(var c=0;c<GREED_ACTION_COPIES[a];c++) d.push(a); });
   }
   return shuffle(d);
 }
@@ -9883,6 +9886,10 @@ function greedDraw(){
 function greedBackIntoDeck(c){                         // into the middle: never back on top
   var d = greedHost.deck, top = Math.max(0, d.length - 6);
   d.splice(Math.floor(Math.random()*(top + 1)), 0, c);
+}
+function greedBurnLater(it, cards){                    // (they reach the pile at the end of their flight)
+  var G = it.greed;
+  greedLater(it, function(){ cards.forEach(function(c){ G.burned.push(c); }); greedSync(it); broadcastState(); }, GREED_BACK_MS - 60);
 }
 function greedStart(it){ playSound('card-shuffle'); greedLater(it, function(){ greedAdvance(it); }, it.startAt - syncedNow() + GREED_SHUFFLE_MS); }
 // the next player who can still play
@@ -9946,7 +9953,7 @@ function greedLanded(it, i){
   greedSync(it);
   broadcastState();
   playSound('card-flip');
-  greedLater(it, function(){ playSound('card-draw'); [0,1,2].forEach(function(k){ if(k !== i) greedBackIntoDeck(H.three[k]); }); H.three = []; greedSync(it); }, 150 + GREED_SHOW_MS);
+  greedLater(it, function(){ playSound('card-draw'); var rest = H.three.filter(function(c, k){ return k !== i; }); H.three = []; greedSync(it); greedBurnLater(it, rest); }, 150 + GREED_SHOW_MS);
   greedLater(it, function(){
     greedAfter(it, res, id, function(){ greedAdvance(it); });
   }, 150 + GREED_SHOW_MS + GREED_BACK_MS);
@@ -10017,7 +10024,7 @@ function greedApply(it, id, code, forced){
     playSound('card-shield');
     return 'next';
   }
-  if(code === 'peek' || code === 'steal' || code === 'discard'){ P.acts.push(code); return 'next'; }
+  if(code === 'peek' || code === 'steal' || code === 'discard' || code === 'summon'){ P.acts.push(code); return 'next'; }
   G.burned.push(code);                                   // freeze / flip three: played at once
   return 'target:' + code;
 }
@@ -10120,7 +10127,7 @@ function greedFreezeSelf(it, id){
   greedSync(it);
   broadcastState();
   playSound('card-flip');
-  greedLater(it, function(){ playSound('card-draw'); greedReturnThree(); greedSync(it); }, 150 + GREED_SHOW_MS);
+  greedLater(it, function(){ playSound('card-draw'); var rest = greedHost.three; greedHost.three = []; greedSync(it); greedBurnLater(it, rest); }, 150 + GREED_SHOW_MS);
   greedLater(it, function(){ greedAdvance(it); }, 150 + GREED_SHOW_MS + GREED_BACK_MS);
 }
 // ---- the gun in the middle of the game ----
@@ -10211,7 +10218,8 @@ function hostGreedMsg(pid, msg){
   G.burnOpen = false;
   if(T.stage === 'stealpick' && a === 'stealcard'){ greedStealTake(it, parseInt(msg.i, 10)); return; }
   if(T.stage === 'stealwho' && a === 'stealwho' && G.pick.allowed.indexOf(msg.id) >= 0){ greedStealWho(it, msg.id); return; }
-  if((T.stage === 'stealwho' || T.stage === 'discard') && a === 'back'){ greedOpen(it); return; }
+  if((T.stage === 'stealwho' || T.stage === 'discard' || T.stage === 'summon') && a === 'back'){ greedOpen(it); return; }
+  if(T.stage === 'summon' && a === 'summoncard'){ greedSummonTake(it, String(msg.code)); return; }
   if(T.stage === 'discard' && a === 'discardcard'){ greedDiscard(it, msg.code); return; }
   if(T.stage !== 'choose') return;
   if(a === 'draw'){ var i = parseInt(msg.i, 10); if(i >= 0 && i < 3) greedPick(it, i); return; }
@@ -10244,7 +10252,52 @@ function hostGreedMsg(pid, msg){
     var kd = G.key;
     broadcastState();
     greedLater(it, function(){ if(G.t === T && T.key === kd) greedOpen(it); }, GREED_TARGET_MS + 200);
+    return;
   }
+  if(a === 'summon' && greedHas(P, 'summon') && greedSummonable(G, P).length){
+    G.key++;
+    T.stage = 'summon'; T.key = G.key; T.ends = syncedNow() + GREED_TARGET_MS;
+    var ks = G.key;
+    broadcastState();
+    greedLater(it, function(){ if(G.t === T && T.key === ks) greedOpen(it); }, GREED_TARGET_MS + 200);
+  }
+}
+// a burned card that would do you no good can't be chosen: a number you have, or what you can only hold one of
+function greedCanSummon(G, P, c){
+  if(c.charAt(0) === 'n' && P.nums.indexOf(c) >= 0) return false;
+  if((c === 'second' || c === 'shield') && greedHas(P, c)) return false;
+  if(G.multTop && /^m\d/.test(c)){
+    var held = P.acts.filter(function(x){ return /^m\d/.test(x); })[0];
+    if(held && +held.slice(1) >= +c.slice(1)) return false;
+  }
+  return true;
+}
+function greedSummonable(G, P){ return G.burned.filter(function(c){ return greedCanSummon(G, P, c); }); }
+function greedSummonTake(it, code){
+  var G = it.greed, T = G.t, id = T.pid, P = G.ps[id], i = G.burned.indexOf(code);
+  if(i < 0 || !greedHas(P, 'summon') || !greedCanSummon(G, P, code)) return;
+  greedDrop(P, 'summon');
+  G.burned.splice(i, 1); G.burned.push('summon');
+  G.key++; T.stage = 'summoning'; T.key = G.key;
+  greedFxAdd(G, { type:'raise', pid:id, code:code, d:GREED_HAND_MS });
+  playSound('card-take');
+  greedSync(it);
+  broadcastState();
+  greedLater(it, function(){
+    var res = greedApply(it, id, code, false);
+    greedSync(it);
+    broadcastState();
+    if(res === 'seven'){ greedReturnThree(); return greedLater(it, function(){ greedEnd(it); }, 700); }
+    if(res.indexOf('target:') === 0) return greedTarget(it, res.slice(7), id, function(){ greedResume(it, id, T); });
+    greedOpen(it);
+  }, GREED_HAND_MS + 100);
+}
+// back to the player's own turn after a Freeze / Flip Three that came out of a kept card
+function greedResume(it, id, T){
+  var G = it.greed;
+  if(G.ps[id].status !== 'play'){ greedReturnThree(); return greedAdvance(it); }
+  G.t = T; T.gone = false; T.shown = {}; T.picked = null;
+  greedOpen(it);
 }
 function greedReturnThree(){ greedHost.three.forEach(function(c){ greedBackIntoDeck(c); }); greedHost.three = []; }
 function greedStealWho(it, victim){
@@ -10284,7 +10337,7 @@ function greedStealTake(it, i){
     if(res === 'bust'){ greedReturnThree(); return greedLater(it, function(){ greedGun(it, id, function(){ greedAdvance(it); }); }, 1000); }
     if(res === 'seven'){ greedReturnThree(); return greedLater(it, function(){ greedEnd(it); }, 700); }
     if(res === 'restart') return greedOpen(it);           // saved: the turn carries on with the same cards
-    if(res.indexOf('target:') === 0) return greedTarget(it, res.slice(7), id, function(){ greedOpen(it); });
+    if(res.indexOf('target:') === 0) return greedTarget(it, res.slice(7), id, function(){ greedResume(it, id, T); });
     greedOpen(it);
   }, GREED_HAND_MS*2 + 100);
 }
@@ -10335,11 +10388,11 @@ function greedFit(el, n, maxW){
   if(!n) return;
   var W = el.clientWidth - 8, H = el.clientHeight - 8, gap = 4, best = 0;   // (8: the box's padding)
   if(W <= 0 || H <= 0) return;
-  for(var r=1;r<=6;r++){
+  for(var r=1;r<=12;r++){
     var c = Math.ceil(n/r), w = Math.min((W - (c - 1)*gap)/c, ((H - (r - 1)*gap)/r)*5/7, maxW);
     if(w > best) best = w;
   }
-  var v = Math.floor(best) + 'px';
+  var v = Math.max(1, Math.floor(best) - 1) + 'px';
   if(el._gw !== v){ el._gw = v; el.style.setProperty('--gw', v); }
 }
 // a frame around a collection that has something on it: the card's own colour and symbol
@@ -10418,7 +10471,7 @@ function greedFxDraw(G, now){
       e.className = 'gr-f gr-f-' + f.type;
       var inner = { plus:'<b>'+escapeHtml(f.text||'')+'</b>', mult:'<b>'+escapeHtml(f.text||'')+'</b>', ice:greedIconHtml('freeze'), heart:greedIconHtml('second')+'<i></i>', smash:'<i></i>', seven:'<b>+'+GREED_SEVEN_BONUS+'</b>',
         lock:'<b>🔒</b>', pop:'<i></i>'+greedIconHtml('shield'), bubble:'<i></i>'+greedIconHtml('shield'), beat:greedIconHtml('second'), hand:greedIconHtml('hand', 'hand') + (f.code ? greedCardHtml(f.code, 'hcard') : ''), bin:greedIconHtml('discard')+(f.code ? greedCardHtml(f.code, 'bcard') : ''), shuffle:'<b>🔀</b>',
-        cardfly:greedCardHtml(f.code || 'back', 'fcard') }[f.type] || '';
+        cardfly:greedCardHtml(f.code || 'back', 'fcard'), raise:greedCardHtml(f.code || 'back', 'fcard') }[f.type] || '';
       e.innerHTML = inner;
       layer.appendChild(e); layer._m[f.id] = e;
     }
@@ -10426,6 +10479,10 @@ function greedFxDraw(G, now){
     if(f.type === 'ice' || f.type === 'cardfly'){
       e.style.left = (p.x + (q.x - p.x)*k) + 'px'; e.style.top = (p.y + (q.y - p.y)*k - Math.sin(Math.PI*k)*wr.height*0.14) + 'px';
       e.firstChild.style.transform = 'rotate(' + Math.round(k*540) + 'deg)';
+    } else if(f.type === 'raise'){                     // out of the burned pile, up to the collection
+      var bpEl = document.getElementById('gr-burn'), bpR = bpEl ? bpEl.getBoundingClientRect() : null;
+      var fromX = bpR ? bpR.left + bpR.width/2 - wr.left : p.x, fromY = bpR ? bpR.top + bpR.height/2 - wr.top : p.y;
+      e.style.left = (fromX + (p.x - fromX)*k) + 'px'; e.style.top = (fromY + (p.y - fromY)*k - Math.sin(Math.PI*k)*wr.height*0.12) + 'px';
     } else if(f.type === 'hand'){
       var t = k < 0.5 ? k*2 : 2 - k*2;                 // out to the victim, back with the card
       e.style.left = (p.x + (q.x - p.x)*t) + 'px'; e.style.top = (p.y + (q.y - p.y)*t) + 'px';
@@ -10439,18 +10496,22 @@ function greedFxDraw(G, now){
   Object.keys(layer._m).forEach(function(i){ if(!seen[i]){ layer._m[i].remove(); delete layer._m[i]; } });
 }
 // ---- the three cards: the same drawing and the same moves on the display and on the phones ----
-// ctx: deck = where they come from and go back to, target(code) = where a taken card flies, peek(i) = a card only I may see
+// ctx: deck = where they come from, burn = where the ones nobody took go, target(code) = where a taken card flies, peek(i) = a card only I may see
 function greedThreeDraw(box, T, now, ctx){
   var key = T.dealAt + '|' + (T.stage === 'flip' ? 'f' + T.flipAt : 'x');
   if(box._k !== key){
     box._k = key;
     var one = function(i, cls){ return '<div class="gr-slot'+cls+'" data-i="'+i+'">'+greedIconHtml('peek', 'gr-eye')+'<div class="gr-card"><div class="gr-face back"><img alt="" src="'+greedImg('back')+'"></div><div class="gr-face front"></div></div></div>'; };
     box.innerHTML = T.stage === 'flip' ? one(0, ' forced') : one(0, '') + one(1, '') + one(2, '');
-    var dk = ctx.deck ? ctx.deck.getBoundingClientRect() : null, br = box.getBoundingClientRect();
+    var dk = ctx.deck ? ctx.deck.getBoundingClientRect() : null, bp = ctx.burn ? ctx.burn.getBoundingClientRect() : null, br = box.getBoundingClientRect();
     Array.prototype.forEach.call(box.children, function(s){
       if(dk && dk.width){
         s.style.setProperty('--dx', (dk.left + dk.width/2 - br.left - s.offsetLeft - s.offsetWidth/2) + 'px');
         s.style.setProperty('--dy', (dk.top + dk.height/2 - br.top - s.offsetTop - s.offsetHeight/2) + 'px');
+      }
+      if(bp && bp.width){
+        s.style.setProperty('--bx', (bp.left + bp.width/2 - br.left - s.offsetLeft - s.offsetWidth/2) + 'px');
+        s.style.setProperty('--by', (bp.top + bp.height/2 - br.top - s.offsetTop - s.offsetHeight/2) + 'px');
       }
       void s.offsetWidth;
     });
@@ -10484,7 +10545,7 @@ function greedStageLabel(G, T){
   var ic = function(n){ return greedIconHtml(n, 'gr-hic'); };
   return T.stage === 'target' ? (G.pick && G.pick.kind === 'flip' ? ic('flip') + ' Flip Three: ' : ic('freeze') + ' Freeze: ') + 'يختار لاعب' :
     T.stage === 'stealwho' ? ic('hand') + ' يختار مين يسرق' : T.stage === 'stealpick' ? ic('hand') + ' يختار بطاقة من ' + escapeHtml(greedName(G.pick ? G.pick.victim : '')) :
-    T.stage === 'discard' ? ic('discard') + ' يختار رقم يرميه' : T.stage === 'flip' ? ic('flip') + ' Flip Three — ' + T.flipN + ' من 3' : 'دور';
+    T.stage === 'discard' ? ic('discard') + ' يختار رقم يرميه' : (T.stage === 'summon' || T.stage === 'summoning') ? ic('summon') + ' يسترجع بطاقة' : T.stage === 'flip' ? ic('flip') + ' Flip Three — ' + T.flipN + ' من 3' : 'دور';
 }
 function renderGreedDisplay(g, it){
   var sig = interSignature(it), now = syncedNow(), G = it.greed;
@@ -10529,7 +10590,7 @@ function renderGreedDisplay(g, it){
   var wh = '<span class="sn-dot" style="background:'+crashColor(T.pid)+'"></span><span>' + greedStageLabel(G, T) + '</span> <b>' + escapeHtml(greedName(T.pid)) + '</b>';
   greedSetHtml(who, wh);
   var endAt = G.pick ? G.pick.ends : T.ends, secs = Math.max(0, Math.ceil((endAt - now)/1000));
-  var tt = endAt && (T.stage === 'choose' || G.pick || T.stage === 'discard') ? String(secs) : '';
+  var tt = endAt && (T.stage === 'choose' || G.pick || T.stage === 'discard' || T.stage === 'summon') ? String(secs) : '';
   if(time.textContent !== tt) time.textContent = tt;
   time.classList.toggle('low', secs <= 5);
   // ---- the big collection and its counter (the number comes with the collection) ----
@@ -10544,9 +10605,9 @@ function renderGreedDisplay(g, it){
   stage.classList.toggle('seven', G.fx.some(function(f){ return f.type === 'seven' && now >= f.at && now < f.at + f.d; }));
   stage.classList.toggle('iced', P.status === 'frozen' && now >= P.frozenAt);
   // ---- the three cards ----
-  greedThreeDraw(document.getElementById('gr-three'), T, now, { deck:document.getElementById('gr-deck'), target:function(){ return rowEl; } });
+  greedThreeDraw(document.getElementById('gr-three'), T, now, { deck:document.getElementById('gr-deck'), burn:pile, target:function(){ return rowEl; } });
   // ---- the burned cards, asked for from the phone of whoever's turn it is ----
-  var bv = document.getElementById('gr-burnview'), bvOpen = !!G.burnOpen && T.stage === 'choose';
+  var bv = document.getElementById('gr-burnview'), bvOpen = (!!G.burnOpen && T.stage === 'choose') || T.stage === 'summon';
   bv.classList.toggle('hidden', !bvOpen);
   if(bvOpen){
     greedSetHtml(bv, greedBurnViewHtml(G, false));
@@ -11370,6 +11431,7 @@ els.greedSheet.addEventListener('click', function(e){
   else if(k === 'stealwho') gqSend({ a:'stealwho', key:T.key, id:v });
   else if(k === 'stealcard') gqSend({ a:'stealcard', key:T.key, i:+v });
   else if(k === 'discard') gqSend({ a:'discardcard', key:T.key, code:v });
+  else if(k === 'summon') gqSend({ a:'summoncard', key:T.key, code:v });
   else if(k === 'back') gqSend({ a:'back', key:T.key });
 });
 function gqBurnToggle(){
@@ -11431,6 +11493,14 @@ function gqSheet(it, G, me, now){
     var P0 = G.ps[me];
     h = '<div class="gq-shead"><span>'+ic('discard')+' أي رقم ترميه؟</span> <i id="gq-sclock"></i></div><div class="gq-grid">'+P0.nums.map(function(cd){ return '<button type="button" class="gq-steal" data-pick="'+cd+'" data-k="discard">'+greedCardHtml(cd, '')+'</button>'; }).join('')+'</div>' +
       '<button type="button" class="gq-back" data-pick="1" data-k="back">رجوع</button>';
+  }
+  else if(T && T.pid === me && T.stage === 'summon'){
+    key = 'sum|'+T.key;
+    var P1 = G.ps[me], seen = {};
+    h = '<div class="gq-shead"><span>'+ic('summon')+' أي بطاقة تسترجع؟</span> <i id="gq-sclock"></i></div><div class="gq-grid">'+greedBurnSorted(G).filter(function(cd){ if(seen[cd]) return false; seen[cd] = true; return true; }).map(function(cd){
+      var ok = greedCanSummon(G, P1, cd);
+      return '<button type="button" class="gq-steal gq-sum'+(ok ? '' : ' off')+'"'+(ok ? ' data-pick="'+cd+'" data-k="summon"' : ' disabled')+'>'+greedCardHtml(cd, '')+'</button>';
+    }).join('')+'</div><button type="button" class="gq-back" data-pick="1" data-k="back">رجوع</button>';
   }
   sh.classList.toggle('hidden', !key);
   if(key && sh._k !== key){ sh._k = key; sh.innerHTML = h; }
@@ -11498,6 +11568,7 @@ function renderGreedPlayer(g, it, alive, outEntry){
   if(showThree){
     greedThreeDraw(els.greedThree, T, now, {
       deck:els.greedDeck,
+      burn:els.greedBurnBtn,
       target:function(){ return mine ? els.greedMineCards : els.greedOtherCards; },
       peek:function(i){ return mine ? gq.peeks[T.dealAt + '|' + i] : null; }
     });
@@ -11511,6 +11582,7 @@ function renderGreedPlayer(g, it, alive, outEntry){
     if(greedHas(P, 'peek')) tools += tool('peek', 'peek', 'Peek', gq.peekMode);
     if(greedHas(P, 'steal') && greedTargets(it, 'steal', me).length) tools += tool('steal', 'hand', 'Steal');
     if(greedHas(P, 'discard') && P.nums.length) tools += tool('discard', 'discard', 'Discard');
+    if(greedHas(P, 'summon') && greedSummonable(G, P).length) tools += tool('summon', 'summon', 'Summon');
   }
   greedSetHtml(els.greedTools, tools);
   els.greedTools.classList.toggle('hidden', !tools);
