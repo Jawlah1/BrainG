@@ -1718,6 +1718,13 @@ body.theme-5 .fg, body.theme-5 .fall-ind-box, body.theme-6 .fg, body.theme-6 .fa
 .gr-bvtitle{flex:0 0 auto;text-align:center;font-size:clamp(18px,3.2vh,32px);font-weight:900;color:var(--gold);}
 .gr-bvgrid{flex:1 1 0;min-height:0;padding:4px;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:4px;direction:ltr;}
 .gr-c.bv{width:var(--gw,60px);}
+.gr-cpgrid{flex:1 1 0;min-height:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:6px;direction:ltr;}
+.gr-cp{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:0;}
+.gr-c.cp{flex:0 0 62%;width:62%;height:auto;aspect-ratio:5/7;min-width:0;}
+.gr-cp b{flex:0 0 auto;font-weight:900;color:var(--gold);font-size:clamp(13px,2.4vh,24px);white-space:nowrap;font-variant-numeric:tabular-nums;}
+.gq-burnview .gr-cpgrid{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(7,minmax(0,1fr));gap:4px;}
+.gq-burnview .gr-cp b{font-size:clamp(13px,2vh,17px);}
+.gq-burnbtn.gq-copybtn{margin-left:6px;}
 .gr-bvnone{flex:1;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:clamp(16px,2.6vh,26px);color:var(--text);}
 .gr-stage.ranking .gr-three, .gr-stage.ranking .gr-bottom, .gr-stage.ranking .gr-head{display:none;}
 .gr-rank{display:flex;flex-direction:column;gap:.7vh;min-width:min(42vw,560px);padding:1.6vh 2vw;border-radius:18px;background:var(--panel);border:1px solid var(--border);direction:rtl;}
@@ -2191,11 +2198,12 @@ body.theme-5 .fg, body.theme-5 .fall-ind-box, body.theme-6 .fg, body.theme-6 .fa
       <button type="button" class="gq-freeze hidden" id="greed-freeze">🔒 جمّد بطاقاتي</button>
       <div class="gq-tools hidden" id="greed-tools"></div>
       <div class="gq-mine" id="greed-mine"><div class="gr-auras" id="greed-mine-auras"></div><div class="gq-cards" id="greed-mine-cards"></div></div>
-      <div class="gq-foot"><div class="gq-deck" id="greed-deck"><img alt="" draggable="false" src="https://raw.githubusercontent.com/Jawlah1/RandFiles/main/deck_stack.webp"><em id="greed-left"></em></div><button type="button" class="gq-burnbtn off" id="greed-burn-btn" disabled></button></div>
+      <div class="gq-foot"><div class="gq-deck" id="greed-deck"><img alt="" draggable="false" src="https://raw.githubusercontent.com/Jawlah1/RandFiles/main/deck_stack.webp"><em id="greed-left"></em></div><button type="button" class="gq-burnbtn off" id="greed-burn-btn" disabled></button><button type="button" class="gq-burnbtn gq-copybtn off" id="greed-copies-btn" disabled>🃏 النسخ</button></div>
       <button type="button" class="gq-drawer hidden" id="greed-drawer"></button>
       <div class="gq-list hidden" id="greed-list"></div>
       <div class="gq-sheet hidden" id="greed-sheet"></div>
       <div class="gq-burnview hidden" id="greed-burnview"></div>
+      <div class="gq-burnview hidden" id="greed-copiesview"></div>
       <div class="gq-zoom hidden" id="greed-zoom"></div>
     </div>
     <div id="submitted-label" class="submitted-label hidden" style="text-align:center;">SUBMITED!</div>
@@ -2791,7 +2799,7 @@ var els = {};
  'counter-container','counter-num','counter-btn','counter-minus-btn','submitted-label','btn-submit',
  'flags-pad-container','flags-remaining','flags-char-img','dpad-up','dpad-left','dpad-right','dpad-down','btn-flags-reset','dpad-up-img','dpad-left-img','dpad-right-img','dpad-down-img',
  'words-container','words-board','words-toast','words-kb','words-giveup',
- 'inter-container','rc-belt','rc-score','rc-timer','rc-recycle','rc-pass','elim-overlay','rc-furnace','char-layer','inter-pick','rc-avatar','faceoff','roundwin','cv-container','cv-fire','cv-belt','cv-box','cv-arrow','cv-pad','cv-avatar','keys-container','keys-count','keys-map','keys-avatar','memo-container','memo-count','memo-grid','memo-grid2','memo-submit','memo-avatar','dice-container','dice-panel','dice-total','dice-count','dice-tray','dice-fix','dice-hint','dice-avatar','elec-container','elec-count','elec-board','elec-avatar','fall-container','fall-ind-ph','fall-count','fall-board','fall-avatar','crash-container','crash-item','crash-pts','crash-cyc','crash-eff','crash-avatar','crash-joy','crash-knob','crash-fire-l','crash-fire-r','gifts-container','gifts-stage','gifts-score','gifts-time','gifts-items','gifts-avatar','gifts-fx','gifts-btns','puzzle-container','puzzle-count','puzzle-moves','puzzle-board','puzzle-peek','puzzle-avatar','snake-container','snake-avatar','snake-turn','snake-pos','snake-count','snake-badges','snake-use','snake-gold','snake-tray','snake-toast','greed-container','greed-avatar','greed-turn','greed-count','greed-total','greed-three','greed-freeze','greed-tools','greed-mine','greed-sheet','greed-list-btn','greed-other','greed-other-name','greed-other-cards','greed-mine-auras','greed-mine-cards','greed-deck','greed-left','greed-burn-btn','greed-drawer','greed-list','greed-burnview','greed-zoom',
+ 'inter-container','rc-belt','rc-score','rc-timer','rc-recycle','rc-pass','elim-overlay','rc-furnace','char-layer','inter-pick','rc-avatar','faceoff','roundwin','cv-container','cv-fire','cv-belt','cv-box','cv-arrow','cv-pad','cv-avatar','keys-container','keys-count','keys-map','keys-avatar','memo-container','memo-count','memo-grid','memo-grid2','memo-submit','memo-avatar','dice-container','dice-panel','dice-total','dice-count','dice-tray','dice-fix','dice-hint','dice-avatar','elec-container','elec-count','elec-board','elec-avatar','fall-container','fall-ind-ph','fall-count','fall-board','fall-avatar','crash-container','crash-item','crash-pts','crash-cyc','crash-eff','crash-avatar','crash-joy','crash-knob','crash-fire-l','crash-fire-r','gifts-container','gifts-stage','gifts-score','gifts-time','gifts-items','gifts-avatar','gifts-fx','gifts-btns','puzzle-container','puzzle-count','puzzle-moves','puzzle-board','puzzle-peek','puzzle-avatar','snake-container','snake-avatar','snake-turn','snake-pos','snake-count','snake-badges','snake-use','snake-gold','snake-tray','snake-toast','greed-container','greed-avatar','greed-turn','greed-count','greed-total','greed-three','greed-freeze','greed-tools','greed-mine','greed-sheet','greed-list-btn','greed-other','greed-other-name','greed-other-cards','greed-mine-auras','greed-mine-cards','greed-deck','greed-left','greed-burn-btn','greed-copies-btn','greed-copiesview','greed-drawer','greed-list','greed-burnview','greed-zoom',
  'btn-next-round','btn-bomb-new-round','btn-reset-all-scores','btn-rename','my-theme-box','my-theme-picker','display-theme-wrap','btn-bomb-to-lobby','btn-bomb-continue','winner-screen',
  'victory-audio-box','btn-pick-victory-audio','victory-audio-input','victory-audio-status'
 ].forEach(function(id){ els[toCamel(id)] = document.getElementById(id); });
@@ -9838,7 +9846,7 @@ function renderSnakeDisplay(g, it){
 // shown and burn (an empty deck is made again from the burned cards). Numbers score their value; a number you already
 // have knocks you out at once (the gun, and you're out of the whole round). Seven different
 // numbers: +50 and the elimination ends for everyone. When nobody can draw any more, the lowest
-// score goes too (elimination mode), or everyone but the best one by one (one round mode).
+// score goes too (elimination mode, only if nobody went by a duplicate in this elimination), or everyone but the best one by one (one round mode).
 // Score = points kept from earlier eliminations + (numbers + bonus cards) x multipliers + 50 for
 // seven; a knocked out player has 0. Points are only wiped when the big round ends.
 // One deck for 2-6 players, two for 7-12, rebuilt for every elimination. To rebalance, edit here:
@@ -9901,7 +9909,7 @@ function greedSetup(it, cfg){
   var startAt = it.greed ? it.greed.nextIdx : 0, prev = it.greed && it.greedRound === it.roundNumber ? it.greed : null;
   it.greedRound = it.roundNumber;
   it.greed = { mode: cfg.greedMode === 'single' ? 'single' : 'elim', turnMs: Math.max(5, Math.min(60, parseInt(cfg.greedSec, 10) || 15))*1000,
-    timeoutDraw: cfg.greedTimeout === 'draw', multTop: cfg.greedMult === 'top', view: cfg.greedView === 'phones' ? 'phones' : 'display', burned:[], burnOpen:false, order:shuffle(ids), idx:-1, ps:{}, t:null, pick:null, fx:[], mood:{}, left:greedHost.deck.length,
+    timeoutDraw: cfg.greedTimeout === 'draw', multTop: cfg.greedMult === 'top', view: cfg.greedView === 'phones' ? 'phones' : 'display', burned:[], burnOpen:false, order:shuffle(ids), idx:-1, ps:{}, t:null, pick:null, fx:[], mood:{}, left:greedHost.deck.length, sets:ids.length >= GREED_TWO_DECKS_FROM ? 2 : 1, copiesOpen:false,
     key:0, done:false, rank:null, tieAll:false, nextIdx:startAt || 0 };
   ids.forEach(function(id){
     var bank = prev && prev.ps[id] ? greedTotal(prev.ps[id]) : 0;
@@ -9961,7 +9969,7 @@ function greedDeal(it, id){
   var G = it.greed, H = greedHost, now = syncedNow();
   H.three = [greedDraw(), greedDraw(), greedDraw()];
   G.key++;
-  G.pick = null; G.burnOpen = false;
+  G.pick = null; G.burnOpen = false; G.copiesOpen = false;
   G.t = { pid:id, key:G.key, stage:'deal', dealAt:now, shown:{}, peeked:{}, picked:null, ends:0 };
   greedSync(it);
   broadcastState();
@@ -10219,7 +10227,7 @@ function greedEnd(it){
   var score = function(id){ return greedTotal(G.ps[id]); };
   var low = Math.min.apply(null, ids.map(score)), high = Math.max.apply(null, ids.map(score));
   G.rank = { at:syncedNow(), rows:ids.slice().sort(function(a, b){ return score(b) - score(a); }).map(function(id){ return { id:id, s:score(id) }; }),
-    low:G.mode === 'single' ? null : low, tie:low === high };
+    low:(G.mode === 'single' || G.bust) ? null : low, tie:low === high };
   broadcastState();
   var wait = 900 + G.rank.rows.length*650 + 900;
   greedLater(it, function(){
@@ -10242,6 +10250,7 @@ function greedEnd(it){
       crashNextGun(sig);
       return;
     }
+    if(G.bust){ G.noLow = true; g.phase = 'inter-elim'; broadcastState(); return; }   // someone already went by a duplicate: the rest carry on with their points
     if(low === high){ G.tieAll = true; g.phase = 'inter-elim'; broadcastState(); return; }   // all level: nobody
     var out = shuffle(ids.filter(function(id){ return score(id) === low; }));
     it.grpCount = (it.grpCount || 0) + 1;
@@ -10261,8 +10270,9 @@ function hostGreedMsg(pid, msg){
   if(a === 'target' && G.pick && G.pick.key === msg.key && G.pick.by === pid && G.pick.kind !== 'steal' && G.pick.allowed.indexOf(msg.id) >= 0){ greedResolveTarget(it, msg.id); return; }
   if(!T || T.pid !== pid || msg.key !== T.key) return;
   var P = G.ps[pid];
-  if(a === 'burnview'){ if(T.stage === 'choose'){ G.burnOpen = !G.burnOpen; broadcastState(); } return; }
-  G.burnOpen = false;
+  if(a === 'burnview'){ if(T.stage === 'choose'){ G.burnOpen = !G.burnOpen; G.copiesOpen = false; broadcastState(); } return; }
+  if(a === 'copiesview'){ if(T.stage === 'choose'){ G.copiesOpen = !G.copiesOpen; G.burnOpen = false; broadcastState(); } return; }
+  G.burnOpen = false; G.copiesOpen = false;
   if(T.stage === 'stealpick' && a === 'stealcard'){ greedStealTake(it, parseInt(msg.i, 10)); return; }
   if(T.stage === 'stealwho' && a === 'stealwho' && G.pick.allowed.indexOf(msg.id) >= 0){ greedStealWho(it, msg.id); return; }
   if((T.stage === 'stealwho' || T.stage === 'discard' || T.stage === 'summon') && a === 'back'){ greedOpen(it); return; }
@@ -10460,6 +10470,21 @@ function greedBurnViewHtml(G, zoom){
   return '<div class="gr-bvtitle">🔥 البطاقات المحروقة ('+l.length+')</div>' +
     (l.length ? '<div class="gr-bvgrid">'+l.map(function(c){ return greedCardHtml(c, 'bv'+(zoom ? ' gz' : '')); }).join('')+'</div>' : '<div class="gr-bvnone">ما فيه بطاقات محروقة للحين</div>');
 }
+// every kind of card and how many copies of it this elimination's deck has
+function greedCopiesList(G){
+  var sets = G.sets || 1, l = [], i;
+  for(i=0;i<=12;i++) l.push({ code:'n'+i, n:GREED_NUMS[i]*sets });
+  Object.keys(GREED_BONUS).forEach(function(v){ l.push({ code:'b'+v, n:GREED_BONUS[v]*sets }); });
+  Object.keys(GREED_MULT).forEach(function(v){ l.push({ code:'m'+v, n:GREED_MULT[v]*sets }); });
+  GREED_ACTIONS.forEach(function(a){ l.push({ code:a, n:GREED_ACTION_COPIES[a]*sets }); });
+  return l;
+}
+function greedCopiesHtml(G, zoom){
+  var l = greedCopiesList(G), total = l.reduce(function(t, c){ return t + c.n; }, 0);
+  return '<div class="gr-bvtitle">🃏 نسخ البطاقات ('+total+')</div><div class="gr-cpgrid">' + l.map(function(c){
+    return '<div class="gr-cp" data-code="'+c.code+'">'+greedCardHtml(c.code, 'cp'+(zoom ? ' gz' : ''))+'<b>x'+c.n+'</b></div>';
+  }).join('') + '</div>';
+}
 function greedSizeClass(n){ return n <= 4 ? 'gr-s' : (n <= 8 ? 'gr-m' : 'gr-l'); }
 // the small collections (coins) by the characters, on a layer of their own (the slots are redrawn every frame)
 function greedMinis(g, it, G, now){
@@ -10609,7 +10634,7 @@ function renderGreedDisplay(g, it){
       '<div class="gr-bottom"><div class="gr-piles"><div class="gr-deck" id="gr-deck"><img alt="" draggable="false" src="'+GREED_DECK_IMG+'"><em id="gr-left"></em></div><div class="gr-burn" id="gr-burn"></div></div>' +
       '<div class="gr-coll" id="gr-coll"><div class="gr-auras" id="gr-auras"></div><div class="gr-row" id="gr-row"></div></div>' +
       '<div class="gr-count" id="gr-count"></div></div>' +
-      '<div class="gr-burnview hidden" id="gr-burnview"></div><div class="gr-rank hidden" id="gr-rank"></div></div>';
+      '<div class="gr-burnview hidden" id="gr-burnview"></div><div class="gr-burnview hidden" id="gr-copiesview"></div><div class="gr-rank hidden" id="gr-rank"></div></div>';
   });
   var stage = document.getElementById('gr-stage');
   if(!stage) return;
@@ -10660,6 +10685,9 @@ function renderGreedDisplay(g, it){
     greedSetHtml(bv, greedBurnViewHtml(G, false));
     var gridEl = bv.querySelector('.gr-bvgrid'); if(gridEl) greedFit(gridEl, bn, 200);
   }
+  var cv = document.getElementById('gr-copiesview'), cvOpen = !!G.copiesOpen && T.stage === 'choose';
+  cv.classList.toggle('hidden', !cvOpen);
+  if(cvOpen) greedSetHtml(cv, greedCopiesHtml(G, false));
 }
 
 // ---------------- shared drawing ----------------
@@ -11021,6 +11049,8 @@ function renderInterElimDisplay(g, it){
       });
       html += '</table>';
       if(victim) html = '<div class="elim-sub">تم إقصاء '+escapeHtml(it.elimNames || victim.name)+(e.tie?' (تعادل - بالقرعة)':'')+'</div>' + html;
+    } else if(it.greed && it.greed.noLow && !e){
+      html = '<div class="elim-title res">🃏 انتهى الإقصاء</div><div class="elim-sub">الباقين ينتقلون للإقصاء التالي بنقاطهم</div>';
     } else if(it.greed && it.greed.tieAll && !e){
       html = '<div class="elim-title res">🤝 تعادل الكل!</div><div class="elim-sub">ما أحد طلع — إقصاء جديد</div>';
     } else if(it.puzzle && it.puzzle.tieAll && !e){
@@ -11416,7 +11446,7 @@ function renderInterPlayer(){
     var mine = it.roundResults.filter(function(r){ return r.id===app.myPlayerId; })[0];
     els.notifBar.textContent = mine ? (mine.winner ? '👑 آخر الصامدين! +'+mine.points : 'انتهت الجولة: +'+mine.points) : 'انتهت الجولة';
   } else {
-    els.notifBar.textContent = (it.greed && it.greed.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.puzzle && it.puzzle.tieAll && !it.elim) ? '🧩 ما أحد كمّل — ما أحد طلع' : (it.gifts && it.gifts.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.crash && it.crash.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.elec && it.elec.tieAll && !it.elim) ? '⚡ ما أحد وصّل — ما أحد طلع' : (it.dice && it.dice.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.memo && it.memo.allOk && !it.elim) ? '🦅 الكل صح — ما أحد طلع' : (it.keys && it.keys.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : hitNow ? 'تم إقصاؤك' : (alive ? ('✔ نجوت - تم إقصاء '+(victim?victim.name:'')) : 'تم إقصاء '+(victim?victim.name:''));
+    els.notifBar.textContent = (it.greed && it.greed.noLow && !it.elim) ? (alive ? '✔ تنتقل للإقصاء التالي بنقاطك' : 'الباقين ينتقلون للإقصاء التالي') : (it.greed && it.greed.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.puzzle && it.puzzle.tieAll && !it.elim) ? '🧩 ما أحد كمّل — ما أحد طلع' : (it.gifts && it.gifts.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.crash && it.crash.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.elec && it.elec.tieAll && !it.elim) ? '⚡ ما أحد وصّل — ما أحد طلع' : (it.dice && it.dice.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : (it.memo && it.memo.allOk && !it.elim) ? '🦅 الكل صح — ما أحد طلع' : (it.keys && it.keys.tieAll && !it.elim) ? '🤝 تعادل الكل — ما أحد طلع' : hitNow ? 'تم إقصاؤك' : (alive ? ('✔ نجوت - تم إقصاء '+(victim?victim.name:'')) : 'تم إقصاء '+(victim?victim.name:''));
   }
   if(isLeader && (!it.elim || syncedNow() >= it.elim.shotAt + 700) && !(it.elimQueue && it.elimQueue.length)){
     els.btnNextRound.textContent = !it.roundResults ? (it.gameKey === 'keys' ? '▶ العبور التالي' : it.gameKey === 'memo' ? '▶ النمط التالي' : it.gameKey === 'dice' ? '▶ الرمية التالية' : it.gameKey === 'elec' ? '▶ اللغز التالي' : it.gameKey === 'crash' ? '▶ الإقصاء التالي' : it.gameKey === 'gifts' ? '▶ الإقصاء التالي' : it.gameKey === 'puzzle' ? '▶ الصورة التالية' : it.gameKey === 'greed' ? '▶ الإقصاء التالي' : '▶ الإقصاء التالي ('+(it.innerNumber+1)+'/'+interInnerTotal(it)+')')
@@ -11492,6 +11522,18 @@ els.greedBurnBtn.addEventListener('click', gqBurnToggle);
 els.greedBurnview.addEventListener('click', function(e){
   if(e.target.closest && e.target.closest('.gz')) return;
   gqBurnToggle();
+});
+function gqCopiesToggle(){
+  var it = gqState(); if(!it) return;
+  var T = it.greed.t;
+  if(!T || T.pid !== app.myPlayerId || T.stage !== 'choose') return;
+  playSound('press');
+  gqSend({ a:'copiesview', key:T.key });
+}
+els.greedCopiesBtn.addEventListener('click', gqCopiesToggle);
+els.greedCopiesview.addEventListener('click', function(e){
+  if(e.target.closest && e.target.closest('.gz')) return;
+  gqCopiesToggle();
 });
 els.greedDrawer.addEventListener('click', function(){ gq.drawer = !gq.drawer; playSound('press'); renderAll(); });
 els.greedListBtn.addEventListener('click', function(){ gq.list = !gq.list; gq.listId = null; playSound('press'); renderAll(); });
@@ -11597,6 +11639,8 @@ function renderGreedPlayer(g, it, alive, outEntry){
   greedSetHtml(els.greedBurnBtn, '🔥 المحروقة ('+G.burned.length+')');
   els.greedBurnBtn.disabled = !choosing;
   els.greedBurnBtn.classList.toggle('off', !choosing);
+  els.greedCopiesBtn.disabled = !choosing;
+  els.greedCopiesBtn.classList.toggle('off', !choosing);
   // the three cards (only on my turn, unless everyone plays on their phones)
   var showThree = !!T && !it.elim && (mine || phones) && T.stage !== 'wait' && T.stage !== 'target';
   els.greedThree.classList.toggle('hidden', !showThree);
@@ -11652,6 +11696,9 @@ function renderGreedPlayer(g, it, alive, outEntry){
     greedSetHtml(els.greedBurnview, greedBurnViewHtml(G, true) + '<button type="button" class="gq-back">إغلاق</button>');
     var bg = els.greedBurnview.querySelector('.gr-bvgrid'); if(bg) greedFit(bg, G.burned.length, 120);
   }
+  var cpOpen = !!G.copiesOpen && choosing;
+  els.greedCopiesview.classList.toggle('hidden', !cpOpen);
+  if(cpOpen) greedSetHtml(els.greedCopiesview, greedCopiesHtml(G, true) + '<button type="button" class="gq-back">إغلاق</button>');
   gqList(it, G, me);
   gqSheet(it, G, me, now);
   if(g.phase !== 'inter-active') return false;
